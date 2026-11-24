@@ -90,4 +90,13 @@ test.describe('nova página inicial', () => {
     const sobra = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     expect(sobra).toBeLessThanOrEqual(0);
   });
+
+  test('o cabeçalho fica em uma linha em 960 px', async ({ page }) => {
+    await page.setViewportSize({ width: 960, height: 800 });
+    await page.goto('./');
+    const alt = await page.locator('header.bar').evaluate((e) => e.getBoundingClientRect().height);
+    expect(alt).toBeLessThanOrEqual(84);
+    const a = await page.locator('.nav a').first().evaluate((e) => e.getBoundingClientRect().height);
+    expect(a).toBeLessThan(44);
+  });
 });

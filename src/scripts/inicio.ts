@@ -24,7 +24,10 @@ function nivelAtual(estado: Estado): string {
 function atualizar(): void {
   const estado = estadoAtual();
 
-  const atual = nivelAtual(estado);
+  let atual = nivelAtual(estado);
+  // Não esconde o painel onde o foco está (o usuário acabou de marcar um tópico): a troca vale no próximo carregamento.
+  const visivel = [...document.querySelectorAll<HTMLElement>('[data-nivel-painel]')].find((p) => !p.hidden);
+  if (visivel && visivel.contains(document.activeElement) && visivel.dataset.nivelPainel !== atual) atual = visivel.dataset.nivelPainel!;
   document.querySelectorAll<HTMLElement>('[data-nivel-painel]').forEach((p) => {
     p.hidden = p.dataset.nivelPainel !== atual;
   });

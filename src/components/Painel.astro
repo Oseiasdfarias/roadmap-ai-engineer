@@ -4,10 +4,9 @@ import { X, ArrowRight, Check } from '@lucide/astro';
 import Refs from './Refs.astro';
 import { idProgresso, rotaDe } from '../lib/conteudo';
 
-const [topicos, dicas, projetos] = await Promise.all([
+const [topicos, dicas] = await Promise.all([
   getCollection('topicos'),
   getCollection('dicas'),
-  getCollection('projetos'),
 ]);
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
@@ -36,15 +35,6 @@ const itens = await Promise.all([
       rota: rotaDe(d),
     };
   }),
-  ...projetos.map(async (p) => ({
-    chave: `projeto:${p.id}`,
-    progresso: undefined as string | undefined,
-    rotulo: `Projeto prático · ${p.data.codigo}`,
-    titulo: p.data.titulo,
-    resumo: p.data.resumo,
-    refs: p.data.referencias,
-    rota: rotaDe(p),
-  })),
 ]);
 ---
 <dialog class="painel" id="painel" aria-labelledby="painel-titulo">

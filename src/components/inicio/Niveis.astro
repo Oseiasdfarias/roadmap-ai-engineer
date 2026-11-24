@@ -33,7 +33,7 @@ const niveis = await Promise.all(
         <div class="nv-cols">
           {n.grupos.map((g) => (
             <div>
-              <h3>{g.grupo.replace(/\s*\(.*\)$/, '')}</h3>
+              <h3>{g.grupo}</h3>
               <ul class="topicos">
                 {g.itens.slice(0, MAX_POR_GRUPO).map((t) => {
                   const id = idProgresso(t);
