@@ -49,7 +49,7 @@ const sumarioItens = [
   ...(d.referencias.length > 0 ? [{ slug: 'referencias', texto: 'Referências' }] : []),
 ];
 ---
-<Base titulo={`${d.titulo} | Roadmap AI Engineer`} descricao={d.resumo}>
+<Base titulo={`${d.titulo} | Roadmap AI Engineer`} descricao={d.resumo} rotaOg={`${tipo === "dica" ? "carreira" : tipo}/${entry.id}`}>
   <div class="item">
     <Migalha itens={[{ rotulo: 'Mapa', href: url('/') }, { rotulo: rotuloPai, href: hrefPai }, { rotulo: d.titulo }]} />
     <div class="panel">

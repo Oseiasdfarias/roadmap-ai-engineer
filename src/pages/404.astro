@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../lib/url';
+import '../styles/detalhe.css';
+---
+<Base titulo="Página não encontrada | Roadmap AI Engineer" descricao="Essa página não existe. Volte ao mapa do roadmap." noindex>
+  <div class="detail" style="text-align: center; padding-top: 60px; padding-bottom: 80px;">
+    <p style="color: var(--acc); font: 800 56px var(--font-titulo); margin: 0;">404</p>
+    <h1 style="font-family: var(--font-titulo); margin: 6px 0 10px;">Página não encontrada</h1>
+    <p style="color: var(--muted); margin: 0 0 22px;">O endereço não existe ou mudou de lugar.</p>
+    <a class="btn pri" href={url('/')}>Voltar ao mapa</a>
+  </div>
+</Base>

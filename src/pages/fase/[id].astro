@@ -27,7 +27,7 @@ const ids = dicas.map(idProgresso);
 const meio = Math.ceil(dicas.length / 2);
 const rotulo = (f: NonNullable<typeof prev>) => `Fase ${f.data.id} · ${cap(f.data.nome)}`;
 ---
-<Base titulo={`Fase ${d.id} · ${cap(d.nome)} | Roadmap AI Engineer`} descricao={d.objetivo}>
+<Base titulo={`Fase ${d.id} · ${cap(d.nome)} | Roadmap AI Engineer`} descricao={d.objetivo} rotaOg={`fase/${d.id}`}>
   <div class="detail">
     <Migalha itens={[{ rotulo: 'Mapa', href: url('/') }, { rotulo: 'Carreira' }, { rotulo: `Fase ${d.id}` }]} />
     <div class="panel">

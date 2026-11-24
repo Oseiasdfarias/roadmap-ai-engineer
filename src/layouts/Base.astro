@@ -9,6 +9,7 @@ import '../styles/tokens.css';
 import '../styles/base.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Busca from '../components/Busca.astro';
 import { SITE } from '../config';
 import { url } from '../lib/url';
 import { todosIdsProgresso } from '../lib/conteudo';
@@ -56,8 +57,9 @@ const imagemOg = rotaOg ? new URL(url('/og/' + rotaOg + '.png'), SITE.url).href 
   </head>
   <body>
     {!semCabecalho && <Header />}
-    <main data-pagefind-ignore={noindex ? '' : undefined}><slot /></main>
+    <main data-pagefind-body={noindex ? undefined : ''} data-pagefind-ignore={noindex ? '' : undefined}><slot /></main>
     <Footer />
+    <Busca />
     <script type="application/json" data-progresso-todos set:html={JSON.stringify(idsProgresso)} />
     <script>
       import '../scripts/progresso';

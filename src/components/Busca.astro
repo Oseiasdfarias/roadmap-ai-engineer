@@ -1,0 +1,38 @@
+---
+import { Search, X } from '@lucide/astro';
+import { url } from '../lib/url';
+---
+<dialog id="busca" class="busca" aria-label="Buscar" data-pagefind-ignore data-pagefind-js={url('/pagefind/pagefind.js')}>
+  <div class="busca-caixa">
+    <form class="busca-campo" role="search" onsubmit="return false">
+      <Search aria-hidden="true" />
+      <input type="search" role="searchbox" name="q" placeholder="Buscar tópicos, projetos e dicas" aria-label="Buscar no roadmap" autocomplete="off" spellcheck="false" />
+      <button type="button" class="btn icon-btn" data-busca-fechar aria-label="Fechar a busca"><X aria-hidden="true" /></button>
+    </form>
+    <div class="busca-estado" role="status" aria-live="polite" data-busca-estado>Digite para buscar. Atalhos: / ou Ctrl+K.</div>
+    <ul class="busca-lista" data-busca-lista></ul>
+  </div>
+</dialog>
+<script>
+  import { ligarBusca } from '../scripts/busca';
+  ligarBusca();
+</script>
+
+<style is:global>
+  .busca { border: 1px solid var(--line-strong); border-radius: 14px; background: var(--card); color: var(--text); padding: 0; width: min(640px, calc(100vw - 32px)); max-height: min(560px, calc(100vh - 80px)); margin: 10vh auto auto; box-shadow: 0 20px 50px rgba(0, 0, 0, .25); }
+  .busca::backdrop { background: rgba(8, 12, 18, .55); }
+  .busca-caixa { display: flex; flex-direction: column; max-height: inherit; }
+  .busca-campo { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid var(--line); margin: 0; }
+  .busca-campo > svg { width: 18px; height: 18px; color: var(--muted); flex: none; }
+  .busca-campo input { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--text); font: inherit; font-size: 16px; outline: none; }
+  .busca-campo input:focus-visible { outline: none; }
+  .busca-campo:focus-within { box-shadow: inset 0 -2px 0 var(--acc); }
+  .busca-estado { padding: 10px 16px; font-size: 13px; color: var(--muted); }
+  .busca-lista { list-style: none; margin: 0; padding: 0 8px 10px; overflow-y: auto; }
+  .busca-lista a { display: block; padding: 10px 10px; border-radius: 9px; color: var(--text); text-decoration: none; }
+  .busca-lista a:hover, .busca-lista a:focus-visible { background: var(--acc-soft); }
+  .busca-lista strong { display: block; font-family: var(--font-titulo); font-size: 15px; }
+  .busca-lista span { display: block; font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .busca-lista mark { background: var(--acc-soft); color: var(--acc); border-radius: 3px; padding: 0 1px; }
+  @media (prefers-reduced-motion: reduce) { .busca * { transition: none !important; } }
+</style>

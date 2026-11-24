@@ -28,7 +28,7 @@ const dicas = await dicasDaFase(d.fase);
 const ids = grupos.flatMap((g) => g.itens).map(idProgresso);
 const rotulo = (n: NonNullable<typeof prev>) => `Nível ${n.data.id} · ${cap(n.data.curto)}`;
 ---
-<Base titulo={`Nível ${d.id} · ${cap(d.nome)} | Roadmap AI Engineer`} descricao={d.objetivo}>
+<Base titulo={`Nível ${d.id} · ${cap(d.nome)} | Roadmap AI Engineer`} descricao={d.objetivo} rotaOg={`nivel/${d.id}`}>
   <div class="detail">
     <Migalha itens={[{ rotulo: 'Mapa', href: url('/') }, { rotulo: 'Estudo' }, { rotulo: `Nível ${d.id}` }]} />
     <div class="panel">

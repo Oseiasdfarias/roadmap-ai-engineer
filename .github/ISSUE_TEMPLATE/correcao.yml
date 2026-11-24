@@ -1,0 +1,27 @@
+name: Correção de conteúdo
+description: Aponte um erro, uma informação desatualizada ou um trecho confuso.
+title: "Correção: "
+labels: ["correção"]
+body:
+  - type: input
+    id: pagina
+    attributes:
+      label: Página
+      description: Endereço da página ou nome do tópico.
+      placeholder: https://oseiasdfarias.github.io/roadmap-ai-engineer/topico/rag/
+    validations:
+      required: true
+  - type: textarea
+    id: problema
+    attributes:
+      label: O que está errado
+      description: Cite o trecho e explique o problema.
+    validations:
+      required: true
+  - type: textarea
+    id: sugestao
+    attributes:
+      label: Como deveria ser
+      description: Se tiver uma fonte que confirme, cole o link.
+    validations:
+      required: false

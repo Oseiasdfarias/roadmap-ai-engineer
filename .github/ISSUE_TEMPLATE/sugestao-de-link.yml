@@ -1,0 +1,36 @@
+name: Sugestão ou link quebrado
+description: Sugira uma referência melhor ou avise de um link que parou de funcionar.
+title: "Link: "
+labels: ["link"]
+body:
+  - type: input
+    id: pagina
+    attributes:
+      label: Página do roadmap
+      placeholder: https://oseiasdfarias.github.io/roadmap-ai-engineer/topico/rag/
+    validations:
+      required: true
+  - type: dropdown
+    id: tipo
+    attributes:
+      label: O que você quer fazer
+      options:
+        - Avisar de link quebrado
+        - Sugerir uma referência nova
+        - Sugerir trocar uma referência
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: Endereço do link
+      placeholder: https://
+    validations:
+      required: true
+  - type: textarea
+    id: motivo
+    attributes:
+      label: Por que vale a pena
+      description: Para uma sugestão, diga o que o material ensina e para quem serve.
+    validations:
+      required: false

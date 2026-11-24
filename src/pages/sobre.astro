@@ -1,0 +1,57 @@
+---
+import Base from '../layouts/Base.astro';
+import Migalha from '../components/Migalha.astro';
+import IconeCanal from '../components/IconeCanal.astro';
+import { AUTOR, ISSUES_URL, REPO_URL } from '../config';
+import { url } from '../lib/url';
+import '../styles/detalhe.css';
+---
+<Base titulo="Sobre | Roadmap AI Engineer" descricao="O que é o Roadmap AI Engineer, como usar, quem o escreve, licenças e como contribuir." rotaOg="sobre">
+  <div class="detail">
+    <Migalha itens={[{ rotulo: 'Mapa', href: url('/') }, { rotulo: 'Sobre' }]} />
+    <div class="panel sobre">
+      <h1>Sobre o roadmap</h1>
+
+      <h2>O que é</h2>
+      <p>O Roadmap AI Engineer é um caminho em português para quem quer trabalhar com sistemas de IA em produção. Ele vai do primeiro script em Python a um agente com avaliação, observabilidade e deploy, em quatro níveis, e cada tópico traz explicação, prática e referências escolhidas a dedo.</p>
+
+      <h2>Por que estudo e carreira juntos</h2>
+      <p>Saber a técnica não basta para conseguir a vaga, e um perfil bem montado não sustenta quem não sabe construir. Por isso cada período do roadmap tem duas trilhas lado a lado: o que estudar e o que fazer pela carreira, como portfólio, LinkedIn, inglês e candidaturas com foco.</p>
+
+      <h2>Como usar este roadmap</h2>
+      <ul>
+        <li>Comece pelo nível 1 e avance na ordem. Cada nível tem objetivo, tópicos, projeto e critérios para saber se está pronto.</li>
+        <li>Os períodos são indicativos, para quem estuda cerca de dez horas por semana. Seu ritmo pode ser outro, e tudo bem.</li>
+        <li>Marque o que já estudou. O progresso fica salvo no seu navegador, sem conta e sem envio de dados; trocar de navegador ou limpar os dados do site zera a marcação.</li>
+        <li>Use a busca (tecla <kbd>/</kbd> ou <kbd>Ctrl</kbd>+<kbd>K</kbd>) para achar um tema e abra o painel de um item no mapa para ver o resumo sem sair da página.</li>
+      </ul>
+
+      <h2>Quem faz</h2>
+      <p><strong>{AUTOR.nome}</strong> é engenheiro eletricista que migrou para software e IA. Hoje atua como {AUTOR.cargo}, com foco em agentes de LLM, MLOps e IA confiável. Constrói sistemas de IA que mantêm sistemas físicos funcionando, em produção.</p>
+      <ul class="canais">
+        {AUTOR.canais.map((c) => (
+          <li><a href={c.url} target="_blank" rel="noopener"><IconeCanal nome={c.icone} /> {c.nome}</a></li>
+        ))}
+      </ul>
+
+      <h2>Licenças</h2>
+      <p>O código do site usa a licença MIT. O conteúdo (textos e ilustrações) usa a licença CC BY 4.0: você pode copiar e adaptar, desde que dê o crédito a {AUTOR.nome}. Os textos completos estão no <a href={REPO_URL} target="_blank" rel="noopener">repositório</a>.</p>
+
+      <h2>Como contribuir</h2>
+      <p>Nesta versão a contribuição acontece por issues. Achou um erro, um link quebrado ou uma referência melhor? Abra uma issue pelo botão abaixo; cada sugestão é lida e, se fizer sentido, entra no conteúdo.</p>
+      <p><a class="btn pri" href={ISSUES_URL} target="_blank" rel="noopener">Sugerir correção</a></p>
+    </div>
+  </div>
+</Base>
+
+<style is:global>
+  .sobre h1 { font-family: var(--font-titulo); font-weight: 800; font-size: 34px; letter-spacing: -.03em; margin: 0 0 8px; }
+  .sobre h2 { font-family: var(--font-titulo); font-size: 20px; margin: 28px 0 8px; }
+  .sobre p, .sobre li { line-height: 1.7; max-width: 70ch; }
+  .sobre a:not(.btn) { color: var(--acc); }
+  .sobre kbd { border: 1px solid var(--line-strong); border-radius: 5px; padding: 0 5px; font-size: .9em; background: var(--soft); }
+  .sobre .canais { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+  .sobre .canais a { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); border-radius: 9px; padding: 6px 12px; text-decoration: none; color: var(--text); }
+  .sobre .canais a:hover { border-color: var(--line-strong); }
+  .sobre .canais svg { width: 16px; height: 16px; }
+</style>
