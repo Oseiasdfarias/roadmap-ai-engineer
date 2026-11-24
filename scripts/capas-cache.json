@@ -652,5 +652,125 @@
   "dominio": "www2.camara.leg.br",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=www2.camara.leg.br",
   "img": null
+ },
+ "https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/": {
+  "tipo": "Artigo",
+  "dominio": "aws.amazon.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=aws.amazon.com",
+  "img": null
+ },
+ "https://aws.amazon.com/compliance/shared-responsibility-model/": {
+  "tipo": "Artigo",
+  "dominio": "aws.amazon.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=aws.amazon.com",
+  "img": null
+ },
+ "https://code.claude.com/docs/en/overview": {
+  "tipo": "Docs",
+  "dominio": "code.claude.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=code.claude.com",
+  "img": "https://claude-code.mintlify.site/docs/_mintlify/api/og/v2?division=Getting+started&title=Overview&description=Claude+Code+is+an+agentic+coding+tool+that+reads+your+codebase%2C+edits+files%2C+runs+commands%2C+and+integrates+with+your+development+tools.+Available+in+your+termin&theme=e2d30309a4005a9870b526a1&signature=9fc1f5490837ef57d6afa7ac8a2d34d3eab43a058bd46143c97c569c1e79c305"
+ },
+ "https://developers.openai.com/codex": {
+  "tipo": "Artigo",
+  "dominio": "developers.openai.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=developers.openai.com",
+  "img": "https://learn.chatgpt.com/og/docs.png"
+ },
+ "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html": {
+  "tipo": "Docs",
+  "dominio": "docs.aws.amazon.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.aws.amazon.com",
+  "img": null
+ },
+ "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html": {
+  "tipo": "Docs",
+  "dominio": "docs.aws.amazon.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.aws.amazon.com",
+  "img": null
+ },
+ "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html": {
+  "tipo": "Docs",
+  "dominio": "docs.aws.amazon.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.aws.amazon.com",
+  "img": null
+ },
+ "https://docs.aws.amazon.com/IAM/latest/UserGuide/root-user-best-practices.html": {
+  "tipo": "Docs",
+  "dominio": "docs.aws.amazon.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.aws.amazon.com",
+  "img": null
+ },
+ "https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html": {
+  "tipo": "Docs",
+  "dominio": "docs.aws.amazon.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.aws.amazon.com",
+  "img": null
+ },
+ "https://docs.docker.com/compose/": {
+  "tipo": "Docs",
+  "dominio": "docs.docker.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.docker.com",
+  "img": "https://docs.docker.com/images/thumbnail.png"
+ },
+ "https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions": {
+  "tipo": "Docs",
+  "dominio": "docs.github.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.github.com",
+  "img": "https://docs.github.com/assets/cb-345/images/social-cards/actions.png"
+ },
+ "https://docs.pytest.org/en/stable/": {
+  "tipo": "Docs",
+  "dominio": "docs.pytest.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.pytest.org",
+  "img": null
+ },
+ "https://docs.streamlit.io/develop/api-reference/write-magic/st.write_stream": {
+  "tipo": "Docs",
+  "dominio": "docs.streamlit.io",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.streamlit.io",
+  "img": "https://docs.streamlit.io/sharing-image-facebook.jpg"
+ },
+ "https://fastapi.tiangolo.com/advanced/custom-response/": {
+  "tipo": "Docs",
+  "dominio": "fastapi.tiangolo.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=fastapi.tiangolo.com",
+  "img": null
+ },
+ "https://fastapi.tiangolo.com/tutorial/background-tasks/": {
+  "tipo": "Docs",
+  "dominio": "fastapi.tiangolo.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=fastapi.tiangolo.com",
+  "img": null
+ },
+ "https://langfuse.com/docs/observability/overview": {
+  "tipo": "Docs",
+  "dominio": "langfuse.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=langfuse.com",
+  "img": "https://langfuse.com/api/og?title=LLM+Observability+%26+Application+Tracing+%28Open+Source%29&description=Open+source+application+tracing+and+observability+for+LLM+apps.+Capture+traces%2C+monitor+latency%2C+track+costs%2C+and+debug+issues+across+OpenAI%2C+LangChain%2C+LlamaIndex%2C+and+more.&section=Docs"
+ },
+ "https://opentelemetry.io/docs/concepts/observability-primer/": {
+  "tipo": "Docs",
+  "dominio": "opentelemetry.io",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=opentelemetry.io",
+  "img": "https://opentelemetry.io/img/social/logo-wordmark-001.png"
+ },
+ "https://platform.claude.com/docs/en/api/rate-limits": {
+  "tipo": "Docs",
+  "dominio": "platform.claude.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
+  "img": "https://platform.claude.com/web-api/og/docs/en/api/rate-limits?design-rev=5"
+ },
+ "https://www.gradio.app/guides/creating-a-chatbot-fast": {
+  "tipo": "Artigo",
+  "dominio": "gradio.app",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.gradio.app",
+  "img": "https://raw.githubusercontent.com/gradio-app/gradio/main/js/_website/src/lib/assets/img/meta-image.jpg"
+ },
+ "https://www.promptfoo.dev/docs/integrations/ci-cd/": {
+  "tipo": "Docs",
+  "dominio": "promptfoo.dev",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.promptfoo.dev",
+  "img": "https://www.promptfoo.dev/img/og/docs-integrations-ci-cd--og.png"
  }
 }
