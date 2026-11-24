@@ -40,7 +40,7 @@ Um link no ar também cria obrigações, como custo e segurança. Tenha controle
 ## Passo a passo
 
 1. **Defina o escopo mínimo público.** Uma interface simples, uso limitado e dados sintéticos ou públicos.
-2. **Proteja a conta antes de criar recursos.** Ative MFA (verificação em duas etapas), use permissões mínimas e configure um alerta no AWS Budgets antes de qualquer outro recurso. Atenção: o Budgets avisa, mas não bloqueia o gasto. Defina também um limite de gasto mensal no painel do provedor do modelo.
+2. **Proteja a conta antes de criar recursos.** Ative MFA (verificação em duas etapas), use permissões mínimas e configure um alerta no AWS Budgets antes de qualquer outro recurso. Atenção: por padrão o AWS Budgets só avisa e não bloqueia o gasto (o Budget Actions pode aplicar restrições, mas exige configuração). Defina também um limite de gasto mensal no painel do provedor do modelo.
 3. **Guarde segredos fora do código**, em variáveis de ambiente ou em um serviço de segredos.
 4. **Automatize testes e evals com GitHub Actions.** Cada mudança deve rodar testes e avaliar a qualidade antes de ir ao ar.
 5. **Publique com contêiner.** Empacote a aplicação em Docker e rode em um serviço gerenciado. O roadmap usa ECS na AWS, e o custo fixo da infraestrutura (contêiner, balanceador, banco) existe mesmo sem ninguém usar.

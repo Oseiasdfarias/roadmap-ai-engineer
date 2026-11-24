@@ -51,7 +51,7 @@ Siga esta lista, na ordem, antes de criar qualquer recurso:
 - **IAM com privilégio mínimo.** Dê a cada usuário, ou a cada aplicação, só as permissões de que precisa. Evite a permissão de administrador total para tudo. Se precisar de acesso a um bucket S3, conceda só a esse bucket.
 - **Funções (roles) no lugar de chaves fixas.** Para uma aplicação rodando na AWS, use uma função do IAM, que entrega credenciais temporárias, em vez de chaves de acesso de longa duração.
 - **Bloqueio de acesso público no S3.** Mantenha o Block Public Access ligado e abra um bucket só com motivo claro.
-- **Alerta no AWS Budgets.** Crie um orçamento com valor baixo, por exemplo US$ 5 (valor ilustrativo), com aviso por e-mail. O Budgets avisa, mas não bloqueia o gasto, e os dados têm atraso; olhe o painel de custos com frequência. O Cost Explorer mostra o gasto por serviço e o Cost Anomaly Detection avisa de gastos fora do padrão.
+- **Alerta no AWS Budgets.** Crie um orçamento com valor baixo, por exemplo US$ 5 (valor ilustrativo), com aviso por e-mail. Por padrão o AWS Budgets só avisa e não bloqueia o gasto (o Budget Actions pode aplicar restrições, mas exige configuração), e os dados têm atraso; olhe o painel de custos com frequência. O Cost Explorer mostra o gasto por serviço e o Cost Anomaly Detection avisa de gastos fora do padrão.
 - **Entenda o nível gratuito.** O que está incluído e por quanto tempo mudam; leia a regra vigente na página da AWS.
 - **Segredos fora do código.** Chave de API e senha ficam em variável de ambiente ou num gerenciador de segredos. O `.env` entra no `.gitignore`. Se uma chave vazar, revogue e gere outra na hora; apagar o commit não basta.
 - **Desligue e apague ao terminar.** Cada estudo termina com a remoção dos recursos criados.

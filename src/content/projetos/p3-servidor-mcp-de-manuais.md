@@ -13,6 +13,7 @@ criterios:
   - "Ferramenta de ação só executa após aprovação humana registrada"
   - "Permissões são mínimas: leitura não escreve nada"
   - "O teste com instrução maliciosa escondida num manual foi feito e corrigido"
+  - "Nomes e descrições das ferramentas são claros o bastante para o cliente escolher a certa"
 referencias:
   - titulo: "Model Context Protocol"
     url: "https://modelcontextprotocol.io/"

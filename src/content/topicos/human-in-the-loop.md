@@ -31,7 +31,7 @@ rascunho: false
 
 ## O que é
 
-Human-in-the-loop (humano no circuito) é o desenho em que o sistema para antes de uma ação de risco e espera a decisão de uma pessoa: aprovar, editar ou recusar. O agente propõe, o humano decide, e só então o seu código executa.
+Human-in-the-loop (humano no circuito) é o desenho em que o sistema para antes de uma ação de risco e espera a decisão de uma pessoa: aprovar ou recusar. O agente propõe, o humano decide, e só então o seu código executa.
 
 ## Por que importa para um AI Engineer
 
@@ -58,7 +58,7 @@ def executar(nome, args, ferramentas, auditoria, usuario):
     return ferramentas[nome](**args)
 ```
 
-**A tela de decisão.** Mostre o que será feito, com quais valores exatos, o motivo que o agente deu, o impacto e se dá para desfazer. Ofereça aprovar, editar e recusar. O que o humano aprova tem de ser exatamente o que é executado: guarde os argumentos aprovados e execute esses, sem recalcular.
+**A tela de decisão.** Mostre o que será feito, com quais valores exatos, o motivo que o agente deu, o impacto e se dá para desfazer. Ofereça aprovar e recusar (editar os argumentos é uma extensão possível, mas exige revalidar tudo). O que o humano aprova tem de ser exatamente o que é executado: guarde os argumentos aprovados e execute esses, sem recalcular.
 
 **O registro.** Grave quem aprovou, quando, a ação, os argumentos e a decisão, em local que o agente não possa alterar. Quando algo der errado, é assim que você reconstrói o que aconteceu.
 
@@ -78,7 +78,7 @@ No P3: Servidor MCP de Manuais, a ferramenta de ação só executa depois de apr
 
 1. Leia a página do OWASP sobre excessive agency (1 hora).
 2. Classifique as ferramentas do seu projeto em leitura, escrita reversível e irreversível (1 hora).
-3. Implemente o portão acima em linha de comando e teste aprovar, recusar e editar (1 dia).
+3. Implemente o portão acima em linha de comando e teste aprovar e recusar (1 dia).
 4. Mova a aprovação para um estado pausável e retome depois (2 dias; a página do LangGraph mostra o padrão).
 
 ## Como mostrar
