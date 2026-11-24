@@ -35,6 +35,18 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=arxiv.org",
   "img": "https://arxiv.org/static/browse/0.3.4/images/arxiv-logo-fb.png"
  },
+ "https://arxiv.org/abs/2302.12173": {
+  "tipo": "Artigo",
+  "dominio": "arxiv.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=arxiv.org",
+  "img": "https://arxiv.org/static/browse/0.3.4/images/arxiv-logo-fb.png"
+ },
+ "https://arxiv.org/abs/2306.05685": {
+  "tipo": "Artigo",
+  "dominio": "arxiv.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=arxiv.org",
+  "img": "https://arxiv.org/static/browse/0.3.4/images/arxiv-logo-fb.png"
+ },
  "https://arxiv.org/abs/2307.03172": {
   "tipo": "Artigo",
   "dominio": "arxiv.org",
@@ -42,6 +54,12 @@
   "img": "https://arxiv.org/static/browse/0.3.4/images/arxiv-logo-fb.png"
  },
  "https://arxiv.org/abs/2311.05232": {
+  "tipo": "Artigo",
+  "dominio": "arxiv.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=arxiv.org",
+  "img": "https://arxiv.org/static/browse/0.3.4/images/arxiv-logo-fb.png"
+ },
+ "https://arxiv.org/abs/2312.06674": {
   "tipo": "Artigo",
   "dominio": "arxiv.org",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=arxiv.org",
@@ -70,6 +88,18 @@
   "dominio": "cs50.harvard.edu",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=cs50.harvard.edu",
   "img": "https://prod-discovery.edx-cdn.org/media/course/image/2cc794d0-316d-42f7-bbfd-25c34e4cd5df-033e46d516c0.small.png"
+ },
+ "https://data-privacy-stack.github.io/presidio/": {
+  "tipo": "Artigo",
+  "dominio": "data-privacy-stack.github.io",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=data-privacy-stack.github.io",
+  "img": null
+ },
+ "https://data-privacy-stack.github.io/presidio/analyzer/adding_recognizers/": {
+  "tipo": "Artigo",
+  "dominio": "data-privacy-stack.github.io",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=data-privacy-stack.github.io",
+  "img": null
  },
  "https://docs.astral.sh/uv/": {
   "tipo": "Docs",
@@ -100,6 +130,12 @@
   "dominio": "docs.github.com",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.github.com",
   "img": "https://docs.github.com/assets/cb-345/images/social-cards/actions.png"
+ },
+ "https://docs.langchain.com/oss/python/langgraph/interrupts": {
+  "tipo": "Docs",
+  "dominio": "docs.langchain.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.langchain.com",
+  "img": "https://langchain-5e9cc07a.mintlify.site/_mintlify/api/og/v2?division=Capabilities&title=Interrupts&theme=f35197f94eda06999e44c5f5&signature=63f0d7d75cf69c50db38ab7d35dd2b9acebc10b7136e90d58ab2f241e3a74ecc"
  },
  "https://docs.pydantic.dev/latest/concepts/models/": {
   "tipo": "Docs",
@@ -155,11 +191,29 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=genai.owasp.org",
   "img": null
  },
+ "https://genai.owasp.org/llmrisk/llm01-prompt-injection/": {
+  "tipo": "Docs",
+  "dominio": "genai.owasp.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=genai.owasp.org",
+  "img": "https://genai.owasp.org/wp-content/uploads/2024/04/LLM01.25.png"
+ },
+ "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/": {
+  "tipo": "Docs",
+  "dominio": "genai.owasp.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=genai.owasp.org",
+  "img": "https://genai.owasp.org/wp-content/uploads/2024/04/Slide06.png"
+ },
  "https://git-scm.com/book/pt-br/v2": {
   "tipo": "Docs",
   "dominio": "git-scm.com",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=git-scm.com",
   "img": null
+ },
+ "https://github.com/NVIDIA/NeMo-Guardrails": {
+  "tipo": "Repositório",
+  "dominio": "github.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=github.com",
+  "img": "https://opengraph.githubassets.com/1/NVIDIA/NeMo-Guardrails"
  },
  "https://github.com/anthropics/courses": {
   "tipo": "Repositório",
@@ -184,6 +238,12 @@
   "dominio": "hamel.dev",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=hamel.dev",
   "img": "https://hamel.dev/blog/posts/evals/images/diagram-cover.png"
+ },
+ "https://hamel.dev/blog/posts/llm-judge/": {
+  "tipo": "Artigo",
+  "dominio": "hamel.dev",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=hamel.dev",
+  "img": "https://hamel.dev/blog/posts/llm-judge/images/cover_img.png"
  },
  "https://huggingface.co/docs/peft": {
   "tipo": "Docs",
@@ -221,12 +281,6 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=langfuse.com",
   "img": "https://langfuse.com/api/og?title=Open+Source+AI+Engineering+Platform&description=Langfuse+is+an+open-source+AI+engineering+platform+%28GitHub%29+that+helps+teams+collaboratively+debug%2C+analyze%2C+and+iterate+on+their+AI+agent+applications.+All+platform+features+are+natively+integrated+to+accelerate+the+development+workflow.&section=Docs"
  },
- "https://microsoft.github.io/presidio/": {
-  "tipo": "Docs",
-  "dominio": "microsoft.github.io",
-  "icone": "https://www.google.com/s2/favicons?sz=64&domain=microsoft.github.io",
-  "img": null
- },
  "https://missing.csail.mit.edu/": {
   "tipo": "Artigo",
   "dominio": "missing.csail.mit.edu",
@@ -239,11 +293,41 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=modelcontextprotocol.io",
   "img": "https://raw.githubusercontent.com/modelcontextprotocol/docs/2eb6171ddbfeefde349dc3b8d5e2b87414c26250/images/og-image.png"
  },
+ "https://modelcontextprotocol.io/docs/learn/architecture": {
+  "tipo": "Docs",
+  "dominio": "modelcontextprotocol.io",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=modelcontextprotocol.io",
+  "img": "https://raw.githubusercontent.com/modelcontextprotocol/docs/2eb6171ddbfeefde349dc3b8d5e2b87414c26250/images/og-image.png"
+ },
+ "https://modelcontextprotocol.io/docs/tutorials/security/authorization": {
+  "tipo": "Docs",
+  "dominio": "modelcontextprotocol.io",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=modelcontextprotocol.io",
+  "img": "https://raw.githubusercontent.com/modelcontextprotocol/docs/2eb6171ddbfeefde349dc3b8d5e2b87414c26250/images/og-image.png"
+ },
+ "https://modelcontextprotocol.io/specification/latest": {
+  "tipo": "Docs",
+  "dominio": "modelcontextprotocol.io",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=modelcontextprotocol.io",
+  "img": "https://raw.githubusercontent.com/modelcontextprotocol/docs/2eb6171ddbfeefde349dc3b8d5e2b87414c26250/images/og-image.png"
+ },
+ "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview": {
+  "tipo": "Docs",
+  "dominio": "platform.claude.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
+  "img": "https://platform.claude.com/web-api/og/docs/en/agents-and-tools/tool-use/overview?design-rev=5"
+ },
  "https://platform.claude.com/docs/en/api/messages": {
   "tipo": "Docs",
   "dominio": "platform.claude.com",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
   "img": "https://platform.claude.com/web-api/og/api/en/messages?design-rev=5"
+ },
+ "https://platform.claude.com/docs/en/build-with-claude/batch-processing": {
+  "tipo": "Docs",
+  "dominio": "platform.claude.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
+  "img": "https://platform.claude.com/web-api/og/docs/en/build-with-claude/batch-processing?design-rev=5"
  },
  "https://platform.claude.com/docs/en/build-with-claude/citations": {
   "tipo": "Docs",
@@ -262,6 +346,12 @@
   "dominio": "platform.claude.com",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
   "img": "https://platform.claude.com/web-api/og/docs/en/build-with-claude/embeddings?design-rev=5"
+ },
+ "https://platform.claude.com/docs/en/build-with-claude/prompt-caching": {
+  "tipo": "Docs",
+  "dominio": "platform.claude.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
+  "img": "https://platform.claude.com/web-api/og/docs/en/build-with-claude/prompt-caching?design-rev=5"
  },
  "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview": {
   "tipo": "Docs",
@@ -293,17 +383,47 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
   "img": "https://platform.claude.com/web-api/og/docs/en/build-with-claude/working-with-messages?design-rev=5"
  },
+ "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests": {
+  "tipo": "Docs",
+  "dominio": "platform.claude.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
+  "img": "https://platform.claude.com/web-api/og/docs/en/test-and-evaluate/develop-tests?design-rev=5"
+ },
+ "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks": {
+  "tipo": "Docs",
+  "dominio": "platform.claude.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
+  "img": "https://platform.claude.com/web-api/og/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks?design-rev=5"
+ },
  "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations": {
   "tipo": "Docs",
   "dominio": "platform.claude.com",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
   "img": "https://platform.claude.com/web-api/og/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations?design-rev=5"
  },
+ "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-latency": {
+  "tipo": "Docs",
+  "dominio": "platform.claude.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
+  "img": "https://platform.claude.com/web-api/og/docs/en/test-and-evaluate/strengthen-guardrails/reduce-latency?design-rev=5"
+ },
  "https://platform.openai.com/docs/guides/fine-tuning": {
   "tipo": "Docs",
   "dominio": "platform.openai.com",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.openai.com",
   "img": "https://developers.openai.com/og/api/docs/guides/model-optimization.png"
+ },
+ "https://platform.openai.com/docs/guides/function-calling": {
+  "tipo": "Docs",
+  "dominio": "platform.openai.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.openai.com",
+  "img": "https://developers.openai.com/og/api/docs/guides/function-calling.png"
+ },
+ "https://plg.uwaterloo.ca/~gvcormac/cormacksigir09-rrf.pdf": {
+  "tipo": "Artigo",
+  "dominio": "plg.uwaterloo.ca",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=plg.uwaterloo.ca",
+  "img": null
  },
  "https://portal.ciee.org.br/": {
   "tipo": "Vagas",
@@ -329,6 +449,12 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=python.useinstructor.com",
   "img": null
  },
+ "https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/": {
+  "tipo": "Artigo",
+  "dominio": "simonwillison.net",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=simonwillison.net",
+  "img": "https://static.simonwillison.net/static/2025/lethaltrifecta.jpg"
+ },
  "https://simonwillison.net/series/prompt-injection/": {
   "tipo": "Artigo",
   "dominio": "simonwillison.net",
@@ -352,6 +478,18 @@
   "dominio": "alura.com.br",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.alura.com.br",
   "img": "https://cdn-wcsm.alura.com.br/2025/04/como-fazer-um-perfil-de-alta-qualidade-no-linkedin-e-atrair-mais-trabalhos.jpg"
+ },
+ "https://www.anthropic.com/engineering/multi-agent-research-system": {
+  "tipo": "Artigo",
+  "dominio": "anthropic.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.anthropic.com",
+  "img": "https://assets.claude.com/6d4a0d28992ade92d6fa63646fd9c9d318245c6c.jpg"
+ },
+ "https://www.anthropic.com/engineering/writing-tools-for-agents": {
+  "tipo": "Artigo",
+  "dominio": "anthropic.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.anthropic.com",
+  "img": "https://assets.claude.com/6d4a0d28992ade92d6fa63646fd9c9d318245c6c.jpg"
  },
  "https://www.anthropic.com/research/building-effective-agents": {
   "tipo": "Artigo",
@@ -383,6 +521,12 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.cursoemvideo.com",
   "img": "https://www.cursoemvideo.com/wp-content/uploads/2019/08/guana6.png"
  },
+ "https://www.gov.br/anpd/pt-br": {
+  "tipo": "Artigo",
+  "dominio": "gov.br",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.gov.br",
+  "img": null
+ },
  "https://www.gov.br/anpd/pt-br/assuntos/regulacao/agenda-regulatoria-1": {
   "tipo": "Artigo",
   "dominio": "gov.br",
@@ -413,11 +557,11 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.nube.com.br",
   "img": "https://www.nube.com.br/media/imagens/nube_imagem_destaque_600x315.jpg"
  },
- "https://www.pinecone.io/learn/chunking-strategies/": {
-  "tipo": "Artigo",
-  "dominio": "pinecone.io",
-  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.pinecone.io",
-  "img": "https://www.pinecone.io/api/og/?title=Chunking%20Strategies%20for%20LLM%20Applications&category=Learn"
+ "https://www.postgresql.org/docs/current/textsearch.html": {
+  "tipo": "Docs",
+  "dominio": "postgresql.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.postgresql.org",
+  "img": "https://www.postgresql.org/media/img/about/press/elephant.png"
  },
  "https://www.postgresql.org/docs/current/tutorial.html": {
   "tipo": "Docs",
@@ -438,6 +582,12 @@
   "img": null
  },
  "https://www.sbert.net/": {
+  "tipo": "Artigo",
+  "dominio": "sbert.net",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.sbert.net",
+  "img": null
+ },
+ "https://www.sbert.net/examples/applications/retrieve_rerank/README.html": {
   "tipo": "Artigo",
   "dominio": "sbert.net",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.sbert.net",
@@ -472,5 +622,11 @@
   "dominio": "youtube.com",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.youtube.com",
   "img": "https://i.ytimg.com/vi/zjkBMFhNj_g/hqdefault.jpg"
+ },
+ "https://www2.camara.leg.br/legin/fed/lei/2018/lei-13709-14-agosto-2018-787077-norma-pl.html": {
+  "tipo": "Artigo",
+  "dominio": "www2.camara.leg.br",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www2.camara.leg.br",
+  "img": null
  }
 }

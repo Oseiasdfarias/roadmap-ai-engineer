@@ -28,7 +28,7 @@ test.describe('página de tópico, dica e projeto', () => {
   });
 
   test('rascunho mostra o aviso e as referências', async ({ page }) => {
-    await page.goto('topico/mcp/');
+    await page.goto('topico/fastapi/');
     await expect(page.getByText('Resumo completo em construção')).toBeVisible();
     await expect(page.locator('.ref').first()).toBeVisible();
   });

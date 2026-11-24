@@ -484,5 +484,173 @@
   "dominio": "platform.openai.com",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.openai.com",
   "img": "https://developers.openai.com/og/api/docs/guides/model-optimization.png"
+ },
+ "https://arxiv.org/abs/2302.12173": {
+  "tipo": "Artigo",
+  "dominio": "arxiv.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=arxiv.org",
+  "img": "https://arxiv.org/static/browse/0.3.4/images/arxiv-logo-fb.png"
+ },
+ "https://arxiv.org/abs/2306.05685": {
+  "tipo": "Artigo",
+  "dominio": "arxiv.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=arxiv.org",
+  "img": "https://arxiv.org/static/browse/0.3.4/images/arxiv-logo-fb.png"
+ },
+ "https://arxiv.org/abs/2312.06674": {
+  "tipo": "Artigo",
+  "dominio": "arxiv.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=arxiv.org",
+  "img": "https://arxiv.org/static/browse/0.3.4/images/arxiv-logo-fb.png"
+ },
+ "https://data-privacy-stack.github.io/presidio/": {
+  "tipo": "Artigo",
+  "dominio": "data-privacy-stack.github.io",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=data-privacy-stack.github.io",
+  "img": null
+ },
+ "https://data-privacy-stack.github.io/presidio/analyzer/adding_recognizers/": {
+  "tipo": "Artigo",
+  "dominio": "data-privacy-stack.github.io",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=data-privacy-stack.github.io",
+  "img": null
+ },
+ "https://docs.langchain.com/oss/python/langgraph/interrupts": {
+  "tipo": "Docs",
+  "dominio": "docs.langchain.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.langchain.com",
+  "img": "https://langchain-5e9cc07a.mintlify.site/_mintlify/api/og/v2?division=Capabilities&title=Interrupts&theme=f35197f94eda06999e44c5f5&signature=63f0d7d75cf69c50db38ab7d35dd2b9acebc10b7136e90d58ab2f241e3a74ecc"
+ },
+ "https://genai.owasp.org/llmrisk/llm01-prompt-injection/": {
+  "tipo": "Docs",
+  "dominio": "genai.owasp.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=genai.owasp.org",
+  "img": "https://genai.owasp.org/wp-content/uploads/2024/04/LLM01.25.png"
+ },
+ "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/": {
+  "tipo": "Docs",
+  "dominio": "genai.owasp.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=genai.owasp.org",
+  "img": "https://genai.owasp.org/wp-content/uploads/2024/04/Slide06.png"
+ },
+ "https://github.com/NVIDIA/NeMo-Guardrails": {
+  "tipo": "Repositório",
+  "dominio": "github.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=github.com",
+  "img": "https://opengraph.githubassets.com/1/NVIDIA/NeMo-Guardrails"
+ },
+ "https://hamel.dev/blog/posts/llm-judge/": {
+  "tipo": "Artigo",
+  "dominio": "hamel.dev",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=hamel.dev",
+  "img": "https://hamel.dev/blog/posts/llm-judge/images/cover_img.png"
+ },
+ "https://modelcontextprotocol.io/docs/learn/architecture": {
+  "tipo": "Docs",
+  "dominio": "modelcontextprotocol.io",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=modelcontextprotocol.io",
+  "img": "https://raw.githubusercontent.com/modelcontextprotocol/docs/2eb6171ddbfeefde349dc3b8d5e2b87414c26250/images/og-image.png"
+ },
+ "https://modelcontextprotocol.io/docs/tutorials/security/authorization": {
+  "tipo": "Docs",
+  "dominio": "modelcontextprotocol.io",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=modelcontextprotocol.io",
+  "img": "https://raw.githubusercontent.com/modelcontextprotocol/docs/2eb6171ddbfeefde349dc3b8d5e2b87414c26250/images/og-image.png"
+ },
+ "https://modelcontextprotocol.io/specification/latest": {
+  "tipo": "Docs",
+  "dominio": "modelcontextprotocol.io",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=modelcontextprotocol.io",
+  "img": "https://raw.githubusercontent.com/modelcontextprotocol/docs/2eb6171ddbfeefde349dc3b8d5e2b87414c26250/images/og-image.png"
+ },
+ "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview": {
+  "tipo": "Docs",
+  "dominio": "platform.claude.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
+  "img": "https://platform.claude.com/web-api/og/docs/en/agents-and-tools/tool-use/overview?design-rev=5"
+ },
+ "https://platform.claude.com/docs/en/build-with-claude/batch-processing": {
+  "tipo": "Docs",
+  "dominio": "platform.claude.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
+  "img": "https://platform.claude.com/web-api/og/docs/en/build-with-claude/batch-processing?design-rev=5"
+ },
+ "https://platform.claude.com/docs/en/build-with-claude/prompt-caching": {
+  "tipo": "Docs",
+  "dominio": "platform.claude.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
+  "img": "https://platform.claude.com/web-api/og/docs/en/build-with-claude/prompt-caching?design-rev=5"
+ },
+ "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests": {
+  "tipo": "Docs",
+  "dominio": "platform.claude.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
+  "img": "https://platform.claude.com/web-api/og/docs/en/test-and-evaluate/develop-tests?design-rev=5"
+ },
+ "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks": {
+  "tipo": "Docs",
+  "dominio": "platform.claude.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
+  "img": "https://platform.claude.com/web-api/og/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks?design-rev=5"
+ },
+ "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-latency": {
+  "tipo": "Docs",
+  "dominio": "platform.claude.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
+  "img": "https://platform.claude.com/web-api/og/docs/en/test-and-evaluate/strengthen-guardrails/reduce-latency?design-rev=5"
+ },
+ "https://platform.openai.com/docs/guides/function-calling": {
+  "tipo": "Docs",
+  "dominio": "platform.openai.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.openai.com",
+  "img": "https://developers.openai.com/og/api/docs/guides/function-calling.png"
+ },
+ "https://plg.uwaterloo.ca/~gvcormac/cormacksigir09-rrf.pdf": {
+  "tipo": "Artigo",
+  "dominio": "plg.uwaterloo.ca",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=plg.uwaterloo.ca",
+  "img": null
+ },
+ "https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/": {
+  "tipo": "Artigo",
+  "dominio": "simonwillison.net",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=simonwillison.net",
+  "img": "https://static.simonwillison.net/static/2025/lethaltrifecta.jpg"
+ },
+ "https://www.anthropic.com/engineering/multi-agent-research-system": {
+  "tipo": "Artigo",
+  "dominio": "anthropic.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.anthropic.com",
+  "img": "https://assets.claude.com/6d4a0d28992ade92d6fa63646fd9c9d318245c6c.jpg"
+ },
+ "https://www.anthropic.com/engineering/writing-tools-for-agents": {
+  "tipo": "Artigo",
+  "dominio": "anthropic.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.anthropic.com",
+  "img": "https://assets.claude.com/6d4a0d28992ade92d6fa63646fd9c9d318245c6c.jpg"
+ },
+ "https://www.gov.br/anpd/pt-br": {
+  "tipo": "Artigo",
+  "dominio": "gov.br",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.gov.br",
+  "img": null
+ },
+ "https://www.postgresql.org/docs/current/textsearch.html": {
+  "tipo": "Docs",
+  "dominio": "postgresql.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.postgresql.org",
+  "img": "https://www.postgresql.org/media/img/about/press/elephant.png"
+ },
+ "https://www.sbert.net/examples/applications/retrieve_rerank/README.html": {
+  "tipo": "Artigo",
+  "dominio": "sbert.net",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.sbert.net",
+  "img": null
+ },
+ "https://www2.camara.leg.br/legin/fed/lei/2018/lei-13709-14-agosto-2018-787077-norma-pl.html": {
+  "tipo": "Artigo",
+  "dominio": "www2.camara.leg.br",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www2.camara.leg.br",
+  "img": null
  }
 }
