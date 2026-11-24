@@ -91,7 +91,7 @@ const itens = await Promise.all([
   .painel::backdrop { background: rgba(0, 0, 0, .3); }
   @keyframes painel-entra { from { transform: translateX(100%); } to { transform: none; } }
   html:has(dialog.painel[open]) { overflow: hidden; }
-  .painel-in { position: relative; padding: 26px 26px 40px; }
+  .painel-in { position: relative; min-height: 100%; padding: 26px 26px 40px; }
   .painel .x { position: absolute; top: 18px; right: 18px; }
   .painel .k { font-size: 12px; color: var(--acc); font-weight: 500; margin: 0; padding-right: 44px; }
   .painel h2 { font-size: 24px; letter-spacing: -.02em; margin: 8px 0 12px; padding-right: 44px; }

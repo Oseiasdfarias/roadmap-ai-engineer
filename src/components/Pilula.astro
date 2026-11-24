@@ -19,4 +19,5 @@ const { painel, titulo, progresso } = Astro.props;
 >
   <span class="o">{progresso && <Check aria-hidden="true" stroke-width={3.4} />}</span>
   {titulo}
+  {progresso && <span class="sr-only estado-feito"> (estudado)</span>}
 </button>

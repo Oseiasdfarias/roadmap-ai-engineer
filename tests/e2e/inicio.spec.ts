@@ -44,6 +44,21 @@ test.describe('página inicial', () => {
     await expect(page.getByRole('dialog')).toHaveCount(0);
   });
 
+  test('clicar na área vazia dentro do painel não o fecha', async ({ page }) => {
+    await page.getByRole('button', { name: 'Python: fundamentos' }).click();
+    const dialogo = page.getByRole('dialog');
+    await expect(dialogo).toBeVisible();
+    const largura = page.viewportSize()!.width;
+    // Espera a animação de entrada terminar (o painel encosta na borda direita).
+    await expect.poll(async () => {
+      const c = await dialogo.boundingBox();
+      return c ? Math.round(c.x + c.width) : 0;
+    }).toBe(largura);
+    const caixa = (await dialogo.boundingBox())!;
+    await page.mouse.click(caixa.x + caixa.width / 2, caixa.y + caixa.height - 20);
+    await expect(dialogo).toBeVisible();
+  });
+
   test('projeto abre o painel sem botão de marcar', async ({ page }) => {
     await page.getByRole('button', { name: /P1: Assistente da Montadora/ }).click();
     const dialogo = page.getByRole('dialog');
