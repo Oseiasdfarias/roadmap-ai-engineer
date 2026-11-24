@@ -1,40 +1,21 @@
 ---
-import { Download } from '@lucide/astro';
 import Base from '../layouts/Base.astro';
-import Ilustracao from '../components/Ilustracao.astro';
-import Mapa from '../components/Mapa.astro';
+import Hero from '../components/inicio/Hero.astro';
+import Tempo from '../components/inicio/Tempo.astro';
+import Niveis from '../components/inicio/Niveis.astro';
+import Portfolio from '../components/inicio/Portfolio.astro';
+import Carreira from '../components/inicio/Carreira.astro';
 import Painel from '../components/Painel.astro';
-import { PDF_URL, SITE } from '../config';
-import { url } from '../lib/url';
+import { SITE } from '../config';
 ---
 <Base titulo={SITE.titulo} descricao={SITE.descricao} rotaOg="index">
-  <section class="hero">
-    <div>
-      <div class="selo"><i></i>Estudo e carreira, lado a lado</div>
-      <h1>Roadmap <span>AI Engineer</span></h1>
-      <p>Do primeiro script em Python a um agente em produção, e o caminho até a vaga: em cada período, o que estudar e o que fazer pela carreira. Marque o que já estudou; o progresso fica salvo no seu navegador.</p>
-      <div class="ctas">
-        <a class="btn pri" href={url('/nivel/1/')}>Começar pelo nível 1</a>
-        {PDF_URL && <a class="btn" href={PDF_URL}><Download aria-hidden="true" /> Baixar o PDF</a>}
-      </div>
-    </div>
-    <div><Ilustracao nome="capa" /></div>
-  </section>
-  <Mapa />
+  <Hero />
+  <Tempo />
+  <Niveis />
+  <Portfolio />
+  <Carreira />
   <Painel />
 </Base>
-
-<style is:global>
-  .hero { max-width: 1200px; margin: 0 auto; padding: 46px 28px 10px; display: grid; grid-template-columns: 1.05fr .95fr; gap: 36px; align-items: center; }
-  .selo { display: inline-flex; gap: 8px; align-items: center; border: 1px solid var(--line); background: var(--card); border-radius: 99px; padding: 5px 12px; font-size: 12.5px; color: var(--muted); margin-bottom: 16px; }
-  .selo i { width: 7px; height: 7px; border-radius: 50%; background: var(--acc); }
-  .hero h1 { font-weight: 800; font-size: 48px; letter-spacing: -.035em; line-height: 1.04; margin: 0 0 14px; }
-  .hero h1 span { color: var(--acc); }
-  .hero p { color: var(--muted); font-size: 16.5px; line-height: 1.65; margin: 0 0 20px; max-width: 540px; }
-  .hero .ctas { display: flex; gap: 10px; flex-wrap: wrap; }
-  .hero .btn { padding: 9px 16px; font-size: 14px; }
-  @media (max-width: 900px) {
-    .hero { grid-template-columns: 1fr; padding: 32px 16px 10px; }
-    .hero h1 { font-size: 36px; }
-  }
-</style>
+<script>
+  import '../scripts/inicio';
+</script>

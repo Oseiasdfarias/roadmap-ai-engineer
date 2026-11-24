@@ -5,18 +5,34 @@ import { PDF_URL } from '../config';
 import { url } from '../lib/url';
 import { todosIdsProgresso } from '../lib/conteudo';
 const total = (await todosIdsProgresso()).length;
+const naHome = Astro.url.pathname === url('/');
+const ancora = (id: string) => (naHome ? `#${id}` : url(`/#${id}`));
+const itens = [
+  { rotulo: 'Linha do tempo', href: ancora('tempo') },
+  { rotulo: 'Níveis', href: ancora('niveis') },
+  { rotulo: 'Portfólio', href: ancora('portfolio') },
+  { rotulo: 'Carreira', href: ancora('carreira') },
+];
 ---
 <header class="bar"><div class="in">
-  <a class="brand" href={url('/')}>Roadmap <span>AI Engineer</span></a>
+  <a class="brand" href={url('/')} aria-label="RAI.E, Roadmap AI Engineer, início">
+    <b>RAI<i>.</i>E</b>
+    <small>Roadmap AI Engineer</small>
+  </a>
+  <nav class="nav" aria-label="Principal">
+    {itens.map((i) => <a href={i.href}>{i.rotulo}</a>)}
+  </nav>
   <div class="prog" data-progresso-global title="Seu progresso, salvo neste navegador">
     <div class="track" role="progressbar" aria-label="Progresso geral" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-progresso-trilha><div class="fill" data-progresso-barra></div></div>
-    <small data-progresso-texto>0 de {total} · 0%</small>
+    <small data-progresso-texto>0 / {total}</small>
   </div>
-  <button type="button" class="btn icon-btn" data-abrir-busca aria-label="Buscar">
-    <Search aria-hidden="true" />
-  </button>
-  {PDF_URL && (
-    <a class="btn" href={PDF_URL} title="Baixar o PDF completo"><FileDown aria-hidden="true" /> PDF</a>
-  )}
-  <ThemeToggle />
+  <div class="acoes">
+    <button type="button" class="btn busca-btn" data-abrir-busca aria-label="Buscar">
+      <Search aria-hidden="true" /><span class="rot">Buscar</span><kbd aria-hidden="true">/</kbd>
+    </button>
+    {PDF_URL && (
+      <a class="btn" href={PDF_URL} title="Baixar o PDF completo"><FileDown aria-hidden="true" /> PDF</a>
+    )}
+    <ThemeToggle />
+  </div>
 </div></header>

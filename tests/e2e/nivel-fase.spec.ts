@@ -24,7 +24,7 @@ test.describe('página de nível', () => {
 
   test('progresso marcado no início aparece no nível', async ({ page }) => {
     await page.goto('./');
-    await page.getByRole('button', { name: 'Python: fundamentos' }).click();
+    await page.getByRole('button', { name: 'Python: fundamentos', exact: true }).click();
     await page.getByRole('dialog').getByRole('button', { name: 'Marcar como estudado' }).click();
     await page.goto('nivel/1/');
     await expect(page.locator('.row[data-progresso-id="topico:python-fundamentos"]')).toHaveClass(/feito/);

@@ -1,0 +1,66 @@
+---
+import { getCollection } from 'astro:content';
+import { rotaDe } from '../../lib/conteudo';
+
+const ordem = ['P1', 'P2', 'P3', 'P4', 'PF'];
+const projetos = (await getCollection('projetos')).sort((a, b) => ordem.indexOf(a.data.codigo) - ordem.indexOf(b.data.codigo));
+const rotulo = (p: (typeof projetos)[number]) => {
+  const c = p.data.camadas ?? [];
+  if (p.data.codigo === 'PF') return 'PF · projeto final';
+  return c.length > 1 ? `${p.data.codigo} · ${c[0].versao} a ${c[c.length - 1].versao}` : p.data.codigo;
+};
+---
+<section id="portfolio" class="portf rv">
+  <div class="sec-cab">
+    <div>
+      <div class="kicker">03 — Portfólio</div>
+      <h2>Cinco projetos que crescem em <span>camadas</span>.</h2>
+    </div>
+    <p>Cada versão vira uma tag no Git. Quem abrir o repositório enxerga a evolução, do chat simples ao agente na AWS.</p>
+  </div>
+  <ol class="pj-grade">
+    {projetos.map((p) => (
+      <li class:list={['pj', { final: p.data.codigo === 'PF' }]}>
+        <a href={rotaDe(p)}>
+          <span class="k">{rotulo(p)}</span>
+          <span class="t">{p.data.titulo.replace(/^[A-Z0-9]+:\s*/, '')}</span>
+          <span class="d">{p.data.resumo}</span>
+        </a>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style is:global>
+  .portf { max-width: 1240px; margin: 0 auto; padding: 96px 32px; }
+  .portf .sec-cab { margin-bottom: 48px; }
+  .portf h2 span { color: var(--accent); }
+  .pj-grade { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid var(--line-strong); }
+  .pj a { display: flex; flex-direction: column; gap: 10px; padding: 26px 22px 30px; height: 100%; min-height: 240px; color: var(--text); text-decoration: none; transition: background .2s; }
+  .pj { border-right: 1px solid var(--line); }
+  .pj:first-child a { padding-left: 0; }
+  .pj a:hover { background: var(--surface); }
+  .pj .k { font-family: var(--font-mono); font-size: 12px; color: var(--accent); }
+  .pj .t { font-size: 19px; font-weight: 600; letter-spacing: -.02em; }
+  .pj .d { font-size: 13.5px; line-height: 1.55; color: var(--text-2); }
+  .pj.final { border-right: 0; }
+  .pj.final a { background: var(--inv-bg); color: var(--inv-ink); border-radius: 0 0 16px 0; }
+  .pj.final a:hover { background: var(--inv-bg); filter: brightness(1.08); }
+  .pj.final .k { color: var(--inv-kicker); }
+  .pj.final .d { color: var(--inv-ink-2); }
+  @media (max-width: 1080px) {
+    .pj-grade { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pj { border-bottom: 1px solid var(--line); }
+    .pj:nth-child(2n) { border-right: 0; }
+    .pj a, .pj:first-child a { padding: 24px 18px 28px; min-height: 0; }
+    .pj.final { grid-column: 1 / -1; border-bottom: 0; }
+    .pj.final a { border-radius: 0 0 16px 16px; }
+  }
+  @media (max-width: 760px) {
+    .portf { padding: 64px 16px; }
+    .pj-grade { grid-template-columns: 1fr; }
+    .pj { border-right: 0; }
+    .pj a { padding: 22px 4px 24px; }
+    .pj.final a { padding: 22px 18px 24px; }
+  }
+</style>

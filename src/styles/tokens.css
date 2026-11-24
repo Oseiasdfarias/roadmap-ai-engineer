@@ -1,14 +1,44 @@
+/* Tema claro (padrão sem JS). O escuro vem de data-theme="dark", definido antes da pintura no <head>. */
 :root {
-  --bg: #F6F7F9; --card: #FFFFFF; --text: #16202B; --muted: #667385; --line: #E2E7EE; --line-strong: #C9D2DC;
-  --acc: #3F6E9E; --acc-soft: #EAF1F8; --soft: #F1F4F8; --shadow: 0 1px 2px rgba(16, 24, 40, .05);
-  --il-tinta: #263241; --il-fina: #8C98A8; --il-papel: #FFFFFF; --il-acento: #4A78A8; --il-acento-esc: #1F3B5C;
-  --il-ag1: #EEF2F6; --il-ag2: #E4EAF1; --il-ag3: #DDE7F2; --il-ag4: #C9D8EA; --il-tela: #F4F7FA; --il-guia: #E2E6EC;
-  --font-titulo: 'Manrope', Inter, system-ui, sans-serif;
-  --font-texto: 'Inter', system-ui, sans-serif;
+  color-scheme: light;
+  --bg: #F7F8FA; --surface: #FFFFFF; --surface-2: #F1F3F7; --section-alt: #F1F3F7; --footer: #ECEFF4;
+  --line: #E3E7ED; --line-strong: #CBD2DC;
+  --text: #0E1116; --text-2: #4A5260; --muted: #5B6370; --link: #2B323D;
+  --accent: #2F5FB3; --accent-ink: #FFFFFF; --accent-soft: #EAF1FC; --accent-border: #BFD1EF;
+  --tl-1: #2F5FB3; --tl-1-ink: #FFFFFF; --tl-2: #6F95D6; --tl-2-ink: #0E1116;
+  --tl-3: #A9C0E8; --tl-3-ink: #0E1116; --tl-4: #C9D8F2; --tl-4-ink: #0E1116; --tl-4-line: #A9C0E8;
+  --career-line: #A9C0E8; --career-ink: #1F4A96;
+  --btn-bg: #0E1116; --btn-ink: #FFFFFF;
+  --inv-bg: #0E1116; --inv-ink: #F7F8FA; --inv-ink-2: #C4CAD4; --inv-kicker: #8AB4FF;
+  --avatar-bg: #DCE7FA; --avatar-ink: #1F4A96;
+  --grid-line: #E6EAF0; --outline-text: #D5DBE4; --ok: #1E8A55; --check-off: #98A1AE;
+  --shadow: 0 1px 2px rgba(16, 24, 40, .05);
+
+  --il-tinta: #1B2330; --il-fina: #8893A3; --il-papel: #FFFFFF; --il-acento: #2F5FB3; --il-acento-esc: #1F3F7A;
+  --il-ag1: #F1F3F7; --il-ag2: #E8ECF2; --il-ag3: #E3EBF8; --il-ag4: #CBDAF2; --il-tela: #F7F8FA; --il-guia: #E3E7ED;
+
+  --font-titulo: 'Geist', system-ui, sans-serif;
+  --font-texto: 'Geist', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  /* nomes antigos, usados pelas páginas internas */
+  --card: var(--surface); --soft: var(--surface-2); --acc: var(--accent); --acc-soft: var(--accent-soft);
 }
 [data-theme='dark'] {
-  --bg: #0C0F14; --card: #12171E; --text: #E5EAF0; --muted: #8792A0; --line: #1E2631; --line-strong: #2C3542;
-  --acc: #86ABD6; --acc-soft: #152232; --soft: #151B23; --shadow: none;
-  --il-tinta: #D3DBE5; --il-fina: #6F7C8D; --il-papel: #161C24; --il-acento: #8FB3DA; --il-acento-esc: #B9CFE8;
-  --il-ag1: #1A212B; --il-ag2: #1F2732; --il-ag3: #1B2838; --il-ag4: #284260; --il-tela: #141A22; --il-guia: #232B36;
+  color-scheme: dark;
+  --bg: #0B0D10; --surface: #0F1216; --surface-2: #12161B; --section-alt: #0D1014; --footer: #090B0E;
+  --line: #1C2026; --line-strong: #262B33;
+  --text: #E8EAED; --text-2: #A3A9B2; --muted: #8E949D; --link: #C9CDD3;
+  --accent: #8AB4FF; --accent-ink: #0B0D10; --accent-soft: #111A27; --accent-border: #23324A;
+  --tl-1: #8AB4FF; --tl-1-ink: #0B0D10; --tl-2: #5E86C9; --tl-2-ink: #0B0D10;
+  --tl-3: #2D4672; --tl-3-ink: #E8EAED; --tl-4: #1E2D47; --tl-4-ink: #E8EAED; --tl-4-line: #2D4672;
+  --career-line: #3A4A66; --career-ink: #C9D8F2;
+  --btn-bg: #E8EAED; --btn-ink: #0B0D10;
+  --inv-bg: #E8EAED; --inv-ink: #0B0D10; --inv-ink-2: #3A414B; --inv-kicker: #2D4672;
+  --avatar-bg: #1E2D47; --avatar-ink: #A9C6FF;
+  --grid-line: #14181E; --outline-text: #1E232A; --ok: #6FCF97; --check-off: #566070;
+  --shadow: none;
+
+  --il-tinta: #D5DAE1; --il-fina: #6B7380; --il-papel: #12161B; --il-acento: #8AB4FF; --il-acento-esc: #A9C6FF;
+  --il-ag1: #151A20; --il-ag2: #1A2028; --il-ag3: #16222F; --il-ag4: #23384F; --il-tela: #0F1318; --il-guia: #20262E;
 }

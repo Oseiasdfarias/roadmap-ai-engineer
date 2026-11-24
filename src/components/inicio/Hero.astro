@@ -1,0 +1,85 @@
+---
+import { Download } from '@lucide/astro';
+import { PERIODOS } from '../../data/periodos';
+import { PDF_URL } from '../../config';
+import { dicasDaFase, idProgresso, topicosDoNivel } from '../../lib/conteudo';
+import { url } from '../../lib/url';
+
+const estacoes = await Promise.all(
+  PERIODOS.map(async (p, i) => {
+    const ids = [
+      ...(p.nivel ? (await topicosDoNivel(p.nivel)).flatMap((g) => g.itens.map(idProgresso)) : []),
+      ...(p.fase ? (await dicasDaFase(p.fase)).map(idProgresso) : []),
+    ];
+    const href = p.nivel ? url(`/nivel/${p.nivel}/`) : url(`/fase/${p.fase ?? p.faseLink}/`);
+    return { p, n: String(i + 1).padStart(2, '0'), ids, href };
+  }),
+);
+---
+<section class="hero">
+  <div class="hero-grade" aria-hidden="true"></div>
+  <div class="hero-in">
+    <div class="hero-pilula"><i></i>Estudo e carreira, lado a lado</div>
+    <h1>Do primeiro script em Python<br /><span>a um agente em produção.</span></h1>
+    <p>Quatro níveis de estudo, cinco fases de carreira e cinco projetos de portfólio. Cada tópico tem um resumo completo e as fontes certas para estudar.</p>
+    <div class="hero-ctas">
+      <a class="bt-pri" href={url('/nivel/1/')}>Começar pelo nível 1</a>
+      <a class="bt-sec" href="#tempo">Ver a linha do tempo</a>
+      {PDF_URL && <a class="bt-sec" href={PDF_URL}><Download aria-hidden="true" />Baixar o PDF</a>}
+    </div>
+  </div>
+  <nav class="periodos" aria-label="Períodos" data-periodos>
+    <ol class="estacoes" style="--p: 0">
+      <li class="trilho" aria-hidden="true"><i></i></li>
+      {estacoes.map((e, i) => (
+        <li data-periodo data-estacao={i} data-ids={e.ids.join(',')} class:list={['est', { atual: i === 0, proxima: i === 1 }]}>
+          <a href={e.href}>
+            <span class="num">{e.n}</span>
+            <span class="nome">{e.p.nome}</span>
+            <span class="sub">{e.p.sub}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </nav>
+</section>
+
+<style is:global>
+  .bt-pri, .bt-sec { text-decoration: none; border-radius: 10px; font-size: 15px; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 22px; transition: transform .2s, border-color .2s, opacity .2s; }
+  .bt-pri { background: var(--btn-bg); color: var(--btn-ink); font-weight: 600; }
+  .bt-sec { border: 1px solid var(--line-strong); background: var(--surface-2); color: var(--text); font-weight: 500; }
+  .bt-sec svg { width: 15px; height: 15px; }
+  .bt-sec:hover { border-color: var(--accent); }
+  .hero { position: relative; overflow: hidden; }
+  .hero-grade { position: absolute; inset: 0; background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px); background-size: 56px 56px; opacity: .7; -webkit-mask-image: linear-gradient(#000 55%, transparent); mask-image: linear-gradient(#000 55%, transparent); }
+  .hero-in { position: relative; max-width: 1240px; margin: 0 auto; padding: 120px 32px 72px; text-align: center; }
+  .hero-pilula { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line-strong); background: var(--surface-2); border-radius: 999px; padding: 6px 14px; font-size: 13px; color: var(--text-2); }
+  .hero-pilula i { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .hero h1 { font-weight: 600; font-size: clamp(38px, 6vw, 76px); line-height: 1.02; letter-spacing: -.045em; margin: 28px auto 0; max-width: 980px; text-wrap: balance; }
+  .hero h1 span { color: var(--muted); }
+  .hero-in > p { font-size: 18px; line-height: 1.6; color: var(--text-2); max-width: 640px; margin: 26px auto 0; }
+  .hero-ctas { display: flex; gap: 12px; justify-content: center; margin-top: 36px; flex-wrap: wrap; }
+  .periodos { position: relative; max-width: 1240px; margin: 0 auto; padding: 0 32px 104px; }
+  .estacoes { list-style: none; margin: 0; padding: 0; position: relative; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .trilho { position: absolute; left: calc(100% / 12); right: calc(100% / 12); top: 19px; height: 1px; background: var(--line-strong); }
+  .trilho i { display: block; height: 100%; width: calc(var(--p) * 100%); background: var(--accent); transition: width .5s ease; }
+  .est a { position: relative; display: flex; flex-direction: column; align-items: center; gap: 10px; text-decoration: none; color: var(--text); text-align: center; }
+  .est .num { width: 38px; height: 38px; border-radius: 50%; background: var(--bg); border: 1px solid var(--line-strong); color: var(--text-2); display: grid; place-items: center; font-family: var(--font-mono); font-size: 13px; transition: transform .2s, border-color .2s; }
+  .est.proxima .num { border-color: var(--accent); color: var(--accent); }
+  .est.atual .num { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 500; }
+  .est a:hover .num { border-color: var(--accent); transform: translateY(-2px); }
+  .est .nome { font-size: 14px; font-weight: 500; }
+  .est .sub { font-size: 12px; color: var(--muted); }
+  @media (max-width: 760px) {
+    .hero-in { padding: 64px 16px 44px; }
+    .hero-in > p { font-size: 16px; }
+    .periodos { padding: 0 16px 56px; }
+    .estacoes { grid-template-columns: 1fr; gap: 18px; }
+    .trilho { left: 19px; right: auto; top: 19px; bottom: 19px; width: 1px; height: auto; }
+    .trilho i { width: 100%; height: calc(var(--p) * 100%); transition: height .5s ease; }
+    .est a { display: grid; grid-template-columns: 38px minmax(0, 1fr); gap: 0 14px; text-align: left; align-items: center; }
+    .est .num { grid-row: 1 / 3; }
+    .est .nome { align-self: end; }
+    .est .sub { align-self: start; }
+  }
+</style>

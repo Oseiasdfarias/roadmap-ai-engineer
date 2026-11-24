@@ -25,7 +25,7 @@ function preencher(el: Element, feitos: number, total: number, pct: number, form
   if (barra) barra.style.width = `${pct}%`;
   const texto = el.querySelector('[data-progresso-texto]') ?? el;
   texto.textContent =
-    formato === 'global' ? `${feitos} de ${total} · ${pct}%` : formato === 'de' ? `${feitos} de ${total}` : `${feitos}/${total}`;
+    formato === 'global' ? `${feitos} / ${total}` : formato === 'de' ? `${feitos} de ${total}` : `${feitos} / ${total}`;
   el.querySelector('[role="progressbar"]')?.setAttribute('aria-valuenow', String(pct));
 }
 
@@ -45,6 +45,7 @@ export function atualizar(): void {
     const { feitos, total, pct } = contar(estado, idsTodos());
     preencher(global, feitos, total, pct, 'global');
   }
+  document.dispatchEvent(new CustomEvent('progresso:atualizado'));
 }
 
 estado = ler(armazem());

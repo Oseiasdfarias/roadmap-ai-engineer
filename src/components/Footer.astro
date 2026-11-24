@@ -1,44 +1,134 @@
 ---
+import { getCollection } from 'astro:content';
+import { ArrowUp, Download } from '@lucide/astro';
 import IconeCanal from './IconeCanal.astro';
 import { AUTOR, PDF_URL, REPO_URL, ISSUES_URL } from '../config';
 import { url } from '../lib/url';
-const ano = new Date().getFullYear();
-const niveis = [1, 2, 3, 4];
+
+const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+const [niveis, fases, projetos] = await Promise.all([
+  getCollection('niveis'),
+  getCollection('fases'),
+  getCollection('projetos'),
+]);
+niveis.sort((a, b) => a.data.id - b.data.id);
+fases.sort((a, b) => a.data.id - b.data.id);
+const ordemProjetos = ['P1', 'P2', 'P3', 'P4', 'PF'];
+projetos.sort((a, b) => ordemProjetos.indexOf(a.data.codigo) - ordemProjetos.indexOf(b.data.codigo));
+const iniciais = AUTOR.nome.split(/\s+/).map((p) => p[0]).slice(0, 2).join('').toUpperCase();
 ---
 <footer class="site">
-  <div class="grade">
-    <section>
-      <div class="marca">Roadmap <span>AI Engineer</span></div>
-      <p>Um caminho de estudo e de carreira para quem quer trabalhar com sistemas de IA, em português.</p>
-      <p>Conteúdo sob CC BY 4.0 · código sob MIT</p>
-      <p>© {ano}</p>
-    </section>
-    <nav aria-label="Roadmap">
-      <h2>Roadmap</h2>
-      <ul>
-        <li><a href={url('/')}>Mapa</a></li>
-        {niveis.map((n) => <li><a href={url(`/nivel/${n}/`)}>Nível {n}</a></li>)}
-        <li><a href={url('/fase/1/')}>Carreira</a></li>
-      </ul>
-    </nav>
-    <nav aria-label="Recursos">
-      <h2>Recursos</h2>
-      <ul>
-        <li><a href={url('/sobre/')}>Sobre</a></li>
-        {PDF_URL && <li><a href={PDF_URL}>Baixar o PDF</a></li>}
-        <li><a href={REPO_URL} target="_blank" rel="noopener">Código no GitHub</a></li>
-        <li><a href={ISSUES_URL} target="_blank" rel="noopener">Sugerir correção</a></li>
-      </ul>
-    </nav>
-    <section>
-      <h2>Autor</h2>
-      <p><strong>{AUTOR.nome}</strong><br /><span class="cargo">{AUTOR.cargo}</span></p>
-      <ul>
-        {AUTOR.canais.map((c) => (
-          <li><a href={c.url} target="_blank" rel="noopener"><IconeCanal nome={c.icone} />{c.nome}</a></li>
-        ))}
-      </ul>
-    </section>
+  <div class="rodape-in">
+    <div class="cta-faixa">
+      <div>
+        <div class="cta-titulo">Comece hoje pelo nível 1.</div>
+        <p>Sem cadastro: marque o que estudou e o progresso fica salvo no seu navegador.</p>
+      </div>
+      <div class="cta-botoes">
+        <a class="bt-pri" href={url('/nivel/1/')}>Abrir o nível 1</a>
+        {PDF_URL && <a class="bt-sec" href={PDF_URL}><Download aria-hidden="true" />Baixar o PDF</a>}
+      </div>
+    </div>
+
+    <div class="colunas">
+      <div class="marca-col">
+        <div class="marca">RAI<span>.</span>E</div>
+        <p class="desc">Roadmap AI Engineer: um caminho de estudo e de carreira para quem quer trabalhar com sistemas de IA, em português e aberto.</p>
+        <div class="autor">
+          <span class="ini" aria-hidden="true">{iniciais}</span>
+          <span><strong>{AUTOR.nome}</strong><span class="cargo">{AUTOR.cargo}</span></span>
+        </div>
+        <ul class="canais">
+          {AUTOR.canais.map((c) => (
+            <li><a href={c.url} target="_blank" rel="noopener" aria-label={c.nome}><IconeCanal nome={c.icone} /></a></li>
+          ))}
+        </ul>
+      </div>
+      <nav aria-label="Estudo">
+        <h2>Estudo</h2>
+        <ul>
+          <li><a href={url('/#tempo')}>Linha do tempo</a></li>
+          {niveis.map((n) => <li><a href={url(`/nivel/${n.data.id}/`)}>Nível {n.data.id} · {cap(n.data.curto)}</a></li>)}
+        </ul>
+      </nav>
+      <nav aria-label="Carreira">
+        <h2>Carreira</h2>
+        <ul>
+          {fases.map((f) => <li><a href={url(`/fase/${f.data.id}/`)}>{cap(f.data.nome)}</a></li>)}
+        </ul>
+      </nav>
+      <nav aria-label="Portfólio">
+        <h2>Portfólio</h2>
+        <ul>
+          {projetos.map((p) => <li><a href={url(`/projeto/${p.id}/`)}>{p.data.codigo} · {p.data.titulo.replace(/^[A-Z0-9]+:\s*/, '')}</a></li>)}
+        </ul>
+      </nav>
+      <nav aria-label="Projeto">
+        <h2>Projeto</h2>
+        <ul>
+          <li><a href={url('/sobre/')}>Sobre o roadmap</a></li>
+          <li><a href={REPO_URL} target="_blank" rel="noopener">Código no GitHub</a></li>
+          <li><a href={ISSUES_URL} target="_blank" rel="noopener">Sugerir correção</a></li>
+          <li><a href={`${REPO_URL}/blob/HEAD/CONTRIBUTING.md`} target="_blank" rel="noopener">Como contribuir</a></li>
+          {PDF_URL && <li><a href={PDF_URL}>Baixar o PDF</a></li>}
+        </ul>
+      </nav>
+    </div>
+
+    <div class="gigante" aria-hidden="true">RAI.E</div>
+
+    <div class="fim">
+      <span>© 2026 {AUTOR.nome} · conteúdo CC BY 4.0 · código MIT</span>
+      <span class="atual"><i></i>Atualizado em novembro de 2026</span>
+      <a class="topo" href="#">Voltar ao topo<ArrowUp aria-hidden="true" /></a>
+    </div>
   </div>
-  <div class="fim">Feito por Oséias Farias · atualizado em novembro de 2026</div>
 </footer>
+
+<style is:global>
+  footer.site { border-top: 1px solid var(--line); background: var(--footer); margin-top: 0; color: var(--muted); font-size: 14px; }
+  footer.site a { color: var(--link); text-decoration: none; }
+  footer.site a:hover { color: var(--accent); }
+  .rodape-in { max-width: 1240px; margin: 0 auto; padding: 72px 32px 0; }
+  .cta-faixa { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 32px; align-items: center; border: 1px solid var(--line); background: var(--surface); border-radius: 20px; padding: 36px 40px; margin-bottom: 72px; }
+  .cta-titulo { font-size: 26px; font-weight: 600; letter-spacing: -.03em; color: var(--text); }
+  .cta-faixa p { font-size: 15px; line-height: 1.6; color: var(--text-2); margin: 8px 0 0; }
+  .cta-botoes { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; }
+  footer.site .bt-pri { background: var(--btn-bg); color: var(--btn-ink); padding: 13px 20px; border-radius: 10px; font-size: 14px; font-weight: 600; min-height: 44px; display: inline-flex; align-items: center; }
+  footer.site .bt-pri:hover { color: var(--btn-ink); opacity: .9; }
+  footer.site .bt-sec { border: 1px solid var(--line-strong); color: var(--text); padding: 13px 20px; border-radius: 10px; font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; }
+  footer.site .bt-sec svg { width: 15px; height: 15px; }
+  .colunas { display: grid; grid-template-columns: minmax(0, 1.6fr) repeat(4, minmax(0, 1fr)); gap: 40px; }
+  .marca { font-weight: 700; font-size: 28px; letter-spacing: -.05em; color: var(--text); }
+  .marca span { color: var(--accent); }
+  .desc { font-size: 14px; line-height: 1.6; color: var(--muted); margin: 12px 0 24px; max-width: 320px; }
+  .autor { display: flex; align-items: center; gap: 14px; border: 1px solid var(--line); border-radius: 14px; padding: 14px; max-width: 320px; }
+  .autor .ini { width: 44px; height: 44px; border-radius: 50%; background: var(--avatar-bg); color: var(--avatar-ink); display: grid; place-items: center; font-weight: 600; font-size: 15px; flex: none; }
+  .autor strong { display: block; font-size: 14px; font-weight: 600; color: var(--text); }
+  .autor .cargo { display: block; font-size: 12.5px; color: var(--muted); }
+  footer.site ul { list-style: none; margin: 0; padding: 0; }
+  .canais { display: flex; gap: 8px; margin-top: 16px !important; }
+  .canais a { width: 44px; height: 44px; border: 1px solid var(--line-strong); border-radius: 10px; display: grid; place-items: center; transition: border-color .15s, transform .15s; }
+  .canais a:hover { border-color: var(--accent); }
+  .canais svg { width: 17px; height: 17px; }
+  footer.site h2 { font-family: var(--font-mono); font-size: 11px; font-weight: 400; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 16px; }
+  footer.site nav ul { display: flex; flex-direction: column; gap: 4px; }
+  footer.site nav a { display: inline-block; padding: 5px 0; }
+  .gigante { font-weight: 700; font-size: clamp(72px, 17.5vw, 220px); line-height: .8; letter-spacing: -.07em; color: transparent; -webkit-text-stroke: 1px var(--outline-text); margin-top: 72px; text-align: center; overflow: hidden; white-space: nowrap; user-select: none; }
+  .fim { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; border-top: 1px solid var(--line); padding: 22px 0 28px; font-size: 13px; color: var(--muted); margin-top: 12px; }
+  .fim .atual { display: inline-flex; align-items: center; gap: 8px; }
+  .fim .atual i { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); }
+  .fim .topo { display: inline-flex; align-items: center; gap: 8px; padding: 10px 0; }
+  .fim .topo svg { width: 14px; height: 14px; }
+  @media (max-width: 960px) {
+    .colunas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .marca-col { grid-column: 1 / -1; }
+    .cta-faixa { grid-template-columns: 1fr; padding: 28px 24px; }
+    .cta-botoes { justify-content: flex-start; }
+  }
+  @media (max-width: 560px) {
+    .rodape-in { padding: 48px 16px 0; }
+    .colunas { gap: 28px 20px; }
+    .fim { flex-direction: column; align-items: flex-start; gap: 10px; }
+  }
+</style>

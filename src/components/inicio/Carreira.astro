@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content';
+import { url } from '../../lib/url';
+
+const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+const fases = (await getCollection('fases')).sort((a, b) => a.data.id - b.data.id);
+---
+<section id="carreira" class="carr rv">
+  <div class="carr-grade">
+    <div class="carr-intro">
+      <div class="kicker">04 — Carreira</div>
+      <h2>O caminho até a vaga, fase por fase.</h2>
+      <p>Vaga júnior de AI Engineer é rara. O caminho mais comum passa por estágio e por desenvolvimento antes de IA.</p>
+    </div>
+    <ol class="fases">
+      {fases.map((f) => (
+        <li>
+          <a href={url(`/fase/${f.data.id}/`)}>
+            <span class="n">{String(f.data.id).padStart(2, '0')}</span>
+            <span class="tx"><span class="t">{cap(f.data.nome)}</span><span class="d">{f.data.objetivo}</span></span>
+            <span class="q">{f.data.quando.toLowerCase()}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style is:global>
+  .carr { max-width: 1240px; margin: 0 auto; padding: 0 32px 112px; }
+  .carr-grade { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 48px; align-items: start; border-top: 1px solid var(--line); padding-top: 64px; }
+  .carr h2 { font-size: clamp(30px, 4vw, 44px); font-weight: 600; letter-spacing: -.04em; line-height: 1.05; margin: 0; text-wrap: balance; }
+  .carr-intro > p { font-size: 15px; line-height: 1.6; color: var(--text-2); margin: 18px 0 0; }
+  .fases { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .fases li { border-bottom: 1px solid var(--line); }
+  .fases a { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: 18px; align-items: center; padding: 22px 8px 22px 0; text-decoration: none; color: var(--text); transition: background .2s, padding .2s; }
+  .fases a:hover { background: var(--surface); padding-left: 12px; }
+  .fases .n { font-family: var(--font-mono); font-size: 14px; color: var(--accent); }
+  .fases .t { display: block; font-size: 18px; font-weight: 600; }
+  .fases .d { display: block; font-size: 14px; color: var(--muted); margin-top: 2px; }
+  .fases .q { font-size: 13px; color: var(--muted); text-align: right; }
+  @media (max-width: 860px) { .carr-grade { grid-template-columns: 1fr; gap: 32px; } }
+  @media (max-width: 560px) {
+    .carr { padding: 0 16px 72px; }
+    .carr-grade { padding-top: 48px; }
+    .fases a { grid-template-columns: 40px minmax(0, 1fr); gap: 12px; }
+    .fases .q { grid-column: 2; text-align: left; }
+  }
+</style>
