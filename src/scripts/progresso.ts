@@ -20,11 +20,12 @@ function idsTodos(): string[] {
   }
 }
 
-function preencher(el: Element, feitos: number, total: number, pct: number, formato: 'barra' | 'global') {
+function preencher(el: Element, feitos: number, total: number, pct: number, formato: 'barra' | 'global' | 'de') {
   const barra = el.querySelector<HTMLElement>('[data-progresso-barra]');
   if (barra) barra.style.width = `${pct}%`;
   const texto = el.querySelector('[data-progresso-texto]') ?? el;
-  texto.textContent = formato === 'global' ? `${feitos} de ${total} · ${pct}%` : `${feitos}/${total}`;
+  texto.textContent =
+    formato === 'global' ? `${feitos} de ${total} · ${pct}%` : formato === 'de' ? `${feitos} de ${total}` : `${feitos}/${total}`;
   el.querySelector('[role="progressbar"]')?.setAttribute('aria-valuenow', String(pct));
 }
 
@@ -37,7 +38,7 @@ export function atualizar(): void {
   document.querySelectorAll<HTMLElement>('[data-progresso-conta]').forEach((el) => {
     const ids = (el.dataset.progressoConta ?? '').split(',').filter(Boolean);
     const { feitos, total, pct } = contar(estado, ids);
-    preencher(el, feitos, total, pct, 'barra');
+    preencher(el, feitos, total, pct, el.dataset.progressoFormato === 'de' ? 'de' : 'barra');
   });
   const global = document.querySelector('[data-progresso-global]');
   if (global) {

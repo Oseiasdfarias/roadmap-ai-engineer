@@ -1,0 +1,55 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { Check, ChevronDown, ArrowRight } from '@lucide/astro';
+import Refs from './Refs.astro';
+import { idProgresso, rotaDe } from '../lib/conteudo';
+
+interface Props {
+  entry: CollectionEntry<'topicos'> | CollectionEntry<'dicas'>;
+}
+const { entry } = Astro.props;
+const id = idProgresso(entry);
+---
+<div class="row" data-progresso-id={id}>
+  <button
+    type="button"
+    class="chk"
+    data-alternar={id}
+    data-progresso-id={id}
+    aria-pressed="false"
+    aria-label={`Marcar como estudado: ${entry.data.titulo}`}
+  >
+    <Check aria-hidden="true" stroke-width={3.4} />
+  </button>
+  <details>
+    <summary>
+      <span class="tt">{entry.data.titulo}</span>
+      <ChevronDown class="more" aria-hidden="true" />
+    </summary>
+    <div class="bd">
+      <p>{entry.data.resumo}</p>
+      <Refs refs={entry.data.referencias} />
+      <a class="ler" href={rotaDe(entry)}>Ler o resumo completo <ArrowRight aria-hidden="true" /></a>
+    </div>
+  </details>
+</div>
+
+<style>
+  .row { display: grid; grid-template-columns: auto 1fr; align-items: start; gap: 12px; border: 1px solid var(--line); border-radius: 12px; margin-bottom: 8px; background: var(--card); padding: 0 13px; }
+  .chk { margin-top: 11px; width: 20px; height: 20px; border-radius: 99px; border: 1.5px solid var(--muted); display: grid; place-items: center; flex: none; cursor: pointer; background: transparent; padding: 0; }
+  .chk :global(svg) { width: 12px; height: 12px; opacity: 0; color: var(--card); }
+  .chk.feito { background: var(--acc); border-color: var(--acc); }
+  .chk.feito :global(svg) { opacity: 1; }
+  .row.feito .tt { color: var(--muted); text-decoration: line-through; }
+  summary { display: flex; align-items: center; gap: 10px; padding: 11px 0; cursor: pointer; list-style: none; border-radius: 8px; }
+  summary::-webkit-details-marker { display: none; }
+  .tt { font-weight: 500; font-size: 14.5px; flex: 1; }
+  .more { width: 16px; height: 16px; color: var(--muted); transition: transform 0.2s; }
+  details[open] .more { transform: rotate(180deg); }
+  .bd { padding: 0 0 13px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+  .bd p { margin: 0 0 12px; }
+  .ler { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; color: var(--acc); font-weight: 500; font-size: 13.5px; text-decoration: none; }
+  .ler:hover { text-decoration: underline; }
+  .ler :global(svg) { width: 14px; height: 14px; }
+  @media (prefers-reduced-motion: reduce) { .more { transition: none; } }
+</style>

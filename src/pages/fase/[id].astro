@@ -1,0 +1,82 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import { ArrowRight } from '@lucide/astro';
+import Base from '../../layouts/Base.astro';
+import Ilustracao from '../../components/Ilustracao.astro';
+import Migalha from '../../components/Migalha.astro';
+import LinhaTopico from '../../components/LinhaTopico.astro';
+import AnteriorProximo from '../../components/AnteriorProximo.astro';
+import { dicasDaFase, idProgresso } from '../../lib/conteudo';
+import { url } from '../../lib/url';
+import '../../styles/detalhe.css';
+
+export async function getStaticPaths() {
+  return (await getCollection('fases')).map((f) => ({ params: { id: String(f.id) } }));
+}
+
+const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+const fase = (await getEntry('fases', Astro.params.id!))!;
+const d = fase.data;
+const [dicas, prev, next, niveis] = await Promise.all([
+  dicasDaFase(d.id),
+  getEntry('fases', String(d.id - 1)),
+  getEntry('fases', String(d.id + 1)),
+  Promise.all(d.niveis.map((n) => getEntry('niveis', String(n)))),
+]);
+const ids = dicas.map(idProgresso);
+const meio = Math.ceil(dicas.length / 2);
+const rotulo = (f: NonNullable<typeof prev>) => `Fase ${f.data.id} · ${cap(f.data.nome)}`;
+---
+<Base titulo={`Fase ${d.id} · ${cap(d.nome)} | Roadmap AI Engineer`} descricao={d.objetivo}>
+  <div class="detail">
+    <Migalha itens={[{ rotulo: 'Mapa', href: url('/') }, { rotulo: 'Carreira' }, { rotulo: `Fase ${d.id}` }]} />
+    <div class="panel">
+      <div class="ph">
+        <div>
+          <div class="kick">Carreira · fase {d.id} de 5 · {d.quando}</div>
+          <h1>{cap(d.nome)}</h1>
+          <p>{d.objetivo}</p>
+          <div class="lp" data-progresso-conta={ids.join(',')} data-progresso-formato="de">
+            <div class="track" role="progressbar" aria-label="Progresso da fase" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+              <span data-progresso-barra></span>
+            </div>
+            <small data-progresso-texto>0 de {ids.length}</small>
+          </div>
+        </div>
+        <div><Ilustracao nome="carreira" /></div>
+      </div>
+
+      <div class="cols">
+        <section>{dicas.slice(0, meio).map((x) => <LinhaTopico entry={x} />)}</section>
+        <section>{dicas.slice(meio).map((x) => <LinhaTopico entry={x} />)}</section>
+      </div>
+
+      <section class="cross">
+        {niveis.length > 0 ? (
+          <>
+            <h2>No estudo, no mesmo período</h2>
+            <p class="sub">
+              {niveis.map((n) => n && (
+                <a class="lk" href={url(`/nivel/${n.data.id}/`)}>Nível {n.data.id} · {cap(n.data.curto)} <ArrowRight aria-hidden="true" /></a>
+              ))}
+            </p>
+          </>
+        ) : (
+          <>
+            <h2>No estudo, nesta fase</h2>
+            <p class="sub">Aprofundar onde você quer ser sênior: design de sistemas com LLM, custo e segurança em escala.</p>
+          </>
+        )}
+      </section>
+
+      <section class="crit">
+        <h2 class="sub-h">Como saber que terminou</h2>
+        <ul>{d.criterios.map((c) => <li>{c}</li>)}</ul>
+      </section>
+    </div>
+    <AnteriorProximo
+      anterior={prev && { rotulo: rotulo(prev), href: url(`/fase/${prev.data.id}/`) }}
+      proximo={next && { rotulo: rotulo(next), href: url(`/fase/${next.data.id}/`) }}
+    />
+  </div>
+</Base>
