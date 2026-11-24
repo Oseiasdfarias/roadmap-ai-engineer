@@ -29,9 +29,9 @@ A entrevista comportamental pergunta como você agiu em situações reais: "cont
 
 ## Por que importa
 
-Quem contrata júnior sabe que você tem pouca experiência, então procura sinais de como você trabalha: comunica, aprende, recebe crítica e assume erros. Uma resposta vaga ("sou dedicado") não mostra nada. Uma história concreta mostra, e o formato STAR evita que você se perca nos detalhes.
+Quem contrata júnior costuma saber que você tem pouca experiência, então procura sinais de como você trabalha: comunica, aprende, recebe crítica e assume erros. Uma resposta vaga ("sou dedicado") não mostra nada. Uma história concreta mostra, e o formato STAR evita que você se perca nos detalhes.
 
-Você não precisa de experiência profissional. Estágio, faculdade, projetos pessoais e trabalhos em grupo servem como material.
+Você não precisa de experiência profissional. Estágio, faculdade, projetos pessoais e trabalhos em grupo servem como material. O guia do MIT CAPD, nas referências, traz mais exemplos de perguntas comportamentais e de como estruturar as respostas.
 
 ## Passo a passo
 
@@ -53,7 +53,7 @@ Resposta, antes:
 
 Depois (exemplo ilustrativo):
 
-> **Situação:** no meu projeto de busca em manuais, eu indexei todos os arquivos sem checar os metadados. **Tarefa:** eu era a única pessoa no projeto e precisava entregar a demonstração na sexta. **Ação:** ao testar, vi que respostas citavam o manual errado. Parei, escrevi um teste que verificava fabricante e modelo de cada trecho, corrigi a importação e reindexei. **Resultado:** as citações passaram a bater com o manual em todos os 30 casos de teste. Aprendi a validar os dados antes de indexar, e hoje esse teste roda a cada mudança.
+> **Situação:** no meu projeto de busca em manuais, eu indexei todos os arquivos sem checar os metadados. **Tarefa:** eu era a única pessoa no projeto e precisava entregar a demonstração na sexta. **Ação:** ao testar, vi que respostas citavam o manual errado. Parei, escrevi um teste que verificava fabricante e modelo de cada trecho, corrigi a importação e reindexei. **Resultado:** as citações passaram a bater com o manual em todos os 25 casos de teste. Aprendi a validar os dados antes de indexar, e hoje esse teste roda a cada mudança.
 
 A resposta mostra um erro real, uma ação sua e uma lição aplicada.
 

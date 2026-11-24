@@ -43,9 +43,9 @@ O projeto também trata de segurança: uma ação que muda o mundo, como abrir u
 
 O servidor MCP, escrito com o SDK oficial em Python, publica duas ferramentas. A de leitura, `buscar_no_manual(equipamento, pergunta)`, chama o código do P2 e devolve trechos com citação; não escreve nada. A de ação, `abrir_ordem_de_servico(...)`, não executa de imediato: cria um pedido pendente e só roda depois que uma pessoa aprova, com o registro de quem aprovou e quando. O cliente (Claude Code ou Claude Desktop) conecta ao servidor e decide quando chamar cada ferramenta.
 
-Veja os tópicos MCP, Tool use, Human-in-the-loop e Prompt injection.
+Veja os tópicos MCP (que também trata de autenticação e permissões; se o servidor for remoto, leia a parte de autorização), Tool use, Human-in-the-loop e Prompt injection.
 
-O cliente decide quais ferramentas chamar a partir do nome e da descrição que você escreve, então trate essa descrição como parte do produto. O registro de aprovação deve guardar a ferramenta, os argumentos, quem aprovou e a hora, para que qualquer ordem aberta possa ser auditada depois.
+O cliente decide quais ferramentas chamar a partir do nome e da descrição que você escreve, então trate essa descrição como parte do produto. A aprovação pode ser simples: um prompt no terminal ("aprovar a ordem 123? s/n") ou uma página mínima com os botões aprovar e recusar. O que importa é o servidor não executar antes do sim. O registro de aprovação deve guardar a ferramenta, os argumentos, quem aprovou e a hora, para que qualquer ordem aberta possa ser auditada depois.
 
 ## Stack sugerida
 

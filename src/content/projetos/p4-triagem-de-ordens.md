@@ -10,10 +10,12 @@ stack:
   - "Código do P2"
   - "Promptfoo ou evals próprios"
 criterios:
-  - "A saída é sempre JSON válido e validado"
+  - "A saída é sempre JSON válido, validado por Pydantic"
   - "Extração e classificação usam o modelo menor e a sugestão usa o maior"
+  - "Há um conjunto de 30 a 50 relatos sintéticos com a resposta esperada"
   - "O README mostra custo e qualidade antes e depois, medidos com evals"
   - "O README explica por que isto é um workflow e não um agente"
+  - "Relatos ambíguos ou incompletos vão para revisão humana, e não para a fila"
 referencias:
   - titulo: "Pydantic: documentação"
     url: "https://docs.pydantic.dev/latest/"

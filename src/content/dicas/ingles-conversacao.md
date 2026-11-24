@@ -3,7 +3,7 @@ titulo: "Inglês: conversação"
 fase: 5
 grupo: "Empresas consolidadas"
 ordem: 1
-resumo: "Falar é a parte mais difícil e a que mais pesa em empresas grandes e multinacionais. Monte uma rotina semanal de prática, ensaie a entrevista em inglês e meça sua evolução ao longo dos meses."
+resumo: "Falar costuma ser a parte mais difícil e pode pesar em empresas com equipes internacionais. Monte uma rotina semanal de prática, ensaie a entrevista em inglês e meça sua evolução ao longo dos meses."
 relacionados:
   - "ingles-leitura-tecnica"
   - "entrevista-comportamental"
@@ -28,16 +28,16 @@ Inglês de conversação é a habilidade de falar e entender em tempo real: reun
 
 ## Por que importa
 
-Empresas grandes e multinacionais costumam ter equipes em vários países, e parte das entrevistas é feita em inglês. Para esse tipo de vaga, falar com clareza pesa tanto quanto saber programar. Além disso, as discussões técnicas e os eventos da área de IA acontecem em inglês.
+Empresas com equipes em vários países podem fazer parte das entrevistas e das reuniões em inglês, e nesses casos falar com clareza passa a contar na avaliação. Além disso, muita discussão técnica e muitos eventos da área de IA acontecem em inglês. Confira nos anúncios das empresas que você quer se o inglês falado é pedido.
 
 Fluência não se alcança em semanas, e não há prazo garantido. O que funciona é frequência: pouco, toda semana, por meses.
 
 ## Passo a passo
 
 1. **Descubra o seu nível atual.** Grave dois minutos falando sobre o seu trabalho e ouça de volta. Anote o que travou: vocabulário, tempo verbal ou pronúncia.
-2. **Marque horários fixos de prática**, por exemplo três sessões de 30 minutos por semana, com data no calendário.
+2. **Marque horários fixos de prática**, usando o material do BBC Learning English como base de escuta, por exemplo três sessões de 30 minutos por semana, com data no calendário.
 3. **Fale com outras pessoas.** Aulas particulares, grupos de conversação, parceiros de troca de idiomas ou colegas de estudo. Falar sozinho ajuda, mas não substitui ouvir resposta.
-4. **Prepare o vocabulário da sua área**: descrever um projeto, explicar uma decisão, pedir esclarecimento ("Could you clarify...?").
+4. **Prepare o vocabulário da sua área** (a seção English at Work, da BBC, traz diálogos de situações de trabalho): descrever um projeto, explicar uma decisão, pedir esclarecimento ("Could you clarify...?").
 5. **Ensaie a entrevista em inglês.** Escreva suas cinco histórias (veja Entrevista comportamental) em inglês, e conte em voz alta, com cronômetro.
 6. **Assista e repita (shadowing).** Escolha uma palestra técnica, ouça uma frase e repita, imitando o ritmo.
 7. **Meça a cada mês.** Grave o mesmo texto e compare. Registre o que melhorou e o que continua difícil.
@@ -51,9 +51,9 @@ Resposta a "Tell me about your project", antes:
 
 Depois (exemplo ilustrativo):
 
-> I built a search tool for technical manuals. The problem was that technicians wasted time looking for fault codes in long PDFs. I combined keyword search and semantic search, because codes don't have meaning for the model. In my tests, the right page appeared in the top five results in 81% of the questions.
+> I built a search tool for technical manuals. The problem was that technicians wasted time looking for fault codes in long PDFs. I combined keyword search and semantic search, because codes don't have meaning for the model. In my tests, the right page appeared in the top five results in 76% of the questions.
 
-Roteiro em português de apoio: problema, decisão, resultado. A resposta usa frases curtas e vocabulário que você já estudou na leitura técnica.
+O roteiro é problema, decisão, resultado (números ilustrativos, use os seus). A resposta usa frases curtas e vocabulário que você já estudou na leitura técnica.
 
 ## Erros comuns
 

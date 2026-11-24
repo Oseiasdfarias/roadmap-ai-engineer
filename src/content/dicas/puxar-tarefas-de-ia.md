@@ -3,7 +3,7 @@ titulo: "Puxar tarefas de IA"
 fase: 4
 grupo: "Transição para IA"
 ordem: 1
-resumo: "Na empresa onde você já trabalha, proponha e assuma as features com LLM. A experiência interna conta como experiência de IA, e é o caminho mais comum para sair de desenvolvedor e virar AI Engineer."
+resumo: "Na empresa onde você já trabalha, proponha e assuma funcionalidades com LLM. A experiência interna pode contar como experiência de IA e é um caminho possível para sair de desenvolvedor e virar AI Engineer."
 relacionados:
   - "projeto-em-producao"
   - "contar-a-historia"
@@ -25,11 +25,11 @@ rascunho: false
 
 ## O que é
 
-Puxar tarefas de IA é propor e assumir, na empresa onde você já trabalha como desenvolvedor, as funcionalidades que usam LLM: busca em documentos, classificação de tickets, resumos, extração de dados. Em vez de esperar uma vaga de AI Engineer, você constrói a experiência dentro do emprego atual, com problema real e usuários reais.
+Puxar tarefas de IA é propor e assumir, na empresa onde você já trabalha como desenvolvedor, as funcionalidades que usam LLM (large language model, modelo de linguagem): busca em documentos, classificação de tickets, resumos, extração de dados. Em vez de esperar uma vaga de AI Engineer, você constrói a experiência dentro do emprego atual, com problema real e usuários reais.
 
 ## Por que importa
 
-Vagas de AI Engineer júnior são raras, e muita gente chega ao cargo vindo de desenvolvimento de software ou de dados. A experiência interna conta como experiência de IA: você tem um problema de negócio, restrições, custo e um resultado para mostrar. Isso pesa mais que um projeto pessoal.
+Vagas de AI Engineer júnior costumam ser raras, e é comum que a pessoa chegue ao cargo vindo de desenvolvimento de software ou de dados. A experiência interna pode contar como experiência de IA: você tem um problema de negócio, restrições, custo e um resultado para mostrar. Isso costuma pesar mais que um projeto pessoal.
 
 Depende do contexto da empresa e do apoio da liderança. Não há garantia de que a proposta seja aceita, mas há um jeito de propor que aumenta a chance.
 
@@ -37,9 +37,9 @@ Depende do contexto da empresa e do apoio da liderança. Não há garantia de qu
 
 1. **Procure dores que se parecem com os seus projetos.** Equipes de suporte que respondem as mesmas perguntas, documentos longos que ninguém acha, formulários digitados à mão. Converse com quem sofre com o problema.
 2. **Meça o ponto de partida.** Quanto tempo a tarefa leva hoje? Quantos erros acontecem? Sem o antes, você não prova o depois.
-3. **Proponha um piloto pequeno.** Uma página: problema, solução em duas linhas, como medir, custo estimado e risco. Prefira o mais simples que resolve, e comece por um workflow antes de pensar num agente (veja o artigo da Anthropic).
+3. **Proponha um piloto pequeno.** Uma página: problema, solução em duas linhas, como medir, custo estimado e risco. Prefira o mais simples que resolve, e comece por um workflow (fluxo fixo de passos) antes de pensar num agente (modelo que decide os passos) (veja o artigo da Anthropic).
 4. **Cuide de dados e segurança antes de tudo.** Defina quais dados podem ir para o modelo, mascare dados pessoais e fale com quem responde por segurança e LGPD na empresa.
-5. **Construa com avaliação.** Monte um conjunto de exemplos reais, com respostas esperadas, e meça antes de liberar (veja Hamel Husain sobre evals).
+5. **Construa com avaliação.**  Monte um conjunto de exemplos reais, com respostas esperadas, e meça antes de liberar (evals são testes de qualidade das respostas; veja o texto de Hamel Husain).
 6. **Libere para poucas pessoas**, colete feedback e meça de novo.
 7. **Registre os resultados** em linhas de currículo e em histórias de entrevista, sem expor dados da empresa.
 

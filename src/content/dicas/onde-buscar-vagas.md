@@ -40,11 +40,11 @@ rascunho: false
 
 ## O que é
 
-É o mapa dos lugares onde aparecem vagas de estágio em tecnologia no Brasil, e um método para não depender de sorte. Vagas de estágio em "IA" são raras. Por isso a busca inclui áreas próximas que dão experiência real em equipe: desenvolvimento, dados, suporte a sistemas e automação com software.
+É o mapa dos lugares onde aparecem vagas de estágio em tecnologia no Brasil, e um método para não depender de sorte. Vagas de estágio com "IA" no título costumam ser raras. Por isso a busca inclui áreas próximas que dão experiência real em equipe: desenvolvimento, dados, suporte a sistemas e automação com software.
 
 ## Por que importa
 
-Quem busca em um canal só vê uma parte das vagas. Cada canal tem seu público: grandes empresas usam plataformas de recrutamento, programas de estágio têm datas fixas, e muitas vagas circulam por indicação. Conhecer os canais e configurar alertas economiza horas e evita perder prazos.
+Quem busca em um canal só vê uma parte das vagas. Cada canal tem seu público: muitas empresas usam plataformas de recrutamento, programas de estágio podem ter datas fixas, e algumas vagas circulam por indicação. Conhecer os canais e configurar alertas economiza horas e evita perder prazos.
 
 Nenhum canal garante resposta. O objetivo é aumentar o número de candidaturas boas, não achar uma vaga ideal.
 
@@ -75,7 +75,7 @@ O primeiro alerta quase não traz resultado, porque estágios com esse nome são
 
 - **Procurar só por "IA".** A busca fica vazia e você desanima.
 - **Usar um único canal.** Vagas se espalham por plataformas e páginas de empresa.
-- **Deixar o perfil incompleto** em Gupy, CIEE e Nube. Perfis incompletos não passam em filtros.
+- **Deixar o perfil incompleto** em Gupy, CIEE e Nube. Perfis incompletos podem ficar de fora de filtros e de buscas de quem recruta.
 - **Ignorar o prazo e as condições do estágio.** Confira o contrato, a carga horária e se a vaga exige matrícula na faculdade.
 - **Aplicar sem ler a vaga.** Veja Candidatura com foco.
 - **Cair em golpe.** Desconfie de vaga que cobra taxa ou pede dados bancários antes do processo seletivo.

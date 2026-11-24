@@ -33,7 +33,7 @@ O GitHub é a plataforma onde você guarda código com histórico de versões (G
 
 ## Por que importa
 
-Quem recruta para vagas técnicas costuma abrir o GitHub depois do currículo, e a leitura é rápida. Um perfil vazio ou cheio de repositórios sem explicação não ajuda. Um perfil com poucos projetos bem apresentados responde sozinho a perguntas que o currículo não cobre: o código roda? Há testes? A pessoa explica as decisões?
+Quem recruta para vagas técnicas pode abrir o GitHub depois do currículo, e a leitura tende a ser rápida. Um perfil vazio ou cheio de repositórios sem explicação não ajuda. Um perfil com poucos projetos bem apresentados responde sozinho a perguntas que o currículo não cobre: o código roda? Há testes? A pessoa explica as decisões?
 
 O GitHub não substitui a entrevista, e ninguém vai ler todo o seu código. O que você controla é a primeira impressão.
 
@@ -43,7 +43,7 @@ O GitHub não substitui a entrevista, e ninguém vai ler todo o seu código. O q
 2. **Fixe de dois a quatro projetos.** Fixe os que mostram mais trabalho e deixe de fora exercícios de curso soltos.
 3. **Escreva um README em cada projeto fixado.** Inclua o problema que ele resolve, como rodar (comandos que funcionem de verdade), uma captura de tela ou exemplo de uso e as decisões principais.
 4. **Faça commits pequenos e frequentes**, com mensagem que diga o que mudou. Uma sequência de dezenas de commits "update" não ensina nada a quem lê.
-5. **Use branches e pull requests mesmo trabalhando sozinho.** Mostra que você conhece o fluxo de equipe.
+5. **Use branches (linhas paralelas de trabalho) e pull requests (pedidos para juntar uma branch ao código principal) mesmo trabalhando sozinho.** Mostra que você conhece o fluxo de equipe.
 6. **Nunca suba segredos.** Chaves de API e arquivos `.env` ficam fora do Git. Se subiu por engano, revogue a chave, porque apagar o commit não basta.
 7. **Revise a cada mês.** Arquive o que ficou velho e atualize o que você fixou.
 
@@ -60,8 +60,8 @@ Depois (exemplo ilustrativo):
 > Responde perguntas sobre manuais públicos de equipamentos industriais e cita o manual e a página.
 >
 > **Como rodar:** `docker compose up`, depois abra `localhost:8000`.
-> **Decisão:** usei busca por palavra-chave junto com a busca por significado, porque códigos de falha como "F0021" não aparecem na busca por significado.
-> **Resultado:** em 30 perguntas de teste, o trecho certo apareceu entre os cinco primeiros em 81% dos casos (número ilustrativo).
+> **Decisão:** usei busca por palavra-chave junto com a busca por significado, porque códigos de falha como "E014" não aparecem na busca por significado.
+> **Resultado:** em 20 perguntas de teste, o trecho certo apareceu entre os cinco primeiros em 85% dos casos (números ilustrativos, use os seus).
 
 A versão nova diz o problema, o comando de execução e uma decisão com resultado medido. Quem lê em 30 segundos já sabe se vale abrir o código.
 

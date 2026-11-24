@@ -38,7 +38,7 @@ Sem registro, você esquece onde aplicou, perde prazos e não consegue ver o que
 1. **Monte uma planilha** com as colunas: empresa, vaga, link, data de envio, versão do currículo, canal, status e data do próximo passo.
 2. **Leia o anúncio inteiro.** Separe o que a vaga exige do que é desejável e confira se você atende a maior parte do que ela exige.
 3. **Adapte o currículo em dez a quinze minutos.** Reordene os projetos e ajuste os termos para os do anúncio, só onde for verdade. Salve o arquivo com o nome da vaga.
-4. **Escreva uma mensagem curta**, quando houver campo de texto ou contato de quem recruta: quem você é, por que esta vaga e um projeto relevante com link.
+4. **Escreva uma mensagem curta**, quando houver campo de texto ou um contato de quem recruta (se não houver contato, não precisa insistir): quem você é, por que esta vaga e um projeto relevante com link.
 5. **Registre o envio** na planilha, com a data do próximo passo.
 6. **Faça follow-up.** Se não houver resposta no prazo do anúncio, ou em cerca de uma semana, envie uma mensagem educada e curta.
 7. **Trate a rejeição como dado.** Registre o motivo quando houver e, a cada duas semanas, olhe a planilha: quais vagas deram resposta e o que elas têm em comum?
@@ -52,9 +52,7 @@ Follow-up, antes:
 
 Depois:
 
-> Olá, Marina. Me candidatei à vaga de estágio em desenvolvimento no dia 12 e queria confirmar se o currículo chegou. Tenho um projeto de busca em manuais técnicos em Python que pode ser relevante para o time: github.com/usuario/projeto. Fico à disposição para uma conversa. Obrigado!
-
-(nome e links ilustrativos).
+> Olá, Marina (nome ilustrativo). Me candidatei à vaga de estágio em desenvolvimento no dia 12 e queria confirmar se o currículo chegou. Tenho um projeto de busca em manuais técnicos em Python que pode ser relevante para o time: github.com/usuario/projeto (link ilustrativo). Fico à disposição para uma conversa. Obrigado!
 
 A versão nova diz qual vaga, quando você se candidatou, e dá um motivo concreto para a pessoa responder. Mande uma vez, e não repita todo dia.
 

@@ -257,6 +257,12 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.pytest.org",
   "img": null
  },
+ "https://docs.python.org/3/tutorial/": {
+  "tipo": "Docs",
+  "dominio": "docs.python.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.python.org",
+  "img": "https://docs.python.org/3.15/_images/social_previews/summary_tutorial_index_4224eef5.png"
+ },
  "https://docs.python.org/pt-br/3/library/dataclasses.html": {
   "tipo": "Docs",
   "dominio": "docs.python.org",
@@ -438,6 +444,12 @@
   "img": "https://missing.csail.mit.edu/static/assets/thumbnails/default.png"
  },
  "https://modelcontextprotocol.io/": {
+  "tipo": "Docs",
+  "dominio": "modelcontextprotocol.io",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=modelcontextprotocol.io",
+  "img": "https://raw.githubusercontent.com/modelcontextprotocol/docs/2eb6171ddbfeefde349dc3b8d5e2b87414c26250/images/og-image.png"
+ },
+ "https://modelcontextprotocol.io/docs/concepts/transports": {
   "tipo": "Docs",
   "dominio": "modelcontextprotocol.io",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=modelcontextprotocol.io",
@@ -652,12 +664,6 @@
   "dominio": "sqlbolt.com",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=sqlbolt.com",
   "img": null
- },
- "https://survey.stackoverflow.co/2025/": {
-  "tipo": "Artigo",
-  "dominio": "survey.stackoverflow.co",
-  "icone": "https://www.google.com/s2/favicons?sz=64&domain=survey.stackoverflow.co",
-  "img": "https://survey.stackoverflow.co/2025/img/stackoverflow-dev-survey-og.png"
  },
  "https://www.alura.com.br/artigos/como-fazer-um-perfil-de-alta-qualidade-no-linkedin-e-atrair-mais-trabalhos": {
   "tipo": "Artigo",

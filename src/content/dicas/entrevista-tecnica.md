@@ -39,7 +39,7 @@ Preparar-se reduz o nervosismo, mas não garante aprovação.
 2. **Pense em voz alta.** Diga o que entendeu do enunciado, dê um exemplo simples, descreva a ideia antes de escrever e teste com um caso pequeno no fim.
 3. **Peça esclarecimento.** Pergunte sobre entradas vazias, tamanhos e formato da saída antes de codar.
 4. **Prepare cada projeto de portfólio por dentro.** Para cada um, escreva em meia página o problema, a arquitetura, três decisões e por que escolheu cada uma, um erro que você corrigiu e o que mudaria.
-5. **Estude as perguntas de IA mais comuns**: o que é um embedding, como funciona RAG, por que o modelo alucina, quando usar workflow em vez de agente, como você mediu a qualidade. Use as páginas de tópicos do roadmap como roteiro.
+5. **Estude as perguntas de IA mais comuns**: o que é um embedding (vetor que representa o significado de um texto), como funciona RAG (buscar trechos nos documentos e entregá-los ao modelo), por que o modelo alucina (inventa resposta com aparência de verdade), quando usar workflow (fluxo fixo de passos) em vez de agente (modelo que decide os passos), como você mediu a qualidade. Use as páginas de tópicos do roadmap como roteiro.
 6. **Faça simulações com outra pessoa**, uma vez por semana, e peça feedback sobre clareza.
 7. **Tenha um plano para travar.** Se não souber, diga o que sabe, o que tentaria e como descobriria.
 
@@ -53,7 +53,7 @@ Resposta, antes:
 
 Depois (números ilustrativos):
 
-> A busca por significado errava códigos de falha como "F0021", porque o código não tem significado para o modelo. Combinei com busca por palavra-chave. Medi com 30 perguntas de teste: o trecho certo entre os cinco primeiros subiu de 62% para 81%. Se o volume de manuais crescesse, eu reavaliaria o custo do reranking.
+> A busca por significado errava códigos de falha como "F0021" (código ilustrativo), porque o código não tem significado para o modelo. Combinei com busca por palavra-chave. Medi com 30 perguntas de teste: o trecho certo entre os cinco primeiros subiu de 62% para 81% (números ilustrativos, use os seus). Se o volume de manuais crescesse, eu reavaliaria o custo do reranking (reordenar os melhores resultados com um modelo extra).
 
 A segunda resposta mostra a causa, a decisão, a medida e a consciência dos limites.
 

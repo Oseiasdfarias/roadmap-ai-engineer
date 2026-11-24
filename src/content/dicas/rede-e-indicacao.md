@@ -3,7 +3,7 @@ titulo: "Rede e indicação"
 fase: 5
 grupo: "Empresas consolidadas"
 ordem: 3
-resumo: "Boa parte das vagas boas chega por indicação. Participe de comunidades e eventos, contribua com open source e aprenda a pedir uma indicação sem constranger quem indica nem a si mesmo."
+resumo: "Indicação pode abrir portas em empresas consolidadas. Participe de comunidades e eventos, contribua com open source e aprenda a pedir uma indicação sem constranger quem indica nem a si mesmo."
 relacionados:
   - "design-de-sistemas-com-llm"
   - "onde-buscar-vagas"
@@ -28,7 +28,7 @@ Rede é o conjunto de pessoas que conhecem o seu trabalho e podem falar bem dele
 
 ## Por que importa
 
-Em empresas consolidadas, a concorrência por vagas é alta e muitas posições são preenchidas por indicação antes ou durante a divulgação. Não há número exato para isso, e varia por empresa. Mas uma pessoa que conhece você pode confirmar o que o currículo só afirma: que você entrega, aprende e trabalha bem com os outros.
+Em empresas consolidadas, a concorrência por vagas costuma ser alta, e muitas empresas têm programas de indicação. Não há número confiável de quantas vagas saem assim, e varia por empresa. Uma pessoa que conhece você pode confirmar o que o currículo só afirma: que você entrega, aprende e trabalha bem com os outros.
 
 Indicação não substitui o processo seletivo. Ela abre a porta, e você ainda precisa passar nas etapas.
 

@@ -12,9 +12,9 @@ stack:
   - "Streamlit ou interface web"
 criterios:
   - "Vários manuais públicos indexados com metadados de fabricante, modelo, seção e página"
-  - "Toda resposta cita manual e página"
+  - "Toda resposta cita manual e página, e diz \"não encontrei\" quando o trecho não existe"
   - "Filtro por equipamento funciona"
-  - "Métricas de recuperação (recall@k e MRR) estão no README"
+  - "As métricas de recuperação (recall@k e MRR) estão no README, medidas num conjunto de perguntas com o trecho certo marcado"
   - "A interface funciona bem no celular"
 referencias:
   - titulo: "pgvector: busca vetorial no PostgreSQL"
@@ -44,7 +44,7 @@ Use manuais públicos de equipamentos industriais, como inversores de frequênci
 
 ## Arquitetura
 
-Há dois fluxos. Na indexação, o sistema lê cada PDF, divide o texto por seção (chunking, ou corte do texto em trechos), guarda os metadados (fabricante, modelo, seção, página) e gera os embeddings, vetores que representam o significado. Na consulta, aplica o filtro por equipamento, roda a busca híbrida (por significado e por palavra-chave), reordena os melhores resultados com um modelo de reranking e envia ao LLM só os trechos finais, com a instrução de citar manual e página.
+Há dois fluxos. Na indexação, o sistema lê cada PDF, divide o texto por seção (chunking, ou corte do texto em trechos), guarda os metadados (fabricante, modelo, seção, página) e gera os embeddings, vetores que representam o significado. Na consulta, aplica o filtro por equipamento, roda a busca híbrida (por significado e por palavra-chave), reordena os melhores resultados com um modelo de reranking e envia ao LLM só os trechos finais, com a instrução de citar manual e página. Se quiser que a citação venha estruturada, a API do Claude tem um recurso próprio de citações (veja a referência Citations). Se os trechos perderem contexto ao serem cortados, o artigo Contextual Retrieval, da Anthropic, descreve como acrescentar uma frase de contexto a cada trecho antes de indexar.
 
 A busca por significado sozinha erra códigos de falha e nomes de peça, que não têm significado próprio. A busca por palavra-chave resolve esse caso. Veja os tópicos RAG, Busca híbrida e reranking e Embeddings.
 
@@ -67,7 +67,7 @@ Python, FastAPI, PostgreSQL com pgvector (vetores e full-text search no mesmo ba
 - O problema e uma captura de tela da interface no celular.
 - Quais manuais foram indexados e a licença de cada um.
 - Diagrama dos dois fluxos.
-- Tabela de métricas: recall@5 e MRR com busca vetorial, com busca híbrida e com reranking.
+- Tabela de métricas (recall@5 é a fração das perguntas em que o trecho certo está entre os cinco primeiros; MRR, o inverso médio da posição do trecho certo): recall@5 e MRR com busca vetorial, com busca híbrida e com reranking.
 - Três perguntas em que o sistema errou e o que você concluiu de cada uma.
 - Como reindexar um manual novo.
 - Limitações, como tabelas e figuras dentro dos PDFs.

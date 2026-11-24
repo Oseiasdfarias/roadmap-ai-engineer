@@ -17,10 +17,10 @@ referencias:
     tipo: "Docs"
     idioma: "en"
     gratuito: true
-  - titulo: "Documentação do Python em português"
-    url: "https://docs.python.org/pt-br/3/tutorial/"
+  - titulo: "Documentação do Python (tutorial em inglês)"
+    url: "https://docs.python.org/3/tutorial/"
     tipo: "Docs"
-    idioma: "pt"
+    idioma: "en"
     gratuito: true
 revisado: "2026-11-24"
 rascunho: false
@@ -38,17 +38,18 @@ Muitas vagas, principalmente em empresas maiores, também pedem inglês. Mas a l
 
 ## Passo a passo
 
-1. **Escolha uma fonte fixa**, como a documentação do Claude, do Python ou do FastAPI. Ler sempre a mesma fonte reduz o vocabulário novo a cada dia.
+1. **Escolha uma fonte fixa**, como a documentação do Claude (introdução da API) ou o tutorial de Python em inglês, ambos nas referências. Ler sempre a mesma fonte reduz o vocabulário novo a cada dia.
 2. **Defina uma meta mensurável.** Por exemplo, 20 minutos por dia ou uma página de documentação por dia, cinco dias por semana.
 3. **Leia primeiro sem traduzir.** Marque as palavras que você não entendeu e só consulte depois de terminar o parágrafo, para tentar entender pelo contexto.
 4. **Mantenha um vocabulário próprio.** Uma planilha ou caderno com a palavra, a frase em que apareceu e o significado. Revise na semana seguinte.
 5. **Assista a vídeos técnicos em inglês**, primeiro com legenda em inglês, depois sem legenda.
 6. **Escreva em inglês o que é curto**: nomes de commits, comentários de código e, quando se sentir pronto, o README dos projetos.
-7. **Reveja a meta todo mês.** Se ficou fácil, troque a fonte por algo mais difícil, como um artigo de pesquisa.
+7. **Complete com o BBC Learning English** se o obstáculo for o inglês geral e não o técnico: ele ajuda com vocabulário e escuta do dia a dia.
+8. **Reveja a meta todo mês.** Se ficou fácil, troque a fonte por algo mais difícil, como um artigo de pesquisa.
 
 ## Exemplo
 
-Trecho de documentação:
+Frase de exemplo, escrita para este exercício no estilo da documentação (paráfrase, não citação):
 
 > The model has no memory between requests, so you must send the full conversation history each time.
 

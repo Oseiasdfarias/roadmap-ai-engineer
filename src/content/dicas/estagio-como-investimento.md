@@ -3,15 +3,15 @@ titulo: "Estágio como investimento"
 fase: 2
 grupo: "Estágio"
 ordem: 4
-resumo: "Nesta fase o salário não é a meta: você compra experiência em equipe, código revisado e prazos. Saiba o que extrair do estágio e como pedir feedback para acelerar o próximo passo."
+resumo: "Nesta fase o salário não é a meta: você compra experiência em equipe, código revisado e prazos. Saiba o que exigir da vaga, o que extrair do estágio e como pedir feedback para acelerar o próximo passo."
 relacionados:
   - "candidatura-com-foco"
   - "entrevista-comportamental"
 referencias:
-  - titulo: "Tech Interview Handbook: Resume"
-    url: "https://www.techinterviewhandbook.org/resume/"
-    tipo: "Artigo"
-    idioma: "en"
+  - titulo: "CIEE: portal de estágio"
+    url: "https://portal.ciee.org.br/"
+    tipo: "Vagas"
+    idioma: "pt"
     gratuito: true
   - titulo: "Gupy: currículo para estágio"
     url: "https://www.gupy.io/blog-do-emprego/curriculo-para-estagio"
@@ -24,24 +24,26 @@ rascunho: false
 
 ## O que é
 
-Estágio é um período curto de trabalho em equipe, acompanhado e com compromisso de aprendizagem. Na sua trajetória até AI Engineering, ele é um investimento: a bolsa existe, mas o valor principal é a experiência que você leva dele. Neste estágio você aprende como uma equipe trabalha, e isso nenhum curso ensina por inteiro.
+Estágio é um período de trabalho em equipe, acompanhado, com compromisso de aprendizagem. Na sua trajetória até AI Engineering, ele é um investimento: além da bolsa, você leva a experiência de trabalhar com outras pessoas, que nenhum curso ensina por inteiro.
+
+Estágio tem regras próprias, previstas na Lei do Estágio (Lei 11.788/2008). Esta dica não é aconselhamento jurídico: leia o seu contrato e, na dúvida, pergunte à coordenação de estágios da sua faculdade ou a uma entidade como o CIEE (veja as referências).
 
 ## Por que importa
 
-O que muitas vagas júnior pedem, na prática, é experiência em equipe: código revisado por outras pessoas, testes, entrega no prazo e comunicação. Um projeto pessoal mostra que você sabe construir. O estágio mostra que você sabe construir com outras pessoas, e isso entra no currículo como experiência de verdade.
+Muitas vagas júnior pedem experiência em equipe: código revisado por outras pessoas, testes, entrega no prazo e comunicação. Um projeto pessoal mostra que você sabe construir. O estágio mostra que você constrói com outras pessoas, e isso entra no currículo como experiência.
 
-Olhar só para o valor da bolsa pode levar a recusar uma vaga que ensinaria muito, ou a aceitar uma que não ensina nada. Compare as vagas pelo que você aprenderia.
+Por isso, nesta fase, vale comparar vagas pelo que você aprenderia, e não só pelo valor da bolsa. Mas aprender não é desculpa para aceitar qualquer condição.
 
 ## Passo a passo
 
-1. **Avalie a vaga pelo aprendizado.** Pergunte quem vai acompanhar você, que tecnologias usa e se há revisão de código. Se possível, confirme a carga horária e o contrato antes de aceitar.
-2. **Combine metas nas primeiras semanas.** Pergunte à pessoa que orienta o que é um bom resultado em 30, 60 e 90 dias.
-3. **Peça tarefas pequenas e entregue.** Uma entrega completa vale mais que muitas tarefas começadas.
-4. **Aprenda o fluxo da equipe**: abrir pull request, receber revisão, rodar testes, publicar. Pergunte quando não souber, depois de tentar por um tempo razoável.
-5. **Documente o que você fez.** Mantenha uma lista com data, problema, o que você fez e o resultado. Ela vira linhas de currículo (veja as referências sobre currículo ao fim da página) e histórias de entrevista (veja Entrevista comportamental).
-6. **Peça feedback a cada duas ou três semanas**, de forma específica.
-7. **Cuide da rede.** Colegas e líderes são futuras indicações. Mantenha contato ao fim do estágio.
-8. **Respeite o sigilo.** Não leve dados, código ou documentos da empresa para o seu portfólio.
+1. **Confirme o mínimo antes de aceitar.** Estes itens são requisitos, não negociação: bolsa-auxílio combinada por escrito, carga horária compatível com as aulas, termo de compromisso assinado por você, pela empresa e pela faculdade, e matrícula ativa. Se a vaga pede que você trabalhe em tempo integral como se fosse funcionário, sem registro e com bolsa baixa, desconfie: isso é trabalho disfarçado de estágio.
+2. **Avalie o aprendizado.** Pergunte quem vai acompanhar você, que tecnologias usa e se há revisão de código.
+3. **Combine metas nas primeiras semanas.** Pergunte o que é um bom resultado em 30, 60 e 90 dias.
+4. **Peça tarefas pequenas e entregue.** Uma entrega completa vale mais que muitas tarefas começadas.
+5. **Aprenda o fluxo da equipe**: abrir pull request (pedido de revisão de código), receber revisão, rodar testes, publicar.
+6. **Documente o que você fez.** Mantenha uma lista com data, problema, o que fez e o resultado. Ela vira linhas de currículo (veja o artigo da Gupy sobre currículo de estágio) e histórias de entrevista (veja Entrevista comportamental).
+7. **Peça feedback a cada duas ou três semanas**, de forma específica.
+8. **Cuide da rede e respeite o sigilo.** Mantenha contato com colegas ao fim do estágio, mas não leve dados, código ou documentos da empresa para o seu portfólio.
 
 ## Exemplo
 
@@ -57,27 +59,27 @@ Linha de currículo, antes:
 
 > Estagiário de TI. Ajudei a equipe em tarefas diversas.
 
-Depois (ilustrativo):
+Depois (números ilustrativos, use os seus):
 
-> Estagiário de desenvolvimento. Implementei 6 endpoints de uma API interna em Python e escrevi testes automatizados para eles. Reduzi de 4 para 1 o número de rodadas de revisão por pull request ao longo de dois meses.
+> Estagiário de desenvolvimento. Implementei 6 endpoints de uma API interna em Python, escrevi 18 testes automatizados para eles e corrigi 4 bugs reportados pelo suporte.
 
-A segunda linha diz o que você fez e o que mudou, sem revelar dados da empresa.
+A segunda linha conta o que você entregou, usando medidas que um estagiário controla, sem revelar dados da empresa.
 
 ## Erros comuns
 
-- **Escolher só pela bolsa.** Você pode perder a vaga que mais ensina.
+- **Escolher só pela bolsa**, ou ignorá-la por completo. Aprendizado e condições justas andam juntos.
+- **Aceitar sem termo de compromisso** ou com carga horária que impede você de assistir às aulas.
 - **Esperar que alguém diga o que fazer.** Proponha, pergunte e traga soluções.
 - **Ter medo de perguntar.** Pergunte depois de tentar, descrevendo o que você já fez.
 - **Não registrar o que você entrega.** Em seis meses você esquece, e o currículo fica vago.
 - **Expor código ou dados da empresa.** Isso pode quebrar contrato e fechar portas.
-- **Sumir ao fim do contrato.** Peça feedback final e mantenha contato.
 
 ## Checklist
 
-- A vaga foi avaliada pelo aprendizado, não só pela bolsa.
+- Bolsa-auxílio, carga horária e papel da faculdade confirmados por escrito.
+- Termo de compromisso assinado pelas três partes antes de começar.
 - Metas de 30, 60 e 90 dias combinadas.
 - Lista de entregas atualizada toda semana.
 - Pedido de feedback marcado a cada poucas semanas.
 - Nenhum dado ou código da empresa fora dos canais permitidos.
-- Pelo menos duas pessoas da equipe adicionadas no LinkedIn ao fim.
-- Linhas de currículo escritas com problema e resultado.
+- Linhas de currículo escritas com o que você entregou.

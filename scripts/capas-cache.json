@@ -856,5 +856,17 @@
   "dominio": "linkedin.com",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.linkedin.com",
   "img": null
+ },
+ "https://docs.python.org/3/tutorial/": {
+  "tipo": "Docs",
+  "dominio": "docs.python.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.python.org",
+  "img": "https://docs.python.org/3.15/_images/social_previews/summary_tutorial_index_4224eef5.png"
+ },
+ "https://modelcontextprotocol.io/docs/concepts/transports": {
+  "tipo": "Docs",
+  "dominio": "modelcontextprotocol.io",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=modelcontextprotocol.io",
+  "img": "https://raw.githubusercontent.com/modelcontextprotocol/docs/2eb6171ddbfeefde349dc3b8d5e2b87414c26250/images/og-image.png"
  }
 }

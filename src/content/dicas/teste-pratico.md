@@ -29,17 +29,17 @@ rascunho: false
 
 ## O que é
 
-O teste prático (também chamado de desafio técnico ou take-home) é uma tarefa que a empresa envia para você resolver em casa, em um prazo de alguns dias. Costuma pedir uma pequena API, um script de dados ou uma funcionalidade com LLM, e a entrega vai num repositório com instruções para rodar.
+O teste prático (também chamado de desafio técnico ou take-home) é uma tarefa que a empresa envia para você resolver em casa, em um prazo de alguns dias. Costuma pedir uma pequena API (a documentação do FastAPI nas referências ajuda a montar uma), um script de dados ou uma funcionalidade com LLM, e a entrega vai num repositório com instruções para rodar.
 
 ## Por que importa
 
-Para muita gente, é a etapa que mais pesa, porque mostra como você trabalha sozinho: lê o escopo, organiza o código, testa e comunica. Quem avalia costuma ler o README primeiro, rodar o projeto e só depois olhar o código. Um projeto que não roda ou não explica o que fez raramente é lido até o fim.
+Pode ser uma etapa de peso, porque mostra como você trabalha sozinho: lê o escopo, organiza o código, testa e comunica. Em geral quem avalia começa pelo README, tenta rodar o projeto e só depois olha o código. Um projeto que não roda ou não explica o que fez tende a perder pontos logo no início.
 
 Os critérios variam por empresa, e uma boa entrega não garante avanço. Mas as falhas mais comuns são evitáveis.
 
 ## Passo a passo
 
-1. **Leia o enunciado duas vezes e liste os requisitos**, marcando o que é obrigatório e o que é opcional. Se algo estiver ambíguo, pergunte e registre a resposta.
+1. **Leia o enunciado duas vezes e liste os requisitos**, marcando o que é obrigatório e o que é opcional. Se algo estiver ambíguo, pergunte e registre a resposta. Pergunte também se o uso de assistentes de IA é permitido e como declarar esse uso; siga a regra da empresa.
 2. **Combine o prazo e planeje o tempo.** Reserve a primeira parte para o essencial funcionando e o fim para README e testes.
 3. **Faça o mínimo que atende ao escopo, bem feito.** Evite acrescentar funcionalidades que ninguém pediu.
 4. **Organize o código**: nomes claros, funções pequenas e uma estrutura de pastas simples.
@@ -58,14 +58,14 @@ Trecho de README, antes:
 Depois:
 
 > ## Como rodar
-> 1. `python -m venv .venv && source .venv/bin/activate`
+> 1. `python -m venv .venv`, e ative com `source .venv/bin/activate` (Linux e macOS) ou `.venv\Scripts\activate` (Windows)
 > 2. `pip install -r requirements.txt`
 > 3. `uvicorn app.main:app --reload`
 > 4. Testes: `pytest`
 >
 > ## Decisões
 > - Usei SQLite para simplificar a instalação. Em produção, trocaria por PostgreSQL.
-> - Não implementei autenticação por falta de tempo. Seria o próximo passo.
+> - Autenticação ficou fora do escopo do enunciado. Seria o próximo passo.
 
 A segunda versão tem comandos exatos, mostra que você conhece os limites da entrega e diz o que faria depois, em vez de esconder.
 

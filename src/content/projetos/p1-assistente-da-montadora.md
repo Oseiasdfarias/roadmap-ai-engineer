@@ -38,7 +38,8 @@ criterios:
   - "Cada camada tem uma tag no Git (v1 a v7)"
   - "Respostas do RAG citam a fonte"
   - "Dados pessoais são mascarados antes do LLM e dos logs"
-  - "Há um relatório de evals com o golden set"
+  - "Há um relatório de evals com o golden set (30 a 50 perguntas)"
+  - "Ao menos cinco testes de prompt injection estão documentados, com o que passou e o que falhou"
 referencias:
   - titulo: "Microsoft Presidio"
     url: "https://microsoft.github.io/presidio/"
@@ -72,17 +73,17 @@ Este é o projeto principal do Nível 3 e cresce em camadas. Cada camada pratica
 
 ## Arquitetura
 
-O cliente fala com uma API em FastAPI. Antes de qualquer chamada ao modelo, uma camada de privacidade mascara CPF, telefone, placa e nome. Em seguida, o assistente decide se responde com o manual (RAG, busca em PostgreSQL com pgvector) ou se chama uma ferramenta (consultar preço, agendar revisão). A saída é validada com Pydantic e passa por guardrails antes de chegar ao cliente. Cada conversa é rastreada no Langfuse.
+O cliente fala com uma API em FastAPI. Antes de qualquer chamada ao modelo, uma camada de privacidade troca CPF, telefone, placa e nome por tokens, como `<CPF_1>` (pseudonimização reversível). O mapa token-valor fica só no servidor: o modelo vê apenas os tokens, e uma ferramenta que precisa do dado real, como agendar revisão, recebe o token e o resolve no servidor, sem passar o valor pelo LLM nem pelo log. Em seguida, o assistente decide se responde com o manual (RAG, ou geração aumentada por recuperação: buscar trechos nos documentos e entregá-los ao LLM, aqui em PostgreSQL com pgvector) ou se chama uma ferramenta (consultar preço, agendar revisão). A saída é validada com Pydantic e passa por guardrails antes de chegar ao cliente. Cada conversa é rastreada no Langfuse.
 
-Use dados públicos ou sintéticos: um manual do proprietário de domínio público ou escrito por você, um catálogo e clientes inventados. Nunca use dados reais de uma empresa ou de pessoas.
+Use apenas dados sintéticos: um manual do proprietário escrito por você (ou gerado e revisado por você), um catálogo inventado e clientes fictícios. Manuais reais de montadoras têm direitos autorais, então não os publique no repositório; se quiser testar com um, confira a licença como no P2. Nunca use dados reais de uma empresa ou de pessoas.
 
 ## Versões em camadas
 
-Cada camada é uma versão marcada com tag no Git, de `v1` a `v7`, para que quem olhar o repositório veja a evolução. A cada versão, refaça os testes das anteriores. Os tópicos de estudo de cada uma são: API e parâmetros (v1), saída estruturada e tool use (v2), RAG (v3), LGPD e dados pessoais (v4), guardrails e prompt injection (v5), evals (v6), observabilidade e custo e latência (v7).
+Cada camada é uma versão marcada com tag no Git, de `v1` a `v7`, para que quem olhar o repositório veja a evolução. A cada versão, refaça os testes das anteriores. Evals são testes que medem a qualidade das respostas, e o golden set é o conjunto fixo de perguntas com resposta esperada. Os tópicos de estudo de cada uma são: API e parâmetros (v1), saída estruturada e tool use (v2), RAG (v3), LGPD e dados pessoais (v4), guardrails e prompt injection (v5), evals (v6), observabilidade e custo e latência (v7).
 
 ## Stack sugerida
 
-Python, FastAPI, PostgreSQL com pgvector, Pydantic, Presidio para detectar dados pessoais, Langfuse para rastreamento e Docker Compose para subir tudo com um comando. Veja os tópicos Postgres e pgvector, Docker local e Observabilidade.
+Python, FastAPI, PostgreSQL com pgvector, Pydantic, Presidio para detectar dados pessoais, Langfuse (rastreia cada chamada ao LLM, com custo e latência; roda local) e Docker Compose para subir tudo com um comando. Veja os tópicos Postgres e pgvector, Docker local e Observabilidade.
 
 ## Critérios de aceite
 

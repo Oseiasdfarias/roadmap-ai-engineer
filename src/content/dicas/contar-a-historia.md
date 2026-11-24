@@ -40,7 +40,7 @@ Também ajuda a manter a verdade. Um roteiro com medida e aprendizado não preci
 3. **Procure o fio condutor.** O que as histórias têm em comum? Por exemplo: "gosto de transformar processos manuais em sistemas medidos". Use isso como frase de abertura.
 4. **Escreva o parágrafo de transição.** Duas ou três frases dizendo de onde você veio, o que fez em IA e para onde quer ir.
 5. **Adapte ao formato**: uma linha no currículo, um parágrafo no LinkedIn, dois minutos na entrevista, uma seção no README.
-6. **Confira os números.** Cada medida precisa ter fonte (README, painel, relatório de evals).
+6. **Confira os números.** Cada medida precisa ter fonte (README, painel, relatório de evals, que são testes de qualidade das respostas; o texto de Hamel Husain nas referências explica como começar).
 7. **Ensaie em voz alta** e peça para alguém interromper com "por quê?" e "como você mediu?".
 
 ## Exemplo
@@ -51,11 +51,11 @@ Resposta à pergunta "Por que você está migrando para IA?", antes:
 
 Depois (números ilustrativos):
 
-> Nos dois últimos anos trabalhei com backend em Python. Na empresa, propus um assistente que sugere respostas para o suporte, com citação do artigo de origem. Medi o resultado em 100 tickets: o tempo médio caiu de 30 para 12 minutos, e 70% das sugestões foram aceitas. Aprendi que a parte difícil não era o modelo, e sim os dados e a avaliação. Quero trabalhar com isso em tempo integral.
+> Nos dois últimos anos trabalhei com backend em Python. Na empresa, propus um assistente que sugere respostas para o suporte, com citação do artigo de origem. No piloto com a equipe, medi o tempo por ticket e a taxa de sugestões aceitas, e o tempo médio caiu de 30 para 20 minutos. Aprendi que a parte difícil não era o modelo, e sim os dados e a avaliação. Quero trabalhar com isso em tempo integral.
 
-Mesmo texto reduzido a uma linha de currículo:
+Mesmo texto reduzido a uma linha de currículo (números ilustrativos, use os seus; o piloto é modesto de propósito):
 
-> Criei assistente de suporte com LLM e busca em base de conhecimento (Python, PostgreSQL). Reduzi o tempo médio por ticket de 30 para 12 minutos em 100 tickets de teste.
+> Criei piloto de assistente de suporte com LLM (modelo de linguagem) e busca em base de conhecimento (Python, PostgreSQL). Reduzi o tempo médio por ticket de 30 para 20 minutos no piloto com a equipe.
 
 A história tem problema, decisão, medida e aprendizado, e serve em formatos diferentes.
 

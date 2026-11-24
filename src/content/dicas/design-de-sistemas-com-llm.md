@@ -33,19 +33,19 @@ Design de sistemas (system design) é a entrevista em que você desenha, num qua
 
 ## Por que importa
 
-Em empresas maduras em IA, esta costuma ser a etapa para vagas pleno e sênior. Mostra se você enxerga o sistema inteiro: além do modelo, existem dados, custo, latência, segurança, avaliação e operação. Quem construiu e colocou no ar um projeto como o PF, com custo medido e evals, já tem material para responder.
+Em algumas empresas, esta etapa aparece para vagas pleno e sênior. Mostra se você enxerga o sistema inteiro: além do modelo, existem dados, custo, latência, segurança, avaliação e operação. Quem construiu e colocou no ar um projeto como o PF, com custo medido e evals, já tem material para responder.
 
-O formato varia por empresa, e esta dica é um roteiro de estudo.
+O formato varia por empresa, e esta dica é um roteiro de estudo. O artigo de Chip Huyen nas referências descreve os componentes de uma plataforma de IA generativa (gateway, RAG, guardrails, observabilidade) e serve de mapa para o desenho.
 
 ## Passo a passo
 
 1. **Esclareça os requisitos.** Quantos usuários? Qual latência aceitável? Que dados? Quem erra, e o que acontece quando erra? Escreva as respostas no quadro.
 2. **Faça uma estimativa simples.** Número de requisições por dia, tokens por requisição e custo por mês. Números aproximados bastam, e você deve dizer que são estimativas.
-3. **Desenhe o fluxo principal.** Entrada do usuário, recuperação de contexto (RAG), chamada ao modelo, validação da saída e resposta.
+3. **Desenhe o fluxo principal.** Entrada do usuário, recuperação de contexto (RAG, buscar trechos relevantes nos documentos), chamada ao LLM (o modelo de linguagem), validação da saída e resposta.
 4. **Escolha entre workflow e agente.** Justifique pelo problema. Comece pelo mais simples e explique quando um agente compensa (veja o artigo da Anthropic).
 5. **Trate custo e latência.** Modelo menor para tarefas simples, cache de prompt, streaming, filas para tarefas longas.
-6. **Trate segurança.** Prompt injection, dados pessoais, privilégio mínimo para ferramentas, aprovação humana em ações irreversíveis (veja a lista da OWASP).
-7. **Trate avaliação e operação.** Golden set, evals no CI, rastreamento de cada resposta, alertas e plano para quando o provedor do modelo falhar.
+6. **Trate segurança.** Prompt injection (instrução maliciosa escondida em texto que o modelo lê), dados pessoais, privilégio mínimo para ferramentas, aprovação humana em ações irreversíveis (veja a lista da OWASP).
+7. **Trate avaliação e operação.** Golden set (perguntas com resposta esperada), evals (testes de qualidade) no CI, rastreamento de cada resposta, alertas e plano para quando o provedor do modelo falhar.
 8. **Treine em voz alta**, com cronômetro de 45 minutos, e peça a alguém para questionar cada caixa do desenho.
 
 ## Exemplo
@@ -58,7 +58,7 @@ Resposta, antes:
 
 Depois (números ilustrativos):
 
-> Primeiro mediria onde o custo está: no RAG, 70% dos tokens vêm dos trechos recuperados. Reduziria de 10 para 5 trechos com reranking e mediria se a qualidade se mantém no golden set. Usaria um modelo menor para classificar a intenção e o maior só para a resposta final. Colocaria cache de prompt para o texto fixo. Por fim, acompanharia o custo por conversa no rastreamento, com alerta quando passar do limite.
+> Primeiro mediria onde o custo está: no RAG, 70% dos tokens vêm dos trechos recuperados. Reduziria de 10 para 5 trechos com reranking (reordenação dos resultados por um modelo extra) e mediria se a qualidade se mantém no golden set. Usaria um modelo menor para classificar a intenção e o maior só para a resposta final. Colocaria cache de prompt (reaproveitar o trecho fixo do prompt entre chamadas) para o texto fixo. Por fim, acompanharia o custo por conversa no rastreamento, com alerta quando passar do limite.
 
 A segunda resposta mede antes de mudar, tem mais de uma alavanca e fecha com monitoramento.
 

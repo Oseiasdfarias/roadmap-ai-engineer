@@ -24,11 +24,11 @@ rascunho: false
 
 ## O que é
 
-O LinkedIn é a rede social profissional mais usada no Brasil para divulgar vagas e para quem recruta procurar pessoas. O seu perfil é uma página pública com título, resumo, experiência, projetos e habilidades. Montar o perfil cedo, antes de precisar dele, deixa o histórico pronto no dia em que você aplicar para a primeira vaga.
+O LinkedIn é uma rede social profissional onde empresas divulgam vagas e quem recruta procura pessoas. O seu perfil é uma página pública com título, resumo, experiência, projetos e habilidades. Montar o perfil cedo, antes de precisar dele, deixa o histórico pronto no dia em que você aplicar para a primeira vaga.
 
 ## Por que importa
 
-Quem recruta busca candidatos digitando termos como "Python", "estágio" ou "dados" e lê o perfil em segundos. O LinkedIn também é a porta de entrada das candidaturas feitas pelo LinkedIn Vagas. Um perfil sem título claro ou sem projetos some nessas buscas, mesmo que você tenha estudado bastante.
+Quem recruta costuma buscar candidatos por termos como "Python", "estágio" ou "dados" e tende a ler o perfil rápido. O LinkedIn também é onde você se candidata pelo LinkedIn Vagas. Um perfil sem título claro ou sem projetos tem menos chance de aparecer nessas buscas, mesmo que você tenha estudado bastante. O artigo da Alura nas referências detalha cada seção do perfil.
 
 Perfil bom não garante resposta. Ele evita que a falta de informação pese contra você.
 
@@ -51,9 +51,9 @@ Título, antes:
 
 Depois:
 
-> Estudante de tecnologia | Python, SQL e APIs | Construindo projetos de IA generativa (RAG) no GitHub
+> Estudante de tecnologia | Aprendendo Python e SQL | Primeiro projeto no GitHub em andamento
 
-(RAG, geração aumentada por recuperação, é uma técnica para responder sobre documentos próprios.)
+Nesta fase, o título diz o que você está aprendendo, sem fingir experiência que ainda não tem.
 
 Frase da seção "Sobre", antes:
 
@@ -61,9 +61,9 @@ Frase da seção "Sobre", antes:
 
 Depois:
 
-> Estou terminando um projeto que responde perguntas sobre manuais técnicos públicos e cita a página de origem. Procuro estágio em desenvolvimento ou dados, onde eu possa trabalhar com Python e SQL.
+> Estou aprendendo Python e SQL e construindo, no GitHub, um programa que organiza uma planilha de gastos (ainda em andamento, com README e testes simples). Quero estágio em desenvolvimento ou dados, para aprender trabalhando em equipe.
 
-A segunda versão diz o que você fez e o que procura, e usa termos que as buscas encontram.
+A segunda versão diz o que você está fazendo, é honesta sobre o estágio do projeto e usa termos que as buscas encontram. Quando o primeiro projeto de IA estiver pronto, troque o texto.
 
 ## Erros comuns
 
