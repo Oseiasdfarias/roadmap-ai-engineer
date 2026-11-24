@@ -1,0 +1,19 @@
+---
+import RefCard from './RefCard.astro';
+
+interface Props {
+  refs: { titulo: string; url: string; tipo: string }[];
+}
+const { refs } = Astro.props;
+---
+{refs.length > 0 && (
+  <ul class="refs">
+    {refs.map((r) => (
+      <li><RefCard ref={r} /></li>
+    ))}
+  </ul>
+)}
+
+<style>
+  .refs { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+</style>

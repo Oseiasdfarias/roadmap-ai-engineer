@@ -1,0 +1,290 @@
+{
+ "https://academy.openai.com/pages/codex-9t6874": {
+  "tipo": "Curso",
+  "dominio": "academy.openai.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=academy.openai.com",
+  "img": "https://d2xo500swnpgl1.cloudfront.net/uploads/oaiacademy/Frame-2147225821-3e255df0-da37-4412-9e6f-d87d21ac9139-1780328972002.jpeg"
+ },
+ "https://anthropic.skilljar.com/": {
+  "tipo": "Curso",
+  "dominio": "anthropic.skilljar.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=anthropic.skilljar.com",
+  "img": "https://cc.sj-cdn.net/instructor/4hdejjwplbrm-anthropic/catalog_page/33z62i4zzunao/tile-image.1750175621.png"
+ },
+ "https://aws.amazon.com/pt/training/course-descriptions/cloud-practitioner-essentials/": {
+  "tipo": "Curso",
+  "dominio": "aws.amazon.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=aws.amazon.com",
+  "img": "https://a0.awsstatic.com/libra-css/images/logos/aws_logo_smile_1200x630.png"
+ },
+ "https://cs50.harvard.edu/python/": {
+  "tipo": "Curso",
+  "dominio": "cs50.harvard.edu",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=cs50.harvard.edu",
+  "img": "https://prod-discovery.edx-cdn.org/media/course/image/2cc794d0-316d-42f7-bbfd-25c34e4cd5df-033e46d516c0.small.png"
+ },
+ "https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html": {
+  "tipo": "Docs",
+  "dominio": "docs.aws.amazon.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.aws.amazon.com",
+  "img": null
+ },
+ "https://docs.docker.com/get-started/": {
+  "tipo": "Docs",
+  "dominio": "docs.docker.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.docker.com",
+  "img": "https://docs.docker.com/learn/thumbnail.png"
+ },
+ "https://docs.github.com/pt/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme": {
+  "tipo": "Docs",
+  "dominio": "docs.github.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.github.com",
+  "img": "https://docs.github.com/assets/cb-345/images/social-cards/account-and-profile.png"
+ },
+ "https://docs.github.com/pt/actions": {
+  "tipo": "Docs",
+  "dominio": "docs.github.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.github.com",
+  "img": "https://docs.github.com/assets/cb-345/images/social-cards/actions.png"
+ },
+ "https://docs.python.org/pt-br/3/tutorial/classes.html": {
+  "tipo": "Docs",
+  "dominio": "docs.python.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.python.org",
+  "img": null
+ },
+ "https://docs.streamlit.io/": {
+  "tipo": "Docs",
+  "dominio": "docs.streamlit.io",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.streamlit.io",
+  "img": "https://docs.streamlit.io/sharing-image-facebook.jpg"
+ },
+ "https://fastapi.tiangolo.com/pt/tutorial/": {
+  "tipo": "Docs",
+  "dominio": "fastapi.tiangolo.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=fastapi.tiangolo.com",
+  "img": null
+ },
+ "https://genai.owasp.org/llm-top-10/": {
+  "tipo": "Docs",
+  "dominio": "genai.owasp.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=genai.owasp.org",
+  "img": null
+ },
+ "https://git-scm.com/book/pt-br/v2": {
+  "tipo": "Docs",
+  "dominio": "git-scm.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=git-scm.com",
+  "img": null
+ },
+ "https://github.com/anthropics/courses": {
+  "tipo": "Repositório",
+  "dominio": "github.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=github.com",
+  "img": "https://opengraph.githubassets.com/1/anthropics/courses"
+ },
+ "https://github.com/pgvector/pgvector": {
+  "tipo": "Repositório",
+  "dominio": "github.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=github.com",
+  "img": "https://opengraph.githubassets.com/1/pgvector/pgvector"
+ },
+ "https://hamel.dev/blog/posts/evals/": {
+  "tipo": "Artigo",
+  "dominio": "hamel.dev",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=hamel.dev",
+  "img": "https://hamel.dev/blog/posts/evals/images/diagram-cover.png"
+ },
+ "https://huyenchip.com/2024/07/25/genai-platform.html": {
+  "tipo": "Artigo",
+  "dominio": "huyenchip.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=huyenchip.com",
+  "img": "https://huyenchip.com/assets/pics/genai-platform/1-genai-platform.png"
+ },
+ "https://jalammar.github.io/illustrated-transformer/": {
+  "tipo": "Artigo",
+  "dominio": "jalammar.github.io",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=jalammar.github.io",
+  "img": null
+ },
+ "https://langchain-ai.github.io/langgraph/": {
+  "tipo": "Artigo",
+  "dominio": "langchain-ai.github.io",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=langchain-ai.github.io",
+  "img": null
+ },
+ "https://langfuse.com/docs": {
+  "tipo": "Docs",
+  "dominio": "langfuse.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=langfuse.com",
+  "img": "https://langfuse.com/api/og?title=Open+Source+AI+Engineering+Platform&description=Langfuse+is+an+open-source+AI+engineering+platform+%28GitHub%29+that+helps+teams+collaboratively+debug%2C+analyze%2C+and+iterate+on+their+AI+agent+applications.+All+platform+features+are+natively+integrated+to+accelerate+the+development+workflow.&section=Docs"
+ },
+ "https://microsoft.github.io/presidio/": {
+  "tipo": "Docs",
+  "dominio": "microsoft.github.io",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=microsoft.github.io",
+  "img": null
+ },
+ "https://modelcontextprotocol.io/": {
+  "tipo": "Docs",
+  "dominio": "modelcontextprotocol.io",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=modelcontextprotocol.io",
+  "img": "https://raw.githubusercontent.com/modelcontextprotocol/docs/2eb6171ddbfeefde349dc3b8d5e2b87414c26250/images/og-image.png"
+ },
+ "https://platform.claude.com/docs/en/api/messages": {
+  "tipo": "Docs",
+  "dominio": "platform.claude.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
+  "img": "https://platform.claude.com/web-api/og/api/en/messages?design-rev=5"
+ },
+ "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview": {
+  "tipo": "Docs",
+  "dominio": "platform.claude.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
+  "img": "https://platform.claude.com/web-api/og/docs/en/build-with-claude/prompt-engineering/overview?design-rev=5"
+ },
+ "https://platform.claude.com/docs/en/build-with-claude/token-counting": {
+  "tipo": "Docs",
+  "dominio": "platform.claude.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
+  "img": "https://platform.claude.com/web-api/og/docs/en/build-with-claude/token-counting?design-rev=5"
+ },
+ "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations": {
+  "tipo": "Docs",
+  "dominio": "platform.claude.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
+  "img": "https://platform.claude.com/web-api/og/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations?design-rev=5"
+ },
+ "https://portal.ciee.org.br/": {
+  "tipo": "Vagas",
+  "dominio": "portal.ciee.org.br",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=portal.ciee.org.br",
+  "img": "https://portal.ciee.org.br/wp-content/uploads/2025/04/thumb_home-portal-sempre-2025-V3.jpg"
+ },
+ "https://portal.gupy.io/": {
+  "tipo": "Vagas",
+  "dominio": "portal.gupy.io",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=portal.gupy.io",
+  "img": "https://portal.gupy.io/images/acesse-portal-de-vagas.png"
+ },
+ "https://python.org.br/": {
+  "tipo": "Artigo",
+  "dominio": "python.org.br",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=python.org.br",
+  "img": null
+ },
+ "https://simonwillison.net/series/prompt-injection/": {
+  "tipo": "Artigo",
+  "dominio": "simonwillison.net",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=simonwillison.net",
+  "img": null
+ },
+ "https://skills.github.com/": {
+  "tipo": "Curso",
+  "dominio": "skills.github.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=skills.github.com",
+  "img": null
+ },
+ "https://sqlbolt.com/": {
+  "tipo": "Curso",
+  "dominio": "sqlbolt.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=sqlbolt.com",
+  "img": null
+ },
+ "https://www.alura.com.br/artigos/como-fazer-um-perfil-de-alta-qualidade-no-linkedin-e-atrair-mais-trabalhos": {
+  "tipo": "Artigo",
+  "dominio": "alura.com.br",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.alura.com.br",
+  "img": "https://cdn-wcsm.alura.com.br/2025/04/como-fazer-um-perfil-de-alta-qualidade-no-linkedin-e-atrair-mais-trabalhos.jpg"
+ },
+ "https://www.anthropic.com/research/building-effective-agents": {
+  "tipo": "Artigo",
+  "dominio": "anthropic.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.anthropic.com",
+  "img": "https://assets.claude.com/62ee69f140ef8421d0390ef6f39e411d785b0be1.jpg"
+ },
+ "https://www.anthropic.com/research/contextual-retrieval": {
+  "tipo": "Artigo",
+  "dominio": "anthropic.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.anthropic.com",
+  "img": "https://assets.claude.com/e81642c949d3942e998d6ba331abf4074dd5050a.jpg"
+ },
+ "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents": {
+  "tipo": "Artigo",
+  "dominio": "anthropic.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.anthropic.com",
+  "img": "https://assets.claude.com/f30ee982765baffdf3c90058e6e9bafe9f1e5542.jpg"
+ },
+ "https://www.bbc.co.uk/learningenglish/": {
+  "tipo": "Curso",
+  "dominio": "bbc.co.uk",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.bbc.co.uk",
+  "img": null
+ },
+ "https://www.cursoemvideo.com/": {
+  "tipo": "Curso",
+  "dominio": "cursoemvideo.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.cursoemvideo.com",
+  "img": "https://www.cursoemvideo.com/wp-content/uploads/2019/08/guana6.png"
+ },
+ "https://www.gov.br/anpd/pt-br/assuntos/regulacao/agenda-regulatoria-1": {
+  "tipo": "Artigo",
+  "dominio": "gov.br",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.gov.br",
+  "img": null
+ },
+ "https://www.linkedin.com/jobs/": {
+  "tipo": "Vagas",
+  "dominio": "linkedin.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.linkedin.com",
+  "img": null
+ },
+ "https://www.nube.com.br/": {
+  "tipo": "Vagas",
+  "dominio": "nube.com.br",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.nube.com.br",
+  "img": "https://www.nube.com.br/media/imagens/nube_imagem_destaque_600x315.jpg"
+ },
+ "https://www.pinecone.io/learn/chunking-strategies/": {
+  "tipo": "Artigo",
+  "dominio": "pinecone.io",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.pinecone.io",
+  "img": "https://www.pinecone.io/api/og/?title=Chunking%20Strategies%20for%20LLM%20Applications&category=Learn"
+ },
+ "https://www.promptfoo.dev/docs/intro/": {
+  "tipo": "Docs",
+  "dominio": "promptfoo.dev",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.promptfoo.dev",
+  "img": "https://www.promptfoo.dev/img/og/docs-intro--og.png"
+ },
+ "https://www.techinterviewhandbook.org/behavioral-interview/": {
+  "tipo": "Artigo",
+  "dominio": "techinterviewhandbook.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.techinterviewhandbook.org",
+  "img": "https://www.techinterviewhandbook.org/social/behavioral-interview.png"
+ },
+ "https://www.techinterviewhandbook.org/coding-interview-prep/": {
+  "tipo": "Artigo",
+  "dominio": "techinterviewhandbook.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.techinterviewhandbook.org",
+  "img": "https://www.techinterviewhandbook.org/social/coding-interview-prep.png"
+ },
+ "https://www.techinterviewhandbook.org/resume/": {
+  "tipo": "Artigo",
+  "dominio": "techinterviewhandbook.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.techinterviewhandbook.org",
+  "img": "https://www.techinterviewhandbook.org/social/resume.png"
+ },
+ "https://www.youtube.com/watch?v=wjZofJX0v4M": {
+  "tipo": "Vídeo",
+  "dominio": "youtube.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.youtube.com",
+  "img": "https://i.ytimg.com/vi/wjZofJX0v4M/hqdefault.jpg"
+ },
+ "https://www.youtube.com/watch?v=zjkBMFhNj_g": {
+  "tipo": "Vídeo",
+  "dominio": "youtube.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.youtube.com",
+  "img": "https://i.ytimg.com/vi/zjkBMFhNj_g/hqdefault.jpg"
+ }
+}

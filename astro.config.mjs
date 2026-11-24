@@ -6,5 +6,5 @@ export default defineConfig({
   base: '/roadmap-ai-engineer',
   trailingSlash: 'always',
   output: 'static',
-  integrations: [sitemap()],
+  integrations: [sitemap({ filter: (pagina) => !pagina.includes('/dev/') })],
 });

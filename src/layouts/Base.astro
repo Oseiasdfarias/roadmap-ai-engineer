@@ -17,8 +17,10 @@ interface Props {
   descricao: string;
   rotaOg?: string;
   semCabecalho?: boolean;
+  /** Página interna: sem indexação por buscadores nem pelo Pagefind. */
+  noindex?: boolean;
 }
-const { titulo, descricao, rotaOg, semCabecalho = false } = Astro.props;
+const { titulo, descricao, rotaOg, semCabecalho = false, noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, SITE.url).href;
 const imagemOg = rotaOg ? new URL(url('/og/' + rotaOg + '.png'), SITE.url).href : undefined;
 ---
@@ -29,6 +31,7 @@ const imagemOg = rotaOg ? new URL(url('/og/' + rotaOg + '.png'), SITE.url).href 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{titulo}</title>
     <meta name="description" content={descricao} />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
     <meta property="og:type" content="website" />
@@ -51,7 +54,7 @@ const imagemOg = rotaOg ? new URL(url('/og/' + rotaOg + '.png'), SITE.url).href 
   </head>
   <body>
     {!semCabecalho && <Header />}
-    <main><slot /></main>
+    <main data-pagefind-ignore={noindex ? '' : undefined}><slot /></main>
     <Footer />
   </body>
 </html>

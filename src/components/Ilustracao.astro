@@ -1,0 +1,22 @@
+---
+const svgs = import.meta.glob<string>('../assets/ilustracoes/*.svg', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+});
+
+interface Props {
+  nome: string;
+  class?: string;
+}
+const { nome, class: extra } = Astro.props;
+const bruto = svgs[`../assets/ilustracoes/${nome}.svg`];
+if (!bruto) throw new Error(`Ilustração desconhecida: ${nome}`);
+const classe = ['ilus-svg', extra].filter(Boolean).join(' ');
+const svg = bruto.trim().replace('<svg ', `<svg class="${classe}" aria-hidden="true" focusable="false" `);
+---
+<Fragment set:html={svg} />
+
+<style is:global>
+  .ilus-svg { display: block; width: 100%; height: auto; }
+</style>

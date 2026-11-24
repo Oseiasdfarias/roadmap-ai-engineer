@@ -1,0 +1,14 @@
+---
+import Base from '../../layouts/Base.astro';
+import RefCard from '../../components/RefCard.astro';
+import Ilustracao from '../../components/Ilustracao.astro';
+---
+<Base titulo="Teste de RefCard" descricao="Página interna de teste dos cards de referência." noindex>
+  <div id="invalida" style="max-width: 640px; margin: 2rem auto; padding: 0 1rem;">
+    <RefCard
+      ref={{ titulo: 'Capa inválida', url: 'https://example.invalid/x.png', tipo: 'Artigo' }}
+      capa="https://example.invalid/x.png"
+    />
+    <div style="max-width: 240px; margin-top: 1rem;"><Ilustracao nome="icone-1" /></div>
+  </div>
+</Base>

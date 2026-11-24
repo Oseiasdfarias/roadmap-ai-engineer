@@ -10,6 +10,8 @@
     "check": "astro check",
     "test": "vitest run",
     "test:e2e": "playwright test",
+    "ilustracoes": "python3 -I scripts/exportar-ilustracoes.py",
+    "capas": "python3 -I scripts/capas.py",
     "lint:conteudo": "node scripts/lint-conteudo.mjs"
   },
   "dependencies": {
