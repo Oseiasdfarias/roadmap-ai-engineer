@@ -772,5 +772,11 @@
   "dominio": "promptfoo.dev",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.promptfoo.dev",
   "img": "https://www.promptfoo.dev/img/og/docs-integrations-ci-cd--og.png"
+ },
+ "https://docs.aws.amazon.com/apprunner/latest/dg/apprunner-availability-change.html": {
+  "tipo": "Docs",
+  "dominio": "docs.aws.amazon.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.aws.amazon.com",
+  "img": null
  }
 }

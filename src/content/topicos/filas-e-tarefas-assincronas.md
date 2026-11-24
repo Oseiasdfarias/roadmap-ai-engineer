@@ -65,6 +65,8 @@ def processar(job_id: str, doc_id: str):
 
 Se `indexar` falhar, a transação desfaz o registro e a nova tentativa reprocessa. Se o trabalho incluir uma chamada externa que não entra na transação, torne-a idempotente também (por exemplo, com uma chave de idempotência).
 
+**SQS na prática.** O visibility timeout esconde a mensagem dos outros workers enquanto um a processa; ele deve ser maior que o tempo de processamento, ou a mensagem reaparece e vira duplicata. As filas FIFO oferecem ordem e deduplicação por um intervalo curto, mas não dispensam a idempotência.
+
 **Reprocessamento e falhas.** Defina quantas vezes tentar e, depois disso, mande a mensagem para uma dead-letter queue (fila de mensagens não entregues), onde fica guardada para você inspecionar. Também permita reprocessar um trabalho manualmente, sem criar duplicatas, o que a idempotência garante.
 
 ## Na prática

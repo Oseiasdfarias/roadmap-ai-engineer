@@ -41,7 +41,7 @@ Provedores de LLM têm limites de requisições e de tokens por minuto, e às ve
 
 **Limite por usuário.** Dê a cada usuário (ou chave de API) um número máximo de pedidos por janela de tempo. Uma técnica comum é o token bucket (balde de fichas): cada pedido gasta uma ficha, e as fichas voltam num ritmo fixo. O contador fica num armazenamento compartilhado, como o Redis, para valer em várias instâncias da API. Ao exceder, devolva o código HTTP 429 (Too Many Requests) com o tempo de espera. Limite também o tamanho da entrada e dos tokens de saída, porque o custo vem deles.
 
-**Erro 429 do provedor.** Significa que você excedeu o limite do provedor. Leia o cabeçalho que indica quanto esperar (a API do Claude traz o `retry-after`) e respeite. Erros 5xx e tempo esgotado também são temporários.
+**Erro 429 do provedor.** Significa que você excedeu o limite do provedor. Leia o cabeçalho que indica quanto esperar (a API do Claude traz o `retry-after`) e respeite. Erros 5xx, o 529 (serviço sobrecarregado, na API da Anthropic) e o tempo esgotado também são temporários.
 
 **Retry com backoff.** Tentar de novo imediatamente piora a sobrecarga. Use espera crescente (backoff exponencial) mais um valor aleatório (jitter), para que muitos clientes não tentem todos juntos, e um número máximo de tentativas. Só repita o que é temporário e idempotente (repetir tem o mesmo efeito que fazer uma vez; veja tool-use). Os SDKs dos provedores já têm retries automáticos, então confira o que o seu faz antes de somar outro por cima.
 
@@ -55,7 +55,7 @@ def com_retry(chamada, tentativas=4):
     for i in range(tentativas):
         try:
             return chamada()
-        except ErroTemporario:  # 429, 5xx, timeout (sua classe)
+        except ErroTemporario:  # 429, 5xx, 529, timeout (sua classe)
             if i == tentativas - 1:
                 raise
             time.sleep(min(2 ** i, 20) + random.random())  # backoff + jitter

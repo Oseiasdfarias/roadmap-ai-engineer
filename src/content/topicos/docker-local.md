@@ -52,20 +52,23 @@ services:
     image: pgvector/pgvector:pg17
     env_file: .env
     volumes: [dados:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
   api:
     build: .
     ports: ["8000:8000"]
     env_file: .env
-    depends_on: [db]
+    depends_on:
+      db: {condition: service_healthy}
 volumes:
   dados:
 ```
 
-O `.env` fica fora do Git (`.gitignore`) e traz `POSTGRES_PASSWORD` e `DATABASE_URL`. Dentro da rede do compose, a API acessa o banco pelo nome `db`, não por `localhost`. A etiqueta da imagem (`pg17`) muda com o tempo; confira as versões disponíveis no Docker Hub.
+O `.env` fica fora do Git (`.gitignore`) e traz `POSTGRES_PASSWORD` e `DATABASE_URL`. Dentro da rede do compose, a API acessa o banco pelo nome `db`, não por `localhost`. O `healthcheck` roda `pg_isready`, e o `service_healthy` faz a API esperar o banco aceitar conexões, não só o container subir. A etiqueta da imagem (`pg17`) muda com o tempo; confira as versões disponíveis no Docker Hub.
 
 Comandos essenciais: `docker compose up -d` sobe tudo em segundo plano, `docker compose logs -f api` acompanha os logs e `docker compose down` para e remove os containers. O volume continua, então os dados do banco permanecem; só `docker compose down -v` apaga o volume e os dados.
 
-**Langfuse.** Para observabilidade local (veja observabilidade), o Langfuse oferece uma configuração `docker compose` própria, com vários serviços. Baixe o arquivo da documentação oficial e suba como um segundo compose, separado do seu, e a API envia os rastros a ele. Isso consome memória e disco, então confira o que sua máquina suporta.
+**Langfuse.** Para observabilidade local (veja observabilidade), o Langfuse oferece uma configuração `docker compose` própria, com vários serviços. Baixe o arquivo da documentação oficial e suba como um segundo compose, separado do seu, e a API envia os rastros a ele pelo endereço e pelas chaves de projeto do Langfuse, configurados no `.env` (de dentro de um container, `localhost` não alcança o outro compose; use `host.docker.internal` ou uma rede compartilhada). Isso consome memória e disco, então confira o que sua máquina suporta.
 
 Imagens e volumes ocupam disco. Veja o uso com `docker system df` antes de baixar imagens grandes e apague o que não usa mais, sem tocar nos volumes que guardam dados que você quer manter.
 

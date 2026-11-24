@@ -49,30 +49,31 @@ Um workflow tem **gatilhos** (evento que o dispara, como abrir um pull request),
 
 ```yaml
 on: pull_request
+permissions:
+  contents: read
 jobs:
   testes:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
+        with: {python-version: "3.12"}
       - run: pip install -r requirements.txt
       - run: pytest
-      - run: npx promptfoo@latest eval
+      - run: npx promptfoo@0.126.0 eval
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
 ```
 
 O arquivo fica em `.github/workflows/`. As versões das actions (`@v4`, `@v5`) mudam; confira as atuais no repositório de cada uma. O `eval` termina com erro quando uma verificação falha, e o pull request fica marcado como reprovado.
 
-**Segredos.** A chave do modelo vem de `secrets`, cadastrados nas configurações do repositório, nunca escritos no YAML. Pull requests de forks não recebem segredos, por segurança.
+**Segredos.** A chave do modelo vem de `secrets`, cadastrados nas configurações do repositório, nunca escritos no YAML. Pull requests de forks não recebem segredos, por segurança, então os evals que precisam da chave falham ou são pulados nelas; trate isso no workflow. O `permissions: contents: read` limita o token do workflow ao mínimo, e a versão fixa do Promptfoo evita que uma atualização mude o resultado sem aviso (confira a versão atual com `npm view promptfoo version`).
 
 **Custo dos evals.** Evals chamam o modelo e custam. Rode os casos principais a cada pull request e o conjunto grande em horários programados, ou ao fundir na branch principal.
 
 **Build e deploy.** Um segundo workflow, disparado ao fundir na `main`, constrói a imagem Docker, a publica num registro de imagens e atualiza o serviço na nuvem. As credenciais da nuvem também ficam em segredos, com permissão mínima (veja seguranca-e-custo-na-nuvem).
 
-**Ambientes.** O GitHub permite ambientes (staging e production), cada um com seus segredos e, se quiser, uma aprovação manual antes do deploy em produção. Uma sequência comum: pull request roda testes e evals; fusão na `main` faz deploy no staging; aprovação leva à produção.
+**Ambientes.** O GitHub permite ambientes (staging e production), cada um com seus segredos e, se quiser, uma aprovação manual antes do deploy em produção (revisores obrigatórios dependem da visibilidade do repositório e do plano). Uma sequência comum: pull request roda testes e evals; fusão na `main` faz deploy no staging; aprovação leva à produção.
 
 ## Na prática
 

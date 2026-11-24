@@ -51,7 +51,7 @@ Três ideias bastam para começar:
 - **Validação com Pydantic.** Você descreve o corpo da requisição como uma classe com tipos. Dados inválidos viram erro 422 com a explicação, sem código extra seu.
 - **Documentação automática.** Ao subir o servidor, a página `/docs` lista as rotas e permite testá-las no navegador.
 
-Respostas de LLM demoram alguns segundos. Com streaming, o servidor envia o texto em pedaços conforme o modelo gera, e o usuário vê as primeiras palavras logo. Os SDKs dos provedores têm modo de streaming (veja a documentação do que você usa), e o FastAPI repassa os pedaços com `StreamingResponse`:
+Respostas de LLM demoram alguns segundos. Com streaming, o servidor envia o texto em pedaços conforme o modelo gera, e o usuário vê as primeiras palavras logo. Os SDKs dos provedores têm modo de streaming (veja a documentação do que você usa), e o FastAPI repassa os pedaços com `StreamingResponse`. Para interfaces de chat, o formato mais usual é o SSE (server-sent events, `media_type="text/event-stream"`), que o navegador sabe ler; o exemplo usa texto simples para ficar curto:
 
 ```python
 from fastapi import FastAPI

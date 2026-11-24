@@ -40,7 +40,7 @@ rascunho: false
 
 ## Por que importa para um AI Engineer
 
-Projetos de IA usam chaves de API de modelos, bancos com dados de clientes e máquinas que podem ser caras. Uma chave publicada no GitHub é encontrada por robôs em minutos e usada por terceiros por conta da sua conta. Uma instância esquecida ligada cobra todo mês. E dados pessoais mal protegidos trazem o problema da LGPD (veja lgpd-e-dados-pessoais). Faça o curso de fundamentos (veja aws-fundamentos) antes de configurar: sem ele, você não percebe o que o agente de programação sugeriu de errado.
+Projetos de IA usam chaves de API de modelos, bancos com dados de clientes e máquinas que podem ser caras. Uma chave publicada no GitHub pode ser achada e usada por terceiros, e a fatura chega na sua conta. Uma instância esquecida ligada cobra todo mês. E dados pessoais mal protegidos trazem o problema da LGPD (veja lgpd-e-dados-pessoais). Faça o curso de fundamentos (veja aws-fundamentos) antes de configurar: sem ele, você não percebe o que o agente de programação sugeriu de errado.
 
 ## Como funciona
 
@@ -49,7 +49,9 @@ Siga esta lista, na ordem, antes de criar qualquer recurso:
 - **MFA na conta raiz.** A conta raiz é a do e-mail do cadastro e tem poder total. Ative autenticação em dois fatores (MFA) nela.
 - **Não use a raiz no dia a dia e não crie chave de acesso para ela.** Crie um usuário do IAM (ou acesso por IAM Identity Center) para trabalhar, também com MFA.
 - **IAM com privilégio mínimo.** Dê a cada usuário, ou a cada aplicação, só as permissões de que precisa. Evite a permissão de administrador total para tudo. Se precisar de acesso a um bucket S3, conceda só a esse bucket.
-- **Alerta no AWS Budgets.** Crie um orçamento com valor baixo, por exemplo US$ 5 (valor ilustrativo), com aviso por e-mail. O Budgets avisa, mas não bloqueia o gasto, e os dados têm atraso; olhe o painel de custos com frequência.
+- **Funções (roles) no lugar de chaves fixas.** Para uma aplicação rodando na AWS, use uma função do IAM, que entrega credenciais temporárias, em vez de chaves de acesso de longa duração.
+- **Bloqueio de acesso público no S3.** Mantenha o Block Public Access ligado e abra um bucket só com motivo claro.
+- **Alerta no AWS Budgets.** Crie um orçamento com valor baixo, por exemplo US$ 5 (valor ilustrativo), com aviso por e-mail. O Budgets avisa, mas não bloqueia o gasto, e os dados têm atraso; olhe o painel de custos com frequência. O Cost Explorer mostra o gasto por serviço e o Cost Anomaly Detection avisa de gastos fora do padrão.
 - **Entenda o nível gratuito.** O que está incluído e por quanto tempo mudam; leia a regra vigente na página da AWS.
 - **Segredos fora do código.** Chave de API e senha ficam em variável de ambiente ou num gerenciador de segredos. O `.env` entra no `.gitignore`. Se uma chave vazar, revogue e gere outra na hora; apagar o commit não basta.
 - **Desligue e apague ao terminar.** Cada estudo termina com a remoção dos recursos criados.
@@ -62,7 +64,7 @@ aws ec2 describe-instances --region sa-east-1 \
   --query "Reservations[].Instances[].[InstanceId,State.Name]" --output text
 ```
 
-Repita para as regiões que você usou (a `sa-east-1` é a de São Paulo). O painel de custos também agrupa o gasto por serviço, e mostra o que está gerando cobrança.
+Repita para as regiões que você usou (a `sa-east-1` é a de São Paulo). Cobranças escondidas costumam vir de bancos RDS ligados, volumes EBS de máquinas já apagadas, Elastic IPs sem uso, load balancers e NAT gateways.
 
 ## Na prática
 
@@ -73,7 +75,6 @@ No PF: Agente Completo, os segredos (chave do modelo, senha do banco) entram com
 - **Chave no repositório.** Mesmo num repositório privado, ela acaba exposta quando você o abre ou compartilha.
 - **Permissão total "para facilitar".** Se a chave vazar, o estrago é total.
 - **Orçamento sem e-mail confirmado** ou valor alto demais para fazer sentido.
-- **Banco aberto para a internet** por regra de rede permissiva demais.
 - **Fazer só o que o agente sugeriu**, sem entender a permissão ou o custo da configuração.
 
 ## Como estudar

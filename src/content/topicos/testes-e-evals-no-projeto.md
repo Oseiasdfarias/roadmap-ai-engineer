@@ -80,7 +80,7 @@ tests:
 
 Troque `NOME-DO-MODELO` pelo identificador atual do provedor; o formato muda, então siga a documentação. Rode com `npx promptfoo eval`. Quando alguma verificação falha, o comando termina com erro, e é isso que faz o CI barrar a mudança.
 
-Como a saída varia, defina um limite: por exemplo, passar se pelo menos 90% dos casos acertarem. Os 90% são ilustrativos; escolha o seu pelo risco do caso de uso.
+Como a saída varia, defina um limite: por exemplo, passar se pelo menos 90% dos casos acertarem. Os 90% são ilustrativos; escolha o seu pelo risco do caso de uso. Esse limite não é automático: configure-o (o Promptfoo tem um limiar de aprovação nas opções de avaliação; veja a documentação), senão uma falha isolada pode não barrar nada, ou barrar tudo.
 
 ## Na prática
 

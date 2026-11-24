@@ -32,6 +32,11 @@ referencias:
     tipo: "Docs"
     idioma: "en"
     gratuito: true
+  - titulo: "AWS App Runner: mudança de disponibilidade"
+    url: "https://docs.aws.amazon.com/apprunner/latest/dg/apprunner-availability-change.html"
+    tipo: "Docs"
+    idioma: "en"
+    gratuito: true
 revisado: "2026-11-24"
 rascunho: false
 ---
@@ -58,15 +63,15 @@ Um projeto só vira prova de trabalho quando está no ar, com link funcionando. 
 - **EC2**: máquinas virtuais. Flexível, mas você mantém o sistema.
 - **S3**: armazenamento de arquivos (objetos), como PDFs de manuais e backups.
 - **RDS**: banco de dados gerenciado, inclusive PostgreSQL; a AWS cuida de backups e atualizações.
-- **ECS e App Runner**: executam containers. O App Runner é mais simples; o ECS oferece mais controle.
+- **ECS (com Fargate)**: executa containers sem você gerenciar servidores. Há também o ECS Express Mode, que simplifica a publicação de uma API. O App Runner, antes a opção mais simples, deixou de aceitar novos clientes; a AWS recomenda o ECS Express Mode (veja a referência).
 - **Lambda**: executa uma função sob demanda, sem servidor para manter. Bom para tarefas curtas.
 - **Bedrock**: acesso a modelos de linguagem, de vários provedores, dentro da AWS. A disponibilidade de modelos e regiões varia; consulte a documentação.
 
-Um fluxo típico de um projeto: a imagem Docker da API roda no ECS ou App Runner, o Postgres fica no RDS, os documentos no S3 e as permissões entre eles ficam no IAM.
+Um fluxo típico de um projeto: a imagem Docker da API roda no ECS (Fargate), o Postgres fica no RDS, os documentos no S3 e as permissões entre eles ficam no IAM.
 
 ## Na prática
 
-No PF: Agente Completo, você leva a API (FastAPI), o banco com pgvector e o pipeline de CI/CD para a AWS, com alerta de custo (veja seguranca-e-custo-na-nuvem e ci-cd). Para o P1: Assistente da Montadora ou o P2: RAG de Manuais Técnicos, o Bedrock é uma alternativa de acesso aos modelos quando a empresa já usa AWS e exige que os dados fiquem nela. Para decidir entre ECS, App Runner e Lambda, compare esforço de operação e custo estimado do seu caso, sem presumir.
+No PF: Agente Completo, você leva a API (FastAPI), o banco com pgvector e o pipeline de CI/CD para a AWS, com alerta de custo (veja seguranca-e-custo-na-nuvem e ci-cd). Para o P1: Assistente da Montadora ou o P2: RAG de Manuais Técnicos, o Bedrock é uma alternativa de acesso aos modelos quando a empresa já usa AWS e exige que os dados fiquem nela. Para decidir entre ECS e Lambda, compare esforço de operação e custo estimado do seu caso, sem presumir.
 
 ## Erros comuns
 
@@ -81,7 +86,7 @@ No PF: Agente Completo, você leva a API (FastAPI), o banco com pgvector e o pip
 1. Faça o AWS Cloud Practitioner Essentials, no Skill Builder, gratuito (1 a 2 semanas).
 2. Leia a página do modelo de responsabilidade compartilhada (1 hora).
 3. Siga o checklist de seguranca-e-custo-na-nuvem antes de criar qualquer recurso (meio dia).
-4. Suba uma imagem Docker simples no App Runner ou ECS e apague tudo ao final (2 a 3 dias).
+4. Suba uma imagem Docker simples no ECS (Fargate ou Express Mode) e apague tudo ao final (2 a 3 dias).
 5. Leia o que é o Bedrock e liste quais modelos estão na sua região (meio dia).
 
 ## Como mostrar

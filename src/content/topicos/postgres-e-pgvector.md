@@ -66,11 +66,28 @@ O operador `<=>` é a distância de cosseno (existem também `<->`, distância e
 
 Com um filtro como o `WHERE` acima, o índice aproximado pode devolver menos linhas do que o `LIMIT` pede. As versões recentes do pgvector trazem opções para isso; confira o README da sua versão.
 
-**Busca híbrida.** Vetores acham sentido, mas falham em códigos exatos como "E-21". O Postgres tem full-text search (busca por palavras): `to_tsvector('portuguese', texto)` com `plainto_tsquery`. Você roda as duas buscas e funde as listas (por exemplo, somando `1/(60 + posição)` de cada uma, a fusão por ranking recíproco). Ver busca-hibrida-e-reranking.
+```sql
+CREATE INDEX ON chunks USING ivfflat (embedding vector_cosine_ops) WITH (lists = 100);
+SET hnsw.ef_search = 100;   -- mais candidatos: mais recall, mais lento
+SET ivfflat.probes = 10;    -- mais grupos visitados: idem
+```
+
+Os valores (`lists`, `ef_search`, `probes`) são ilustrativos; ajuste medindo o recall. Crie um dos dois índices por coluna, não os dois.
+
+**Busca híbrida.** Vetores acham sentido, mas falham em códigos exatos como "E-21". O Postgres tem full-text search (busca por palavras): `to_tsvector('portuguese', texto)` com `plainto_tsquery`. Com um índice GIN e uma consulta:
+
+```sql
+CREATE INDEX ON chunks USING gin (to_tsvector('portuguese', texto));
+SELECT id FROM chunks
+WHERE to_tsvector('portuguese', texto) @@ plainto_tsquery('portuguese', 'erro E-21')
+LIMIT 20;
+```
+
+Você roda as duas buscas e funde as listas (por exemplo, somando `1/(60 + posição)` de cada uma, a fusão por ranking recíproco). Ver busca-hibrida-e-reranking.
 
 ## Na prática
 
-No P2: RAG de Manuais Técnicos, a tabela de chunks guarda manual, seção e página como colunas, para filtrar a busca e montar a citação. No P1: Assistente da Montadora e no PF: Agente Completo, o mesmo banco guarda também o histórico de conversas e os registros do projeto. Em desenvolvimento, uma imagem Docker com pgvector sobe o banco em um comando (veja docker-local).
+No P2: RAG de Manuais Técnicos, a tabela de chunks guarda manual, seção e página como colunas, para filtrar a busca e montar a citação. No P1: Assistente da Montadora e no PF: Agente Completo, o mesmo banco guarda também o histórico de conversas e os registros do projeto.
 
 ## Erros comuns
 
@@ -78,7 +95,6 @@ No P2: RAG de Manuais Técnicos, a tabela de chunks guarda manual, seção e pá
 - **Misturar modelos de embeddings** na mesma coluna: as distâncias deixam de ter sentido.
 - **Criar IVFFlat com a tabela vazia.** O índice precisa dos dados para formar os grupos.
 - **Não medir o efeito do índice.** Compare a busca exata com a aproximada nas suas perguntas de teste (recall) antes de ajustar parâmetros.
-- **Esquecer o filtro de permissão.** Se há documentos restritos, filtre no SQL, não depois.
 
 ## Como estudar
 
