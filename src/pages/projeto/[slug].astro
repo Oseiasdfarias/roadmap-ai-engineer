@@ -1,0 +1,10 @@
+---
+import { getCollection } from 'astro:content';
+import Item from '../../layouts/Item.astro';
+
+export async function getStaticPaths() {
+  return (await getCollection('projetos')).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+---
+<Item entry={entry} tipo="projeto" />

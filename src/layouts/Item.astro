@@ -1,0 +1,128 @@
+---
+import { getEntry, render, type CollectionEntry } from 'astro:content';
+import { Check, Hammer } from '@lucide/astro';
+import Base from './Base.astro';
+import Ilustracao from '../components/Ilustracao.astro';
+import Migalha from '../components/Migalha.astro';
+import Refs from '../components/Refs.astro';
+import Selos from '../components/Selos.astro';
+import Sumario from '../components/Sumario.astro';
+import AnteriorProximo from '../components/AnteriorProximo.astro';
+import { idProgresso, rotaDe, vizinhos } from '../lib/conteudo';
+import { url } from '../lib/url';
+import '../styles/detalhe.css';
+import '../styles/prosa.css';
+
+type Entrada = CollectionEntry<'topicos'> | CollectionEntry<'dicas'> | CollectionEntry<'projetos'>;
+interface Props {
+  entry: Entrada;
+  tipo: 'topico' | 'dica' | 'projeto';
+}
+const { entry, tipo } = Astro.props;
+const d = entry.data;
+const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+const { Content, headings } = await render(entry as CollectionEntry<'topicos'>);
+
+const nivelOuFase = tipo === 'dica' ? 'fases' : 'niveis';
+const numero = tipo === 'dica' ? (d as CollectionEntry<'dicas'>['data']).fase : (d as CollectionEntry<'topicos'>['data']).nivel;
+const pai = (await getEntry(nivelOuFase, String(numero)))!;
+const rotuloPai =
+  tipo === 'dica' ? `Fase ${numero} · ${cap(pai.data.nome)}` : `Nível ${numero} · ${cap((pai.data as { curto: string }).curto)}`;
+const hrefPai = url(tipo === 'dica' ? `/fase/${numero}/` : `/nivel/${numero}/`);
+const rotuloTipo = { topico: 'Tópico', dica: 'Carreira', projeto: 'Projeto' }[tipo];
+const kick = tipo === 'projeto' ? `Projeto ${(d as CollectionEntry<'projetos'>['data']).codigo} · ${rotuloPai}` : `${rotuloTipo} · ${(d as { grupo: string }).grupo}`;
+
+const marcavel = tipo !== 'projeto';
+const id = marcavel ? idProgresso(entry as CollectionEntry<'topicos'>) : undefined;
+const { anterior, proximo } = await vizinhos(entry);
+const aoLado = (x?: Entrada) => x && { rotulo: x.data.titulo, href: rotaDe(x) };
+
+const relacionados = tipo === 'projeto' ? [] : await Promise.all(
+  ((d as { relacionados?: Array<{ id: string; collection: 'topicos' | 'dicas' }> }).relacionados ?? []).map(async (r) =>
+    getEntry(r.collection, r.id),
+  ),
+);
+const proj = tipo === 'projeto' ? (d as CollectionEntry<'projetos'>['data']) : undefined;
+const sumarioItens = [
+  ...(proj ? [{ slug: 'camadas', texto: 'Camadas do projeto' }, { slug: 'stack', texto: 'Stack' }, { slug: 'criterios', texto: 'Critérios do projeto' }] : []),
+  ...headings.filter((h) => h.depth === 2).map((h) => ({ slug: h.slug, texto: h.text })),
+  ...(d.referencias.length > 0 ? [{ slug: 'referencias', texto: 'Referências' }] : []),
+];
+---
+<Base titulo={`${d.titulo} | Roadmap AI Engineer`} descricao={d.resumo}>
+  <div class="item">
+    <Migalha itens={[{ rotulo: 'Mapa', href: url('/') }, { rotulo: rotuloPai, href: hrefPai }, { rotulo: d.titulo }]} />
+    <div class="panel">
+      <div class="item-grid">
+        <article>
+          <header class="item-cab">
+            <div>
+              <div class="kick">{kick}</div>
+              <h1>{d.titulo}</h1>
+            </div>
+            {tipo === 'topico' && <div class="icone"><Ilustracao nome={`icone-${numero}`} /></div>}
+            {tipo === 'dica' && <div class="fase-num" aria-hidden="true">{numero}</div>}
+            {tipo === 'projeto' && <div class="icone"><Ilustracao nome="projetos" /></div>}
+          </header>
+          <p class="resumo">{d.resumo}</p>
+          {tipo !== 'projeto' && <Selos tempo={(d as { tempo?: string }).tempo} ferramentas={(d as { ferramentas?: string[] }).ferramentas} />}
+          {id && (
+            <div class="acoes">
+              <button type="button" class="marcar" data-alternar={id} data-progresso-id={id} aria-pressed="false">
+                <Check aria-hidden="true" stroke-width={3} />
+                <span class="nao">Marcar como estudado</span>
+                <span class="ja">Estudado</span>
+              </button>
+            </div>
+          )}
+          {d.rascunho && (
+            <p class="aviso" role="note"><Hammer aria-hidden="true" /> <span><b>Resumo completo em construção.</b> Enquanto isso, as referências abaixo cobrem o assunto.</span></p>
+          )}
+
+          {proj && (
+            <>
+              {proj.camadas && proj.camadas.length > 0 && (
+                <section class="bloco">
+                  <h2 id="camadas" class="bloco-h">Camadas do projeto</h2>
+                  <ol class="camadas">
+                    {proj.camadas.map((c) => (
+                      <li><span class="v">{c.versao}</span><div><b>{c.nome}</b><span>{c.entrega}</span></div></li>
+                    ))}
+                  </ol>
+                </section>
+              )}
+              <section class="bloco">
+                <h2 id="stack" class="bloco-h">Stack</h2>
+                <ul class="chips">{proj.stack.map((s) => <li>{s}</li>)}</ul>
+              </section>
+              <section class="bloco">
+                <h2 id="criterios" class="bloco-h">Critérios do projeto</h2>
+                <ul class="criterios">{proj.criterios.map((c) => <li>{c}</li>)}</ul>
+              </section>
+            </>
+          )}
+
+          <div class="prosa"><Content /></div>
+
+          {d.referencias.length > 0 && (
+            <section class="bloco">
+              <h2 id="referencias" class="bloco-h">Referências</h2>
+              <Refs refs={d.referencias} />
+            </section>
+          )}
+
+          {relacionados.length > 0 && (
+            <section class="bloco relacionados">
+              <h2 class="bloco-h">Relacionados</h2>
+              <ul>
+                {relacionados.filter((r) => r != null).map((r) => <li><a href={rotaDe(r!)}>{r!.data.titulo}</a></li>)}
+              </ul>
+            </section>
+          )}
+        </article>
+        <aside class="item-lado"><Sumario itens={sumarioItens} /></aside>
+      </div>
+    </div>
+    <AnteriorProximo anterior={aoLado(anterior)} proximo={aoLado(proximo)} />
+  </div>
+</Base>
