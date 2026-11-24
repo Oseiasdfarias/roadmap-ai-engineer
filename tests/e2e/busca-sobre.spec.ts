@@ -29,6 +29,7 @@ test('a página Sobre traz autor, canais, uso, licenças e link para as issues',
     await expect(main.getByRole('link', { name: canal, exact: true })).toBeVisible();
   }
   await expect(main.getByRole('heading', { name: 'Como usar este roadmap' })).toBeVisible();
+  await expect(main).toContainText('10 a 15 horas');
   await expect(main.getByText('MIT').first()).toBeVisible();
   await expect(main.getByText('CC BY 4.0').first()).toBeVisible();
   await expect(main.getByRole('link', { name: 'Sugerir correção' })).toHaveAttribute('href', /\/issues\/new\/choose$/);

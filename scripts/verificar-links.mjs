@@ -19,7 +19,7 @@ for (const colecao of ['topicos', 'dicas', 'projetos']) {
     const front = /^---\n([\s\S]*?)\n---/.exec(texto)?.[1] ?? '';
     const dados = parseYaml(front) ?? {};
     const achados = new Set((dados.referencias ?? []).map((r) => r.url));
-    for (const m of texto.matchAll(/\]\((https?:\/\/[^)\s]+)\)/g)) achados.add(m[1]);
+    for (const m of texto.matchAll(/\]\((https?:\/\/(?:[^()\s]|\([^()\s]*\))+)\)/g)) achados.add(m[1]);
     for (const u of achados) urls.set(u, [...(urls.get(u) ?? []), `${colecao}/${nome}`]);
   }
 }
@@ -37,6 +37,7 @@ async function checar(u) {
   try {
     let r = await tentar('HEAD');
     if (r.status >= 400) r = await tentar('GET'); // alguns servidores recusam HEAD
+    await r.body?.cancel();
     return r.status >= 200 && r.status < 400 ? null : `HTTP ${r.status}`;
   } catch (e) {
     return e.name === 'AbortError' ? 'tempo esgotado' : String(e.cause?.code ?? e.message);
