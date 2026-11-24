@@ -13,6 +13,7 @@ Depois copie o PDF gerado (`roadmap-ai-engineer.pdf`) para `public/pdf/roadmap-a
 Antes de publicar, confira que não há dados internos:
 
 ```
+pdftotext public/pdf/roadmap-ai-engineer.pdf - | grep -inEf scripts/pdf/termos-proibidos.txt
 ```
 
-A saída deve ser vazia.
+Os termos (nomes e referências pessoais que não devem aparecer) ficam num arquivo local não versionado, `scripts/pdf/termos-proibidos.txt`, uma expressão por linha. A saída deve ser vazia.
