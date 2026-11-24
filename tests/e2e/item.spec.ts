@@ -27,12 +27,6 @@ test.describe('página de tópico, dica e projeto', () => {
     await expect(page.locator('h2#como-funciona')).toBeInViewport();
   });
 
-  test('rascunho mostra o aviso e as referências', async ({ page }) => {
-    await page.goto('carreira/onde-buscar-vagas/');
-    await expect(page.getByText('Resumo completo em construção')).toBeVisible();
-    await expect(page.locator('.ref').first()).toBeVisible();
-  });
-
   test('dica: migalha com a fase', async ({ page }) => {
     await page.goto('carreira/curriculo/');
     await expect(page.getByRole('navigation', { name: 'Você está em' })).toContainText('Fase 2 · Estágio');

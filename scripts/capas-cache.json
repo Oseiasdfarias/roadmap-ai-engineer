@@ -778,5 +778,83 @@
   "dominio": "docs.aws.amazon.com",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.aws.amazon.com",
   "img": null
+ },
+ "https://capd.mit.edu/resources/interviewing/": {
+  "tipo": "Artigo",
+  "dominio": "capd.mit.edu",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=capd.mit.edu",
+  "img": "https://cdn.uconnectlabs.com/wp-content/themes/uConnect_MIT/images/default-og-image.png?v=4.744.1.001"
+ },
+ "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html": {
+  "tipo": "Docs",
+  "dominio": "docs.aws.amazon.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.aws.amazon.com",
+  "img": null
+ },
+ "https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/pinning-items-to-your-profile": {
+  "tipo": "Docs",
+  "dominio": "docs.github.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.github.com",
+  "img": "https://docs.github.com/assets/cb-345/images/social-cards/account-and-profile.png"
+ },
+ "https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes": {
+  "tipo": "Docs",
+  "dominio": "docs.github.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.github.com",
+  "img": "https://docs.github.com/assets/cb-345/images/social-cards/repositories.png"
+ },
+ "https://docs.pydantic.dev/latest/": {
+  "tipo": "Docs",
+  "dominio": "docs.pydantic.dev",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.pydantic.dev",
+  "img": "https://pydantic.dev/docs/og/validation/latest/get-started/index.png"
+ },
+ "https://docs.pytest.org/en/stable/getting-started.html": {
+  "tipo": "Docs",
+  "dominio": "docs.pytest.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.pytest.org",
+  "img": null
+ },
+ "https://github.com/modelcontextprotocol/python-sdk": {
+  "tipo": "Repositório",
+  "dominio": "github.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=github.com",
+  "img": "https://opengraph.githubassets.com/1/modelcontextprotocol/python-sdk"
+ },
+ "https://opensource.guide/how-to-contribute/": {
+  "tipo": "Artigo",
+  "dominio": "opensource.guide",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=opensource.guide",
+  "img": "https://opensource.guide/assets/images/cards/contribute.png"
+ },
+ "https://platform.claude.com/docs/en/intro": {
+  "tipo": "Docs",
+  "dominio": "platform.claude.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
+  "img": "https://platform.claude.com/web-api/og/docs/en/intro?design-rev=5"
+ },
+ "https://roadmap.sh/full-stack": {
+  "tipo": "Artigo",
+  "dominio": "roadmap.sh",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=roadmap.sh",
+  "img": "https://roadmap.sh/og/roadmap/full-stack"
+ },
+ "https://survey.stackoverflow.co/2025/": {
+  "tipo": "Artigo",
+  "dominio": "survey.stackoverflow.co",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=survey.stackoverflow.co",
+  "img": "https://survey.stackoverflow.co/2025/img/stackoverflow-dev-survey-og.png"
+ },
+ "https://www.bbc.co.uk/learningenglish/english/features/english-at-work": {
+  "tipo": "Curso",
+  "dominio": "bbc.co.uk",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.bbc.co.uk",
+  "img": "https://ichef.bbci.co.uk/images/ic/1200xn/p04zz13f.jpg"
+ },
+ "https://www.linkedin.com/help/linkedin/answer/a511279": {
+  "tipo": "Artigo",
+  "dominio": "linkedin.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.linkedin.com",
+  "img": null
  }
 }

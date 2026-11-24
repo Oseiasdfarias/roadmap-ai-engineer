@@ -13,31 +13,61 @@ criterios:
   - "Ferramenta de ação só executa após aprovação humana registrada"
   - "Permissões são mínimas: leitura não escreve nada"
   - "O teste com instrução maliciosa escondida num manual foi feito e corrigido"
-referencias: []
+referencias:
+  - titulo: "Model Context Protocol"
+    url: "https://modelcontextprotocol.io/"
+    tipo: "Docs"
+    idioma: "en"
+    gratuito: true
+  - titulo: "MCP Python SDK"
+    url: "https://github.com/modelcontextprotocol/python-sdk"
+    tipo: "Repositório"
+    idioma: "en"
+    gratuito: true
+  - titulo: "OWASP Top 10 for LLM Applications"
+    url: "https://genai.owasp.org/llm-top-10/"
+    tipo: "Docs"
+    idioma: "en"
+    gratuito: true
 revisado: "2026-11-24"
-rascunho: true
+rascunho: false
 ---
 
 ## O problema
 
-Em construção.
+A busca do projeto P2 funciona dentro da sua aplicação. Para que ferramentas como o Claude Code ou o Claude Desktop também consultem os manuais, você a expõe como um servidor MCP (Model Context Protocol, um protocolo aberto que padroniza como um modelo acessa ferramentas e dados). Assim, qualquer cliente compatível usa a mesma busca sem integração própria.
+
+O projeto também trata de segurança: uma ação que muda o mundo, como abrir uma ordem de serviço, só pode rodar depois de aprovação humana, e um manual malicioso não pode comandar o agente.
 
 ## Arquitetura
 
-Em construção.
+O servidor MCP, escrito com o SDK oficial em Python, publica duas ferramentas. A de leitura, `buscar_no_manual(equipamento, pergunta)`, chama o código do P2 e devolve trechos com citação; não escreve nada. A de ação, `abrir_ordem_de_servico(...)`, não executa de imediato: cria um pedido pendente e só roda depois que uma pessoa aprova, com o registro de quem aprovou e quando. O cliente (Claude Code ou Claude Desktop) conecta ao servidor e decide quando chamar cada ferramenta.
+
+Veja os tópicos MCP, Tool use, Human-in-the-loop e Prompt injection.
+
+O cliente decide quais ferramentas chamar a partir do nome e da descrição que você escreve, então trate essa descrição como parte do produto. O registro de aprovação deve guardar a ferramenta, os argumentos, quem aprovou e a hora, para que qualquer ordem aberta possa ser auditada depois.
 
 ## Stack sugerida
 
-Em construção.
+Python, o SDK oficial do MCP, o código do P2 reaproveitado como biblioteca e Claude Code ou Claude Desktop como cliente para testar. Veja o tópico FastAPI se quiser expor também uma API HTTP.
 
 ## Critérios de aceite
 
-Em construção.
+- A ferramenta de leitura devolve trechos de manual com citação.
+- A ferramenta de ação só executa após aprovação humana registrada, com quem aprovou e quando.
+- As permissões são mínimas: a ferramenta de leitura não escreve nada e não tem acesso à ação.
+- Um teste com instrução maliciosa escondida num manual indexado foi feito, e a correção está documentada.
+- Os nomes e as descrições das ferramentas são claros o bastante para o cliente escolher a certa.
 
 ## O que colocar no README
 
-Em construção.
+- O que o servidor expõe, com a descrição de cada ferramenta e exemplos de chamada.
+- Como instalar e como conectar no Claude Code ou Claude Desktop, passo a passo.
+- O fluxo de aprovação com um diagrama e um exemplo de registro.
+- Permissões de cada ferramenta e por que são mínimas.
+- O teste de ataque: o texto malicioso usado, o que o agente fez antes da correção e o que faz depois.
+- Limitações, como defesa que reduz o risco mas não elimina.
 
 ## Como apresentar na entrevista
 
-Em construção.
+Explique por que escolheu MCP em vez de uma integração própria: um servidor atende vários clientes. Conte o teste de ataque, que é a parte mais memorável: "escondi uma instrução num manual, o agente tentou abrir uma ordem, a aprovação humana barrou, e depois reduzi o privilégio e separei dados de instruções". Esteja pronto para dizer que não existe defesa perfeita contra prompt injection, e que a aprovação humana e o privilégio mínimo limitam o dano. Mostre o registro de uma aprovação.

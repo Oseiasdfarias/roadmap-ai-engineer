@@ -83,6 +83,12 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=aws.amazon.com",
   "img": "https://a0.awsstatic.com/libra-css/images/logos/aws_logo_smile_1200x630.png"
  },
+ "https://capd.mit.edu/resources/interviewing/": {
+  "tipo": "Artigo",
+  "dominio": "capd.mit.edu",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=capd.mit.edu",
+  "img": "https://cdn.uconnectlabs.com/wp-content/themes/uConnect_MIT/images/default-og-image.png?v=4.744.1.001"
+ },
  "https://capd.mit.edu/resources/resumes/": {
   "tipo": "Artigo",
   "dominio": "capd.mit.edu",
@@ -143,6 +149,12 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.aws.amazon.com",
   "img": null
  },
+ "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html": {
+  "tipo": "Docs",
+  "dominio": "docs.aws.amazon.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.aws.amazon.com",
+  "img": null
+ },
  "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html": {
   "tipo": "Docs",
   "dominio": "docs.aws.amazon.com",
@@ -185,11 +197,23 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.docker.com",
   "img": "https://docs.docker.com/learn/thumbnail.png"
  },
+ "https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/pinning-items-to-your-profile": {
+  "tipo": "Docs",
+  "dominio": "docs.github.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.github.com",
+  "img": "https://docs.github.com/assets/cb-345/images/social-cards/account-and-profile.png"
+ },
  "https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions": {
   "tipo": "Docs",
   "dominio": "docs.github.com",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.github.com",
   "img": "https://docs.github.com/assets/cb-345/images/social-cards/actions.png"
+ },
+ "https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes": {
+  "tipo": "Docs",
+  "dominio": "docs.github.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.github.com",
+  "img": "https://docs.github.com/assets/cb-345/images/social-cards/repositories.png"
  },
  "https://docs.github.com/pt/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme": {
   "tipo": "Docs",
@@ -209,6 +233,12 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.langchain.com",
   "img": "https://langchain-5e9cc07a.mintlify.site/_mintlify/api/og/v2?division=Capabilities&title=Interrupts&theme=f35197f94eda06999e44c5f5&signature=63f0d7d75cf69c50db38ab7d35dd2b9acebc10b7136e90d58ab2f241e3a74ecc"
  },
+ "https://docs.pydantic.dev/latest/": {
+  "tipo": "Docs",
+  "dominio": "docs.pydantic.dev",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.pydantic.dev",
+  "img": "https://pydantic.dev/docs/og/validation/latest/get-started/index.png"
+ },
  "https://docs.pydantic.dev/latest/concepts/models/": {
   "tipo": "Docs",
   "dominio": "docs.pydantic.dev",
@@ -216,6 +246,12 @@
   "img": "https://pydantic.dev/docs/og/validation/latest/concepts/models.png"
  },
  "https://docs.pytest.org/en/stable/": {
+  "tipo": "Docs",
+  "dominio": "docs.pytest.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.pytest.org",
+  "img": null
+ },
+ "https://docs.pytest.org/en/stable/getting-started.html": {
   "tipo": "Docs",
   "dominio": "docs.pytest.org",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.pytest.org",
@@ -323,6 +359,12 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=github.com",
   "img": "https://opengraph.githubassets.com/1/anthropics/prompt-eng-interactive-tutorial"
  },
+ "https://github.com/modelcontextprotocol/python-sdk": {
+  "tipo": "Repositório",
+  "dominio": "github.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=github.com",
+  "img": "https://opengraph.githubassets.com/1/modelcontextprotocol/python-sdk"
+ },
  "https://github.com/pgvector/pgvector": {
   "tipo": "Repositório",
   "dominio": "github.com",
@@ -383,6 +425,12 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=langfuse.com",
   "img": "https://langfuse.com/api/og?title=LLM+Observability+%26+Application+Tracing+%28Open+Source%29&description=Open+source+application+tracing+and+observability+for+LLM+apps.+Capture+traces%2C+monitor+latency%2C+track+costs%2C+and+debug+issues+across+OpenAI%2C+LangChain%2C+LlamaIndex%2C+and+more.&section=Docs"
  },
+ "https://microsoft.github.io/presidio/": {
+  "tipo": "Docs",
+  "dominio": "microsoft.github.io",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=microsoft.github.io",
+  "img": null
+ },
  "https://missing.csail.mit.edu/": {
   "tipo": "Artigo",
   "dominio": "missing.csail.mit.edu",
@@ -412,6 +460,12 @@
   "dominio": "modelcontextprotocol.io",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=modelcontextprotocol.io",
   "img": "https://raw.githubusercontent.com/modelcontextprotocol/docs/2eb6171ddbfeefde349dc3b8d5e2b87414c26250/images/og-image.png"
+ },
+ "https://opensource.guide/how-to-contribute/": {
+  "tipo": "Artigo",
+  "dominio": "opensource.guide",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=opensource.guide",
+  "img": "https://opensource.guide/assets/images/cards/contribute.png"
  },
  "https://opentelemetry.io/docs/concepts/observability-primer/": {
   "tipo": "Docs",
@@ -497,6 +551,12 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
   "img": "https://platform.claude.com/web-api/og/docs/en/build-with-claude/working-with-messages?design-rev=5"
  },
+ "https://platform.claude.com/docs/en/intro": {
+  "tipo": "Docs",
+  "dominio": "platform.claude.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
+  "img": "https://platform.claude.com/web-api/og/docs/en/intro?design-rev=5"
+ },
  "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests": {
   "tipo": "Docs",
   "dominio": "platform.claude.com",
@@ -563,6 +623,12 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=python.useinstructor.com",
   "img": null
  },
+ "https://roadmap.sh/full-stack": {
+  "tipo": "Artigo",
+  "dominio": "roadmap.sh",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=roadmap.sh",
+  "img": "https://roadmap.sh/og/roadmap/full-stack"
+ },
  "https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/": {
   "tipo": "Artigo",
   "dominio": "simonwillison.net",
@@ -586,6 +652,12 @@
   "dominio": "sqlbolt.com",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=sqlbolt.com",
   "img": null
+ },
+ "https://survey.stackoverflow.co/2025/": {
+  "tipo": "Artigo",
+  "dominio": "survey.stackoverflow.co",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=survey.stackoverflow.co",
+  "img": "https://survey.stackoverflow.co/2025/img/stackoverflow-dev-survey-og.png"
  },
  "https://www.alura.com.br/artigos/como-fazer-um-perfil-de-alta-qualidade-no-linkedin-e-atrair-mais-trabalhos": {
   "tipo": "Artigo",
@@ -629,6 +701,12 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.bbc.co.uk",
   "img": null
  },
+ "https://www.bbc.co.uk/learningenglish/english/features/english-at-work": {
+  "tipo": "Curso",
+  "dominio": "bbc.co.uk",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.bbc.co.uk",
+  "img": "https://ichef.bbci.co.uk/images/ic/1200xn/p04zz13f.jpg"
+ },
  "https://www.cursoemvideo.com/": {
   "tipo": "Curso",
   "dominio": "cursoemvideo.com",
@@ -664,6 +742,12 @@
   "dominio": "gupy.io",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.gupy.io",
   "img": "https://3299491.fs1.hubspotusercontent-na1.net/hubfs/3299491/trilhas-de-aprendizagem.jpg"
+ },
+ "https://www.linkedin.com/help/linkedin/answer/a511279": {
+  "tipo": "Artigo",
+  "dominio": "linkedin.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.linkedin.com",
+  "img": null
  },
  "https://www.linkedin.com/jobs/": {
   "tipo": "Vagas",
