@@ -27,62 +27,73 @@ const [grupos, projetos, fase, prev, next] = await Promise.all([
 const dicas = await dicasDaFase(d.fase);
 const ids = grupos.flatMap((g) => g.itens).map(idProgresso);
 const rotulo = (n: NonNullable<typeof prev>) => `Nível ${n.data.id} · ${cap(n.data.curto)}`;
+const semCodigo = (t: string) => t.replace(/^[A-Z0-9]+:\s*/, '');
+const rotuloProjeto = (p: (typeof projetos)[number]) => {
+  const c = p.data.camadas ?? [];
+  return c.length > 1 ? `${p.data.codigo} · ${c[0].versao} a ${c[c.length - 1].versao}` : p.data.codigo;
+};
+const secCrit = projetos.length > 0 ? '03' : '02';
 ---
 <Base titulo={`Nível ${d.id} · ${cap(d.nome)} | Roadmap AI Engineer`} descricao={d.objetivo} rotaOg={`nivel/${d.id}`}>
   <div class="detail">
     <Migalha itens={[{ rotulo: 'Mapa', href: url('/') }, { rotulo: 'Estudo' }, { rotulo: `Nível ${d.id}` }]} />
-    <div class="panel">
-      <div class="ph">
-        <div>
-          <div class="kick">Nível {d.id} de 4 · {d.duracao}</div>
-          <h1>{cap(d.nome)}</h1>
-          <p>{d.objetivo}</p>
-          <div class="lp" data-progresso-conta={ids.join(',')} data-progresso-formato="de">
-            <div class="track" role="progressbar" aria-label="Progresso do nível" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-              <span data-progresso-barra></span>
-            </div>
-            <small data-progresso-texto>0 de {ids.length}</small>
-          </div>
+    <header class="pg-cab">
+      <div class="pg-cab-txt">
+        <div class="pg-meta">
+          <span class="etq">Nível {d.id} · {d.duracao}</span>
+          <span class="dur">Nível {d.id} de 4 · {ids.length} tópicos</span>
         </div>
-        <div><Ilustracao nome={`nivel${d.id}`} /></div>
+        <h1>{cap(d.nome)}</h1>
+        <p class="obj">{d.objetivo}</p>
+        <div class="lp" data-progresso-conta={ids.join(',')}>
+          <div class="track" role="progressbar" aria-label="Progresso do nível" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <span data-progresso-barra></span>
+          </div>
+          <small data-progresso-texto>0 / {ids.length}</small>
+        </div>
       </div>
+      <div class="pg-lado"><Ilustracao nome={`nivel${d.id}`} /></div>
+    </header>
 
+    <div class="pg-grade">
       <div class="cols">
+        <div class="kicker">01 — Tópicos</div>
         {grupos.map((g) => (
-          <section>
+          <section class="grupo">
             <h2>{g.grupo}</h2>
-            {g.itens.map((t) => <LinhaTopico entry={t} />)}
+            <div class="linhas">{g.itens.map((t) => <LinhaTopico entry={t} />)}</div>
           </section>
         ))}
       </div>
 
-      {projetos.length > 0 && (
-        <>
-          <h2 class="sub-h">Projetos práticos</h2>
-          <div class="projs">
-            {projetos.map((p) => (
-              <a href={rotaDe(p)}><b>{p.data.titulo}</b><span>{p.data.resumo}</span></a>
-            ))}
-          </div>
-        </>
-      )}
-
       {fase && (
-        <section class="cross">
-          <h2>Ao mesmo tempo, na carreira: fase {fase.data.id} · {cap(fase.data.nome)}</h2>
-          <p class="sub">
-            {fase.data.objetivo}
-            <a class="lk" href={url(`/fase/${fase.data.id}/`)}>Abrir a fase <ArrowRight aria-hidden="true" /></a>
-          </p>
-          {dicas.map((x) => <LinhaTopico entry={x} />)}
-        </section>
+        <aside class="cross" aria-labelledby="na-carreira">
+          <h2 id="na-carreira"><span class="rot">Ao mesmo tempo, na carreira</span><span class="fase-t">Fase {fase.data.id} · {cap(fase.data.nome)}</span></h2>
+          <p class="sub">{fase.data.objetivo}</p>
+          <div class="linhas">{dicas.map((x) => <LinhaTopico entry={x} />)}</div>
+          <a class="abrir" href={url(`/fase/${fase.data.id}/`)}>Abrir a fase {fase.data.id} <ArrowRight aria-hidden="true" /></a>
+        </aside>
       )}
-
-      <section class="crit">
-        <h2 class="sub-h">Como saber que terminou</h2>
-        <ul>{d.criterios.map((c) => <li>{c}</li>)}</ul>
-      </section>
     </div>
+
+    {projetos.length > 0 && (
+      <section class="pg-sec">
+        <div class="kicker">02 — Portfólio</div>
+        <h2>Projetos práticos</h2>
+        <div class="projs">
+          {projetos.map((p) => (
+            <a href={rotaDe(p)}><span class="k">{rotuloProjeto(p)}</span><span class="t">{semCodigo(p.data.titulo)}</span><span class="d">{p.data.resumo}</span></a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="pg-sec">
+      <div class="kicker">{secCrit} — Critérios</div>
+      <h2>Como saber que terminou</h2>
+      <ol class="crit-lista">{d.criterios.map((c, i) => <li><span class="n">{String(i + 1).padStart(2, '0')}</span><span>{c}</span></li>)}</ol>
+    </section>
+
     <AnteriorProximo
       anterior={prev && { rotulo: rotulo(prev), href: url(`/nivel/${prev.data.id}/`) }}
       proximo={next && { rotulo: rotulo(next), href: url(`/nivel/${next.data.id}/`) }}

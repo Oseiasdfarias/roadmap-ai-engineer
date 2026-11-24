@@ -20,7 +20,7 @@ const img = capa ?? info?.img ?? null;
       : <img class="ico" src={icone} alt="" loading="lazy" referrerpolicy="no-referrer" />}
   </span>
   <span class="corpo">
-    <span class="tl">{r.titulo}</span>
+    <span class="ref-tit">{r.titulo}</span>
     <span class="mt">
       <span class="tg">{r.tipo}</span>
       <span class="dom">{dominio}</span>
@@ -59,34 +59,40 @@ const img = capa ?? info?.img ?? null;
 <style>
   .ref {
     display: grid;
-    grid-template-columns: 112px 1fr;
-    gap: 12px;
+    grid-template-columns: 128px minmax(0, 1fr);
+    gap: 14px;
     align-items: center;
     border: 1px solid var(--line);
     border-radius: 12px;
-    padding: 7px;
+    padding: 8px;
     text-decoration: none;
     color: var(--text);
-    background: var(--card);
+    background: var(--surface);
     transition: border-color 0.15s, transform 0.15s;
   }
-  .ref:hover { border-color: var(--acc); transform: translateY(-1px); }
+  .ref:hover { border-color: var(--accent); transform: translateY(-1px); }
   .th {
-    width: 112px;
+    width: 128px;
     aspect-ratio: 16 / 9;
     border-radius: 8px;
     overflow: hidden;
-    background: var(--soft);
+    background: var(--surface-2);
     display: grid;
     place-items: center;
     border: 1px solid var(--line);
   }
   .th :global(img.capa) { width: 100%; height: 100%; object-fit: cover; display: block; }
   .th :global(img.ico) { width: 26px; height: 26px; border-radius: 6px; }
-  .tl { font-size: 13.5px; font-weight: 600; line-height: 1.35; display: block; color: var(--text); }
-  .mt { display: flex; align-items: center; gap: 8px; margin-top: 5px; font-size: 12px; color: var(--muted); }
-  .tg { border: 1px solid var(--acc); color: var(--acc); border-radius: 99px; padding: 1px 8px; font-size: 11px; font-weight: 500; }
-  .ar { margin-left: auto; padding-right: 6px; display: inline-flex; color: var(--muted); }
-  .ref:hover .ar { color: var(--acc); }
+  .corpo { min-width: 0; padding-right: 4px; }
+  .ref-tit { font-size: 14px; font-weight: 500; line-height: 1.4; display: block; color: var(--text); }
+  .mt { display: flex; align-items: center; gap: 10px; margin-top: 7px; font-size: 12px; color: var(--muted); min-width: 0; }
+  .tg { font-family: var(--font-mono); font-size: 11px; color: var(--accent); border: 1px solid var(--accent-border); background: var(--accent-soft); border-radius: 5px; padding: 1px 6px; flex: none; }
+  .dom { font-family: var(--font-mono); font-size: 11.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+  .ar { margin-left: auto; padding-right: 4px; display: inline-flex; color: var(--muted); flex: none; }
+  .ref:hover .ar { color: var(--accent); }
+  @media (max-width: 420px) {
+    .ref { grid-template-columns: 96px minmax(0, 1fr); gap: 12px; }
+    .th { width: 96px; }
+  }
   @media (prefers-reduced-motion: reduce) { .ref { transition: none; } .ref:hover { transform: none; } }
 </style>

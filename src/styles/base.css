@@ -8,7 +8,7 @@ main { flex: 1; }
 a { color: inherit; }
 button { font-family: inherit; }
 h1, h2, h3, h4, h5 { font-family: var(--font-titulo); }
-:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
@@ -17,6 +17,9 @@ h1, h2, h3, h4, h5 { font-family: var(--font-titulo); }
 }
 
 /* barra superior */
+/* --header-h: altura real do cabeçalho fixo (o script da home a atualiza com ResizeObserver) */
+:root { --header-h: 69px; }
+@media (max-width: 860px) { :root { --header-h: 139px; } }
 html { scroll-padding-top: 84px; }
 .bar { position: sticky; top: 0; z-index: 6; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
 .bar .in { max-width: 1240px; margin: 0 auto; padding: 12px 32px; display: flex; align-items: center; gap: 28px; }
@@ -62,6 +65,9 @@ html { scroll-padding-top: 84px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .estado-feito { display: none; }
 .feito > .estado-feito { display: inline; position: absolute; }
+
+/* rótulo mono de seção ("02 — Níveis") */
+.kicker { font-family: var(--font-mono); font-size: 12px; color: var(--accent); margin-bottom: 14px; }
 
 /* entrada das seções ao rolar (a classe rv-on só existe com JS e sem prefers-reduced-motion) */
 .rv-on .rv { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }

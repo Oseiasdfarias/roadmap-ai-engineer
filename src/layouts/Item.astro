@@ -1,6 +1,6 @@
 ---
 import { getEntry, render, type CollectionEntry } from 'astro:content';
-import { Check, Hammer } from '@lucide/astro';
+import { ArrowUpRight, Check, Hammer } from '@lucide/astro';
 import Base from './Base.astro';
 import Ilustracao from '../components/Ilustracao.astro';
 import Migalha from '../components/Migalha.astro';
@@ -10,7 +10,6 @@ import Sumario from '../components/Sumario.astro';
 import AnteriorProximo from '../components/AnteriorProximo.astro';
 import { idProgresso, rotaDe, vizinhos } from '../lib/conteudo';
 import { url } from '../lib/url';
-import '../styles/detalhe.css';
 import '../styles/prosa.css';
 
 type Entrada = CollectionEntry<'topicos'> | CollectionEntry<'dicas'> | CollectionEntry<'projetos'>;
@@ -42,9 +41,11 @@ const relacionados = tipo === 'projeto' ? [] : await Promise.all(
     getEntry(r.collection, r.id),
   ),
 );
+const relacionadosOk = relacionados.filter((r) => r != null);
 const proj = tipo === 'projeto' ? (d as CollectionEntry<'projetos'>['data']) : undefined;
 const sumarioItens = [
-  ...(proj ? [{ slug: 'camadas', texto: 'Camadas do projeto' }, { slug: 'stack', texto: 'Stack' }, { slug: 'criterios', texto: 'Critérios do projeto' }] : []),
+  ...(proj?.camadas && proj.camadas.length > 0 ? [{ slug: 'camadas', texto: 'Camadas do projeto' }] : []),
+  ...(proj ? [{ slug: 'stack', texto: 'Stack' }, { slug: 'criterios', texto: 'Critérios do projeto' }] : []),
   ...headings.filter((h) => h.depth === 2).map((h) => ({ slug: h.slug, texto: h.text })),
   ...(d.referencias.length > 0 ? [{ slug: 'referencias', texto: 'Referências' }] : []),
 ];
@@ -52,76 +53,82 @@ const sumarioItens = [
 <Base titulo={`${d.titulo} | Roadmap AI Engineer`} descricao={d.resumo} rotaOg={`${tipo === "dica" ? "carreira" : tipo}/${entry.id}`}>
   <div class="item">
     <Migalha itens={[{ rotulo: 'Mapa', href: url('/') }, { rotulo: rotuloPai, href: hrefPai }, { rotulo: d.titulo }]} />
-    <div class="panel">
-      <div class="item-grid">
-        <article>
-          <header class="item-cab">
-            <div>
-              <div class="kick">{kick}</div>
-              <h1>{d.titulo}</h1>
-            </div>
-            {tipo === 'topico' && <div class="icone"><Ilustracao nome={`icone-${numero}`} /></div>}
-            {tipo === 'dica' && <div class="fase-num" aria-hidden="true">{numero}</div>}
-            {tipo === 'projeto' && <div class="icone"><Ilustracao nome="projetos" /></div>}
-          </header>
-          <p class="resumo">{d.resumo}</p>
-          {tipo !== 'projeto' && <Selos tempo={(d as { tempo?: string }).tempo} ferramentas={(d as { ferramentas?: string[] }).ferramentas} />}
-          {id && (
-            <div class="acoes">
-              <button type="button" class="marcar" data-alternar={id} data-progresso-id={id} aria-pressed="false">
-                <Check aria-hidden="true" stroke-width={3} />
-                <span class="nao">Marcar como estudado</span>
-                <span class="ja">Estudado</span>
-              </button>
-            </div>
-          )}
-          {d.rascunho && (
-            <p class="aviso" role="note"><Hammer aria-hidden="true" /> <span><b>Resumo completo em construção.</b> Enquanto isso, as referências abaixo cobrem o assunto.</span></p>
-          )}
-
-          {proj && (
-            <>
-              {proj.camadas && proj.camadas.length > 0 && (
-                <section class="bloco">
-                  <h2 id="camadas" class="bloco-h">Camadas do projeto</h2>
-                  <ol class="camadas">
-                    {proj.camadas.map((c) => (
-                      <li><span class="v">{c.versao}</span><div><b>{c.nome}</b><span>{c.entrega}</span></div></li>
-                    ))}
-                  </ol>
-                </section>
-              )}
-              <section class="bloco">
-                <h2 id="stack" class="bloco-h">Stack</h2>
-                <ul class="chips">{proj.stack.map((s) => <li>{s}</li>)}</ul>
-              </section>
-              <section class="bloco">
-                <h2 id="criterios" class="bloco-h">Critérios do projeto</h2>
-                <ul class="criterios">{proj.criterios.map((c) => <li>{c}</li>)}</ul>
-              </section>
-            </>
-          )}
-
-          <div class="prosa"><Content /></div>
-
-          {d.referencias.length > 0 && (
-            <section class="bloco">
-              <h2 id="referencias" class="bloco-h">Referências</h2>
-              <Refs refs={d.referencias} />
-            </section>
-          )}
-
-          {relacionados.length > 0 && (
-            <section class="bloco relacionados">
-              <h2 class="bloco-h">Relacionados</h2>
-              <ul>
-                {relacionados.filter((r) => r != null).map((r) => <li><a href={rotaDe(r!)}>{r!.data.titulo}</a></li>)}
-              </ul>
-            </section>
-          )}
-        </article>
-        <aside class="item-lado"><Sumario itens={sumarioItens} /></aside>
+    <header class="item-cab">
+      <div class="item-cab-txt">
+        <div class="kicker">{kick}</div>
+        <h1>{d.titulo}</h1>
+        <p class="resumo">{d.resumo}</p>
+        {tipo !== 'projeto' && <Selos tempo={(d as { tempo?: string }).tempo} ferramentas={(d as { ferramentas?: string[] }).ferramentas} />}
+        {id && (
+          <div class="acoes">
+            <button type="button" class="marcar" data-alternar={id} data-progresso-id={id} aria-pressed="false">
+              <span class="anel" aria-hidden="true"><Check stroke-width={3.6} /></span>
+              <span class="nao">Marcar como estudado</span>
+              <span class="ja">Estudado</span>
+            </button>
+          </div>
+        )}
+        {d.rascunho && (
+          <p class="aviso" role="note"><Hammer aria-hidden="true" /> <span><b>Resumo completo em construção.</b> Enquanto isso, as referências abaixo cobrem o assunto.</span></p>
+        )}
       </div>
+      {tipo === 'topico' && <div class="item-vis"><Ilustracao nome={`icone-${numero}`} /></div>}
+      {tipo === 'dica' && <div class="item-vis fase-num" aria-hidden="true">{String(numero).padStart(2, '0')}<small>fase</small></div>}
+      {tipo === 'projeto' && <div class="item-vis largo"><Ilustracao nome="projetos" /></div>}
+    </header>
+
+    <div class="item-grid">
+      <article class="item-corpo">
+        {proj && (
+          <>
+            {proj.camadas && proj.camadas.length > 0 && (
+              <section class="bloco">
+                <h2 id="camadas" class="sec-h">Camadas do projeto</h2>
+                <ol class="camadas">
+                  {proj.camadas.map((c) => (
+                    <li><span class="v">{c.versao}</span><div><b>{c.nome}</b><span>{c.entrega}</span></div></li>
+                  ))}
+                </ol>
+              </section>
+            )}
+            <section class="bloco">
+              <h2 id="stack" class="sec-h">Stack</h2>
+              <ul class="chips">{proj.stack.map((s) => <li>{s}</li>)}</ul>
+            </section>
+            <section class="bloco">
+              <h2 id="criterios" class="sec-h">Critérios do projeto</h2>
+              <ul class="criterios">{proj.criterios.map((c) => <li><span class="ok" aria-hidden="true"><Check stroke-width={3} /></span><span>{c}</span></li>)}</ul>
+            </section>
+          </>
+        )}
+
+        <div class="prosa"><Content /></div>
+
+        {d.referencias.length > 0 && (
+          <section class="bloco">
+            <h2 id="referencias" class="sec-h">Referências</h2>
+            <Refs refs={d.referencias} />
+          </section>
+        )}
+
+        {relacionadosOk.length > 0 && (
+          <section class="bloco relacionados">
+            <h2 class="sec-h">Relacionados</h2>
+            <ul>
+              {relacionadosOk.map((r) => (
+                <li>
+                  <a href={rotaDe(r!)}>
+                    <span class="k">{r!.collection === 'dicas' ? 'Carreira' : 'Tópico'}</span>
+                    <span class="t">{r!.data.titulo}</span>
+                    <ArrowUpRight aria-hidden="true" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+      </article>
+      <aside class="item-lado"><Sumario itens={sumarioItens} /></aside>
     </div>
     <AnteriorProximo anterior={aoLado(anterior)} proximo={aoLado(proximo)} />
   </div>

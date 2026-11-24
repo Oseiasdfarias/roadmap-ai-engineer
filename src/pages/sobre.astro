@@ -1,57 +1,125 @@
 ---
+import { ArrowUpRight } from '@lucide/astro';
 import Base from '../layouts/Base.astro';
 import Migalha from '../components/Migalha.astro';
 import IconeCanal from '../components/IconeCanal.astro';
 import { AUTOR, ISSUES_URL, REPO_URL } from '../config';
 import { url } from '../lib/url';
 import '../styles/detalhe.css';
+
+const iniciais = AUTOR.nome.split(/\s+/).map((p) => p[0]).slice(0, 2).join('').toUpperCase();
 ---
 <Base titulo="Sobre | Roadmap AI Engineer" descricao="O que é o Roadmap AI Engineer, como usar, quem o escreve, licenças e como contribuir." rotaOg="sobre">
-  <div class="detail">
+  <div class="topo-grade" aria-hidden="true"></div>
+  <div class="detail sobre">
     <Migalha itens={[{ rotulo: 'Mapa', href: url('/') }, { rotulo: 'Sobre' }]} />
-    <div class="panel sobre">
+    <header class="sobre-cab">
+      <div class="kicker">Sobre o projeto</div>
       <h1>Sobre o roadmap</h1>
+    </header>
 
-      <h2>O que é</h2>
-      <p>O Roadmap AI Engineer é um caminho em português para quem quer trabalhar com sistemas de IA em produção. Ele vai do primeiro script em Python a um agente com avaliação, observabilidade e deploy, em quatro níveis, e cada tópico traz explicação, prática e referências escolhidas a dedo.</p>
+    <section class="sobre-sec">
+      <div class="sobre-tit"><span class="n" aria-hidden="true">01</span><h2>O que é</h2></div>
+      <div class="tx">
+        <p>O Roadmap AI Engineer é um caminho em português para quem quer trabalhar com sistemas de IA em produção. Ele vai do primeiro script em Python a um agente com avaliação, observabilidade e deploy, em quatro níveis, e cada tópico traz explicação, prática e referências escolhidas a dedo.</p>
+      </div>
+    </section>
 
-      <h2>Por que estudo e carreira juntos</h2>
-      <p>Saber a técnica não basta para conseguir a vaga, e um perfil bem montado não sustenta quem não sabe construir. Por isso cada período do roadmap tem duas trilhas lado a lado: o que estudar e o que fazer pela carreira, como portfólio, LinkedIn, inglês e candidaturas com foco.</p>
+    <section class="sobre-sec">
+      <div class="sobre-tit"><span class="n" aria-hidden="true">02</span><h2>Por que estudo e carreira juntos</h2></div>
+      <div class="tx">
+        <p>Saber a técnica não basta para conseguir a vaga, e um perfil bem montado não sustenta quem não sabe construir. Por isso cada período do roadmap tem duas trilhas lado a lado: o que estudar e o que fazer pela carreira, como portfólio, LinkedIn, inglês e candidaturas com foco.</p>
+      </div>
+    </section>
 
-      <h2>Como usar este roadmap</h2>
-      <ul>
-        <li>Comece pelo nível 1 e avance na ordem. Cada nível tem objetivo, tópicos, projeto e critérios para saber se está pronto.</li>
-        <li>Os períodos são indicativos, para quem estuda 10 a 15 horas de estudo por semana. Seu ritmo pode ser outro, e tudo bem.</li>
-        <li>Marque o que já estudou. O progresso fica salvo no seu navegador, sem conta e sem envio de dados; trocar de navegador ou limpar os dados do site zera a marcação.</li>
-        <li>Use a busca (tecla <kbd>/</kbd> ou <kbd>Ctrl</kbd>+<kbd>K</kbd>) para achar um tema e abra o painel de um item no mapa para ver o resumo sem sair da página.</li>
+    <section class="sobre-sec">
+      <div class="sobre-tit"><span class="n" aria-hidden="true">03</span><h2>Como usar este roadmap</h2></div>
+      <div class="tx">
+        <ul class="uso">
+        <li><span>Comece pelo nível 1 e avance na ordem. Cada nível tem objetivo, tópicos, projeto e critérios para saber se está pronto.</span></li>
+        <li><span>Os períodos são indicativos, para quem estuda 10 a 15 horas de estudo por semana. Seu ritmo pode ser outro, e tudo bem.</span></li>
+        <li><span>Marque o que já estudou. O progresso fica salvo no seu navegador, sem conta e sem envio de dados; trocar de navegador ou limpar os dados do site zera a marcação.</span></li>
+        <li><span>Use a busca (tecla <kbd>/</kbd> ou <kbd>Ctrl</kbd>+<kbd>K</kbd>) para achar um tema e abra o painel de um item no mapa para ver o resumo sem sair da página.</span></li>
       </ul>
+      </div>
+    </section>
 
-      <h2>Quem faz</h2>
-      <p><strong>{AUTOR.nome}</strong> é engenheiro eletricista que migrou para software e IA. Hoje atua como {AUTOR.cargo}, com foco em agentes de LLM, MLOps e IA confiável. Constrói sistemas de IA que mantêm sistemas físicos funcionando, em produção.</p>
-      <ul class="canais">
-        {AUTOR.canais.map((c) => (
-          <li><a href={c.url} target="_blank" rel="noopener"><IconeCanal nome={c.icone} /> {c.nome}</a></li>
-        ))}
-      </ul>
+    <section class="sobre-sec">
+      <div class="sobre-tit"><span class="n" aria-hidden="true">04</span><h2>Quem faz</h2></div>
+      <div class="tx">
+        <div class="autor-card">
+          <div class="autor-topo">
+            <span class="ini" aria-hidden="true">{iniciais}</span>
+            <span><strong>{AUTOR.nome}</strong><span class="cargo">{AUTOR.cargo}</span></span>
+          </div>
+          <p><strong>{AUTOR.nome}</strong> é engenheiro eletricista que migrou para software e IA. Hoje atua como {AUTOR.cargo}, com foco em agentes de LLM, MLOps e IA confiável. Constrói sistemas de IA que mantêm sistemas físicos funcionando, em produção.</p>
+          <ul class="sobre-canais">
+            {AUTOR.canais.map((c) => (
+              <li><a href={c.url} target="_blank" rel="noopener"><IconeCanal nome={c.icone} /> {c.nome}</a></li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
 
-      <h2>Licenças</h2>
-      <p>O código do site usa a licença MIT. O conteúdo (textos e ilustrações) usa a licença CC BY 4.0: você pode copiar e adaptar, desde que dê o crédito a {AUTOR.nome}. Os textos completos estão no <a href={REPO_URL} target="_blank" rel="noopener">repositório</a>.</p>
+    <section class="sobre-sec">
+      <div class="sobre-tit"><span class="n" aria-hidden="true">05</span><h2>Licenças</h2></div>
+      <div class="tx">
+        <p>O código do site usa a licença MIT. O conteúdo (textos e ilustrações) usa a licença CC BY 4.0: você pode copiar e adaptar, desde que dê o crédito a {AUTOR.nome}. Os textos completos estão no <a href={REPO_URL} target="_blank" rel="noopener">repositório</a>.</p>
+      </div>
+    </section>
 
-      <h2>Como contribuir</h2>
-      <p>Nesta versão a contribuição acontece por issues. Achou um erro, um link quebrado ou uma referência melhor? Abra uma issue pelo botão abaixo; cada sugestão é lida e, se fizer sentido, entra no conteúdo.</p>
-      <p><a class="btn pri" href={ISSUES_URL} target="_blank" rel="noopener">Sugerir correção</a></p>
-    </div>
+    <section class="sobre-sec">
+      <div class="sobre-tit"><span class="n" aria-hidden="true">06</span><h2>Como contribuir</h2></div>
+      <div class="tx">
+        <div class="contrib">
+          <p>Nesta versão a contribuição acontece por issues. Achou um erro, um link quebrado ou uma referência melhor? Abra uma issue pelo botão abaixo; cada sugestão é lida e, se fizer sentido, entra no conteúdo.</p>
+          <p class="contrib-bt"><a class="bt-pri" href={ISSUES_URL} target="_blank" rel="noopener">Sugerir correção <ArrowUpRight aria-hidden="true" /></a></p>
+        </div>
+      </div>
+    </section>
   </div>
 </Base>
 
 <style is:global>
-  .sobre h1 { font-family: var(--font-titulo); font-weight: 800; font-size: 34px; letter-spacing: -.03em; margin: 0 0 8px; }
-  .sobre h2 { font-family: var(--font-titulo); font-size: 20px; margin: 28px 0 8px; }
-  .sobre p, .sobre li { line-height: 1.7; max-width: 70ch; }
-  .sobre a:not(.btn) { color: var(--acc); }
-  .sobre kbd { border: 1px solid var(--line-strong); border-radius: 5px; padding: 0 5px; font-size: .9em; background: var(--soft); }
-  .sobre .canais { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
-  .sobre .canais a { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); border-radius: 9px; padding: 6px 12px; text-decoration: none; color: var(--text); }
-  .sobre .canais a:hover { border-color: var(--line-strong); }
-  .sobre .canais svg { width: 16px; height: 16px; }
+  .topo-grade { position: absolute; left: 0; right: 0; height: 420px; background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px); background-size: 56px 56px; opacity: .7; -webkit-mask-image: linear-gradient(#000 30%, transparent); mask-image: linear-gradient(#000 30%, transparent); pointer-events: none; }
+  .sobre { position: relative; }
+  .sobre-cab { padding: 48px 0 64px; }
+  .sobre-cab h1 { font-size: clamp(40px, 6vw, 76px); font-weight: 600; letter-spacing: -.045em; line-height: 1.02; margin: 0; }
+  .sobre-sec { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 48px; border-top: 1px solid var(--line); padding: 40px 0; }
+  .sobre-tit { display: flex; gap: 18px; align-items: baseline; }
+  .sobre-tit .n { font-family: var(--font-mono); font-size: 14px; color: var(--accent); min-width: 28px; }
+  .sobre-tit h2 { font-size: 24px; font-weight: 600; letter-spacing: -.025em; line-height: 1.2; margin: 0; text-wrap: balance; }
+  .sobre .tx { min-width: 0; }
+  .sobre .tx p { font-size: 17px; line-height: 1.7; color: var(--text-2); margin: 0 0 16px; max-width: 64ch; }
+  .sobre .tx p:last-child { margin-bottom: 0; }
+  .sobre .tx strong { color: var(--text); font-weight: 600; }
+  .sobre .tx a:not(.bt-pri) { color: var(--accent); text-underline-offset: 3px; }
+  .sobre kbd { font-family: var(--font-mono); font-size: .8em; border: 1px solid var(--line-strong); border-bottom-width: 2px; border-radius: 5px; padding: 1px 6px; background: var(--surface-2); color: var(--text); }
+  .uso { list-style: none; margin: 0; padding: 0; counter-reset: uso; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); overflow: hidden; }
+  .uso li { counter-increment: uso; display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 10px; padding: 18px 24px; border-bottom: 1px solid var(--line); font-size: 16px; line-height: 1.65; color: var(--text-2); }
+  .uso li:last-child { border-bottom: 0; }
+  .uso li::before { content: counter(uso, decimal-leading-zero); content: counter(uso, decimal-leading-zero) / ""; font-family: var(--font-mono); font-size: 12px; color: var(--accent); padding-top: 4px; }
+  .autor-card, .contrib { border: 1px solid var(--line); background: var(--surface); border-radius: 20px; padding: 28px; }
+  .autor-topo { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+  .autor-topo .ini { width: 48px; height: 48px; border-radius: 50%; background: var(--avatar-bg); color: var(--avatar-ink); display: grid; place-items: center; font-weight: 600; font-size: 16px; flex: none; }
+  .autor-topo strong { display: block; font-size: 16px; }
+  .autor-topo .cargo { display: block; font-size: 13px; color: var(--muted); }
+  .sobre .sobre-canais { list-style: none; padding: 0; margin: 20px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .sobre .tx .sobre-canais a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; border: 1px solid var(--line-strong); border-radius: 10px; padding: 0 14px; text-decoration: none; color: var(--text); font-size: 14px; background: var(--surface-2); transition: border-color .15s; }
+  .sobre .tx .sobre-canais a:hover { border-color: var(--accent); }
+  .sobre .sobre-canais svg { width: 16px; height: 16px; }
+  .sobre .bt-pri { text-decoration: none; border-radius: 10px; font-size: 15px; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 22px; background: var(--btn-bg); color: var(--btn-ink); font-weight: 600; }
+  .sobre .bt-pri:hover { opacity: .9; }
+  .sobre .bt-pri svg { width: 16px; height: 16px; }
+  .contrib-bt { margin-top: 22px !important; }
+  @media (max-width: 860px) {
+    .sobre-sec { grid-template-columns: 1fr; gap: 18px; padding: 32px 0; }
+    .sobre-cab { padding: 28px 0 44px; }
+  }
+  @media (max-width: 560px) {
+    .uso li { padding: 16px 18px; grid-template-columns: 28px minmax(0, 1fr); }
+    .autor-card, .contrib { padding: 22px 20px; }
+    .sobre .tx p { font-size: 16px; }
+  }
 </style>

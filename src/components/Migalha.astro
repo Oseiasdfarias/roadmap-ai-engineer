@@ -18,10 +18,11 @@ const { itens } = Astro.props;
 </nav>
 
 <style>
-  .crumb { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
-  ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
-  li { display: inline-flex; align-items: center; gap: 6px; }
-  a { color: var(--acc); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  svg { width: 14px; height: 14px; }
+  .crumb { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+  ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+  li { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }
+  a { color: var(--text-2); text-decoration: none; padding: 6px 0; }
+  a:hover { color: var(--accent); }
+  [aria-current] { color: var(--muted); }
+  svg { width: 13px; height: 13px; color: var(--muted); flex: none; }
 </style>

@@ -6,6 +6,6 @@ export default defineConfig({
   base: '/roadmap-ai-engineer',
   trailingSlash: 'always',
   output: 'static',
-  markdown: { shikiConfig: { themes: { light: 'github-light', dark: 'github-dark' } } },
+  markdown: { shikiConfig: { themes: { light: 'github-light-default', dark: 'github-dark-default' } } },
   integrations: [sitemap({ filter: (pagina) => !pagina.includes('/dev/') })],
 });

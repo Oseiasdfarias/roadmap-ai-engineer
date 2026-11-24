@@ -56,8 +56,9 @@ const itens = await Promise.all([
     <div class="acts">
       {i.progresso && (
         <button type="button" class="mark" data-alternar={i.progresso} data-progresso-id={i.progresso} aria-pressed="false">
+          <span class="anel" aria-hidden="true"><Check stroke-width={3.6} /></span>
           <span class="nao">Marcar como estudado</span>
-          <span class="sim"><Check aria-hidden="true" size={15} stroke-width={3} /> Estudado</span>
+          <span class="sim">Estudado</span>
         </button>
       )}
       <a class="btn" href={i.rota}>Ler o resumo completo <ArrowRight aria-hidden="true" /></a>
@@ -73,28 +74,30 @@ const itens = await Promise.all([
 
 <style is:global>
   .painel {
-    position: fixed; inset: 0 0 0 auto; margin: 0; padding: 0; border: 0; border-left: 1px solid var(--line);
-    height: 100%; max-height: 100%; width: min(440px, 100%); max-width: 100%;
-    background: var(--card); color: var(--text); overflow: auto;
+    position: fixed; inset: 0 0 0 auto; margin: 0; padding: 0; border: 0; border-left: 1px solid var(--line-strong);
+    height: 100%; max-height: 100%; width: min(460px, 100%); max-width: 100%;
+    background: var(--surface); color: var(--text); overflow: auto;
   }
   .painel[open] { animation: painel-entra .25s ease; }
-  .painel::backdrop { background: rgba(0, 0, 0, .3); }
+  .painel::backdrop { background: rgba(8, 12, 18, .45); }
   @keyframes painel-entra { from { transform: translateX(100%); } to { transform: none; } }
   html:has(dialog.painel[open]) { overflow: hidden; }
-  .painel-in { position: relative; min-height: 100%; padding: 26px 26px 40px; }
-  .painel .x { position: absolute; top: 18px; right: 18px; }
-  .painel .k { font-size: 12px; color: var(--acc); font-weight: 500; margin: 0; padding-right: 44px; }
-  .painel h2 { font-size: 24px; letter-spacing: -.02em; margin: 8px 0 12px; padding-right: 44px; }
-  .painel .resumo { color: var(--muted); line-height: 1.65; font-size: 15px; margin: 0; }
-  .painel h3 { font: 600 11px var(--font-texto); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 26px 0 10px; }
-  .painel .acts { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 22px; }
-  .painel .mark {
-    border: 1px solid var(--acc); background: transparent; color: var(--acc); border-radius: 9px;
-    padding: 9px 14px; font-size: 13.5px; font-weight: 600; cursor: pointer;
-  }
-  .painel .mark.feito { background: var(--acc); color: var(--card); }
-  .painel .mark .sim { display: none; align-items: center; gap: 6px; }
-  .painel .mark.feito .sim { display: inline-flex; }
+  .painel-in { position: relative; min-height: 100%; padding: 32px 30px 44px; }
+  .painel .x { position: absolute; top: 20px; right: 20px; }
+  .painel .k { font-family: var(--font-mono); font-size: 12px; color: var(--accent); margin: 6px 0 0; padding-right: 52px; }
+  .painel h2 { font-size: 28px; font-weight: 600; letter-spacing: -.03em; line-height: 1.15; margin: 14px 0 14px; padding-right: 44px; }
+  .painel .resumo { color: var(--text-2); line-height: 1.65; font-size: 15.5px; margin: 0; }
+  .painel h3 { font-family: var(--font-mono); font-size: 11px; font-weight: 400; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 30px 0 12px; }
+  .painel .acts { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+  .painel .mark { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 16px 0 14px; border-radius: 10px; border: 1px solid var(--line-strong); background: var(--surface-2); color: var(--text); font-size: 14px; font-weight: 500; cursor: pointer; }
+  .painel .mark:hover { border-color: var(--accent); }
+  .painel .mark .anel { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--check-off); display: grid; place-items: center; flex: none; }
+  .painel .mark .anel svg { width: 11px; height: 11px; color: var(--accent-ink); opacity: 0; }
+  .painel .mark.feito { border-color: var(--accent-border); background: var(--accent-soft); }
+  .painel .mark.feito .anel { background: var(--accent); border-color: var(--accent); }
+  .painel .mark.feito .anel svg { opacity: 1; }
+  .painel .mark .sim { display: none; }
+  .painel .mark.feito .sim { display: inline; }
   .painel .mark.feito .nao { display: none; }
-  .painel .acts .btn { padding: 9px 14px; font-size: 13.5px; }
+  .painel .acts .btn { min-height: 44px; padding: 0 16px; font-size: 14px; border-radius: 10px; }
 </style>

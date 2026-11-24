@@ -28,7 +28,7 @@ test.describe('página de nível', () => {
     await page.getByRole('dialog').getByRole('button', { name: 'Marcar como estudado' }).click();
     await page.goto('nivel/1/');
     await expect(page.locator('.row[data-progresso-id="topico:python-fundamentos"]')).toHaveClass(/feito/);
-    await expect(page.locator('[data-progresso-conta]').first()).toContainText('1 de 13');
+    await expect(page.locator('[data-progresso-conta]').first()).toContainText('1 / 13');
   });
 
   test('nível 2 mostra a carreira em paralelo', async ({ page }) => {
