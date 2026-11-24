@@ -286,5 +286,47 @@
   "dominio": "youtube.com",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.youtube.com",
   "img": "https://i.ytimg.com/vi/zjkBMFhNj_g/hqdefault.jpg"
+ },
+ "https://arxiv.org/abs/2005.11401": {
+  "tipo": "Artigo",
+  "dominio": "arxiv.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=arxiv.org",
+  "img": "https://arxiv.org/static/browse/0.3.4/images/arxiv-logo-fb.png"
+ },
+ "https://arxiv.org/abs/2307.03172": {
+  "tipo": "Artigo",
+  "dominio": "arxiv.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=arxiv.org",
+  "img": "https://arxiv.org/static/browse/0.3.4/images/arxiv-logo-fb.png"
+ },
+ "https://careerservices.fas.harvard.edu/channels/create-a-resume-cv-or-cover-letter/": {
+  "tipo": "Artigo",
+  "dominio": "careerservices.fas.harvard.edu",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=careerservices.fas.harvard.edu",
+  "img": "https://cdn-careerservices.fas.harvard.edu/wp-content/themes/uConnect_Harvard_Arts_Science/images/default-og-image.png?v=4.744.1.1"
+ },
+ "https://platform.claude.com/docs/en/build-with-claude/citations": {
+  "tipo": "Docs",
+  "dominio": "platform.claude.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
+  "img": "https://platform.claude.com/web-api/og/docs/en/build-with-claude/citations?design-rev=5"
+ },
+ "https://www.google.com/about/careers/applications/how-we-hire/": {
+  "tipo": "Artigo",
+  "dominio": "google.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.google.com",
+  "img": "https://www.gstatic.com/hiring/CportalUi/meta/og_image_google_careers.png"
+ },
+ "https://www.gupy.io/blog-do-emprego/boas-praticas-curriculo-gupy": {
+  "tipo": "Vagas",
+  "dominio": "gupy.io",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.gupy.io",
+  "img": "https://f.hubspotusercontent40.net/hubfs/3299491/boas-praticas-curriculo-gupy.avif"
+ },
+ "https://www.gupy.io/blog-do-emprego/curriculo-para-estagio": {
+  "tipo": "Vagas",
+  "dominio": "gupy.io",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.gupy.io",
+  "img": "https://3299491.fs1.hubspotusercontent-na1.net/hubfs/3299491/trilhas-de-aprendizagem.jpg"
  }
 }
