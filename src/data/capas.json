@@ -1,4 +1,10 @@
 {
+ "https://12factor.net/config": {
+  "tipo": "Artigo",
+  "dominio": "12factor.net",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=12factor.net",
+  "img": null
+ },
  "https://academy.openai.com/pages/codex-9t6874": {
   "tipo": "Curso",
   "dominio": "academy.openai.com",
@@ -11,13 +17,31 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=anthropic.skilljar.com",
   "img": "https://cc.sj-cdn.net/instructor/4hdejjwplbrm-anthropic/catalog_page/33z62i4zzunao/tile-image.1750175621.png"
  },
+ "https://arxiv.org/abs/1706.03762": {
+  "tipo": "Artigo",
+  "dominio": "arxiv.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=arxiv.org",
+  "img": "https://arxiv.org/static/browse/0.3.4/images/arxiv-logo-fb.png"
+ },
  "https://arxiv.org/abs/2005.11401": {
   "tipo": "Artigo",
   "dominio": "arxiv.org",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=arxiv.org",
   "img": "https://arxiv.org/static/browse/0.3.4/images/arxiv-logo-fb.png"
  },
+ "https://arxiv.org/abs/2106.09685": {
+  "tipo": "Artigo",
+  "dominio": "arxiv.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=arxiv.org",
+  "img": "https://arxiv.org/static/browse/0.3.4/images/arxiv-logo-fb.png"
+ },
  "https://arxiv.org/abs/2307.03172": {
+  "tipo": "Artigo",
+  "dominio": "arxiv.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=arxiv.org",
+  "img": "https://arxiv.org/static/browse/0.3.4/images/arxiv-logo-fb.png"
+ },
+ "https://arxiv.org/abs/2311.05232": {
   "tipo": "Artigo",
   "dominio": "arxiv.org",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=arxiv.org",
@@ -47,6 +71,12 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=cs50.harvard.edu",
   "img": "https://prod-discovery.edx-cdn.org/media/course/image/2cc794d0-316d-42f7-bbfd-25c34e4cd5df-033e46d516c0.small.png"
  },
+ "https://docs.astral.sh/uv/": {
+  "tipo": "Docs",
+  "dominio": "docs.astral.sh",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.astral.sh",
+  "img": null
+ },
  "https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html": {
   "tipo": "Docs",
   "dominio": "docs.aws.amazon.com",
@@ -71,7 +101,37 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.github.com",
   "img": "https://docs.github.com/assets/cb-345/images/social-cards/actions.png"
  },
+ "https://docs.pydantic.dev/latest/concepts/models/": {
+  "tipo": "Docs",
+  "dominio": "docs.pydantic.dev",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.pydantic.dev",
+  "img": "https://pydantic.dev/docs/og/validation/latest/concepts/models.png"
+ },
+ "https://docs.python.org/pt-br/3/library/dataclasses.html": {
+  "tipo": "Docs",
+  "dominio": "docs.python.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.python.org",
+  "img": null
+ },
+ "https://docs.python.org/pt-br/3/library/typing.html": {
+  "tipo": "Docs",
+  "dominio": "docs.python.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.python.org",
+  "img": null
+ },
+ "https://docs.python.org/pt-br/3/tutorial/": {
+  "tipo": "Docs",
+  "dominio": "docs.python.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.python.org",
+  "img": null
+ },
  "https://docs.python.org/pt-br/3/tutorial/classes.html": {
+  "tipo": "Docs",
+  "dominio": "docs.python.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.python.org",
+  "img": null
+ },
+ "https://docs.python.org/pt-br/3/tutorial/venv.html": {
   "tipo": "Docs",
   "dominio": "docs.python.org",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=docs.python.org",
@@ -107,6 +167,12 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=github.com",
   "img": "https://opengraph.githubassets.com/1/anthropics/courses"
  },
+ "https://github.com/anthropics/prompt-eng-interactive-tutorial": {
+  "tipo": "Repositório",
+  "dominio": "github.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=github.com",
+  "img": "https://opengraph.githubassets.com/1/anthropics/prompt-eng-interactive-tutorial"
+ },
  "https://github.com/pgvector/pgvector": {
   "tipo": "Repositório",
   "dominio": "github.com",
@@ -119,16 +185,28 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=hamel.dev",
   "img": "https://hamel.dev/blog/posts/evals/images/diagram-cover.png"
  },
+ "https://huggingface.co/docs/peft": {
+  "tipo": "Docs",
+  "dominio": "huggingface.co",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=huggingface.co",
+  "img": "https://cdn-thumbnails.huggingface.co/social-thumbnails/docs/peft/index.png"
+ },
  "https://huyenchip.com/2024/07/25/genai-platform.html": {
   "tipo": "Artigo",
   "dominio": "huyenchip.com",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=huyenchip.com",
   "img": "https://huyenchip.com/assets/pics/genai-platform/1-genai-platform.png"
  },
- "https://jalammar.github.io/illustrated-transformer/": {
+ "https://jalammar.github.io/illustrated-word2vec/": {
   "tipo": "Artigo",
   "dominio": "jalammar.github.io",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=jalammar.github.io",
+  "img": null
+ },
+ "https://json-schema.org/learn/getting-started-step-by-step": {
+  "tipo": "Artigo",
+  "dominio": "json-schema.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=json-schema.org",
   "img": null
  },
  "https://langchain-ai.github.io/langgraph/": {
@@ -149,6 +227,12 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=microsoft.github.io",
   "img": null
  },
+ "https://missing.csail.mit.edu/": {
+  "tipo": "Artigo",
+  "dominio": "missing.csail.mit.edu",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=missing.csail.mit.edu",
+  "img": "https://missing.csail.mit.edu/static/assets/thumbnails/default.png"
+ },
  "https://modelcontextprotocol.io/": {
   "tipo": "Docs",
   "dominio": "modelcontextprotocol.io",
@@ -167,17 +251,47 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
   "img": "https://platform.claude.com/web-api/og/docs/en/build-with-claude/citations?design-rev=5"
  },
+ "https://platform.claude.com/docs/en/build-with-claude/context-windows": {
+  "tipo": "Docs",
+  "dominio": "platform.claude.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
+  "img": "https://platform.claude.com/web-api/og/docs/en/build-with-claude/context-windows?design-rev=5"
+ },
+ "https://platform.claude.com/docs/en/build-with-claude/embeddings": {
+  "tipo": "Docs",
+  "dominio": "platform.claude.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
+  "img": "https://platform.claude.com/web-api/og/docs/en/build-with-claude/embeddings?design-rev=5"
+ },
  "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview": {
   "tipo": "Docs",
   "dominio": "platform.claude.com",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
   "img": "https://platform.claude.com/web-api/og/docs/en/build-with-claude/prompt-engineering/overview?design-rev=5"
  },
+ "https://platform.claude.com/docs/en/build-with-claude/streaming": {
+  "tipo": "Docs",
+  "dominio": "platform.claude.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
+  "img": "https://platform.claude.com/web-api/og/docs/en/build-with-claude/streaming?design-rev=5"
+ },
+ "https://platform.claude.com/docs/en/build-with-claude/structured-outputs": {
+  "tipo": "Docs",
+  "dominio": "platform.claude.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
+  "img": "https://platform.claude.com/web-api/og/docs/en/build-with-claude/structured-outputs?design-rev=5"
+ },
  "https://platform.claude.com/docs/en/build-with-claude/token-counting": {
   "tipo": "Docs",
   "dominio": "platform.claude.com",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
   "img": "https://platform.claude.com/web-api/og/docs/en/build-with-claude/token-counting?design-rev=5"
+ },
+ "https://platform.claude.com/docs/en/build-with-claude/working-with-messages": {
+  "tipo": "Docs",
+  "dominio": "platform.claude.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
+  "img": "https://platform.claude.com/web-api/og/docs/en/build-with-claude/working-with-messages?design-rev=5"
  },
  "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations": {
   "tipo": "Docs",
@@ -201,6 +315,12 @@
   "tipo": "Artigo",
   "dominio": "python.org.br",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=python.org.br",
+  "img": null
+ },
+ "https://python.useinstructor.com/": {
+  "tipo": "Artigo",
+  "dominio": "python.useinstructor.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=python.useinstructor.com",
   "img": null
  },
  "https://simonwillison.net/series/prompt-injection/": {
@@ -293,11 +413,29 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.pinecone.io",
   "img": "https://www.pinecone.io/api/og/?title=Chunking%20Strategies%20for%20LLM%20Applications&category=Learn"
  },
+ "https://www.postgresql.org/docs/current/tutorial.html": {
+  "tipo": "Docs",
+  "dominio": "postgresql.org",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.postgresql.org",
+  "img": "https://www.postgresql.org/media/img/about/press/elephant.png"
+ },
  "https://www.promptfoo.dev/docs/intro/": {
   "tipo": "Docs",
   "dominio": "promptfoo.dev",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.promptfoo.dev",
   "img": "https://www.promptfoo.dev/img/og/docs-intro--og.png"
+ },
+ "https://www.promptingguide.ai/pt": {
+  "tipo": "Artigo",
+  "dominio": "promptingguide.ai",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.promptingguide.ai",
+  "img": null
+ },
+ "https://www.sbert.net/": {
+  "tipo": "Artigo",
+  "dominio": "sbert.net",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.sbert.net",
+  "img": null
  },
  "https://www.techinterviewhandbook.org/behavioral-interview/": {
   "tipo": "Artigo",
