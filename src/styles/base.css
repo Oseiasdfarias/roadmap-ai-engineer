@@ -20,7 +20,7 @@ h1, h2, h3, h4, h5 { font-family: var(--font-titulo); }
 /* --header-h: altura real do cabeçalho fixo (o script da home a atualiza com ResizeObserver) */
 :root { --header-h: 69px; }
 @media (max-width: 860px) { :root { --header-h: 139px; } }
-html { scroll-padding-top: 84px; }
+html { scroll-padding-top: calc(var(--header-h, 84px) + 16px); }
 .bar { position: sticky; top: 0; z-index: 6; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
 .bar .in { max-width: 1240px; margin: 0 auto; padding: 12px 32px; display: flex; align-items: center; gap: 28px; }
 .brand { display: flex; align-items: baseline; gap: 12px; text-decoration: none; color: var(--text); white-space: nowrap; }

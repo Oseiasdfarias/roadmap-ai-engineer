@@ -40,6 +40,12 @@ tests/          testes unitários e e2e
 .github/        publicação no GitHub Pages e modelos de issue
 ```
 
+## Publicar
+
+A publicação é automática pelo GitHub Actions (`.github/workflows/deploy.yml`) a cada push na branch padrão, que deve ser `develop`. Antes do primeiro deploy, em Settings, Pages, escolha Source "GitHub Actions"; sem isso o passo `deploy-pages` falha.
+
+As capas dos cards (`src/data/capas.json`) apontam para endereços de terceiros que expiram com o tempo. Rode `npm run capas` de vez em quando e faça commit do resultado; o workflow semanal `links.yml` só verifica os links, não atualiza as capas.
+
 ## Como contribuir
 
 A contribuição, por enquanto, é por issues: correções de conteúdo, links quebrados e sugestões de referências. Veja o [CONTRIBUTING.md](CONTRIBUTING.md) e abra uma issue em https://github.com/Oseiasdfarias/roadmap-ai-engineer/issues/new/choose.

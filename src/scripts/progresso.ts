@@ -53,7 +53,7 @@ document.addEventListener('click', (e) => {
   const botao = (e.target as Element).closest<HTMLElement>('[data-alternar]');
   if (!botao?.dataset.alternar) return;
   const id = botao.dataset.alternar;
-  if (alternar(armazem(), id)) estado[id] = true;
+  if (alternar(armazem(), id, estado)) estado[id] = true;
   else delete estado[id];
   atualizar();
 });

@@ -30,8 +30,11 @@ test('alternar o tema muda data-theme e persiste após recarregar', async ({ pag
   await page.goto('./');
   const html = page.locator('html');
   await expect(html).toHaveAttribute('data-theme', 'light');
-  await page.getByRole('button', { name: 'Alternar tema' }).click();
+  const botaoTema = page.getByRole('button', { name: 'Alternar tema' });
+  await expect(botaoTema).toHaveAttribute('aria-pressed', 'false');
+  await botaoTema.click();
   await expect(html).toHaveAttribute('data-theme', 'dark');
+  await expect(botaoTema).toHaveAttribute('aria-pressed', 'true');
   await page.reload();
   await expect(html).toHaveAttribute('data-theme', 'dark');
 });

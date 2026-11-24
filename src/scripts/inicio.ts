@@ -84,11 +84,3 @@ if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: re
   document.documentElement.classList.add('rv-on');
   alvos.forEach((a) => io.observe(a));
 }
-
-// Altura real do cabeçalho em --header-h: a abertura da home ocupa exatamente a tela visível abaixo dele.
-const barra = document.querySelector<HTMLElement>('header.bar');
-if (barra) {
-  const medir = () => document.documentElement.style.setProperty('--header-h', `${Math.round(barra.getBoundingClientRect().height)}px`);
-  medir();
-  if ('ResizeObserver' in window) new ResizeObserver(medir).observe(barra);
-}

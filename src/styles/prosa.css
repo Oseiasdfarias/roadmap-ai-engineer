@@ -38,7 +38,7 @@
 .item-corpo { counter-reset: sec; min-width: 0; max-width: 72ch; }
 
 /* H2 com índice mono ("01", "02"...), contado em ordem no artigo, como no sumário */
-.sec-h, .prosa h2 { counter-increment: sec; font-size: 26px; font-weight: 600; letter-spacing: -.03em; line-height: 1.2; margin: 56px 0 16px; scroll-margin-top: 100px; }
+.sec-h, .prosa h2 { counter-increment: sec; font-size: 26px; font-weight: 600; letter-spacing: -.03em; line-height: 1.2; margin: 56px 0 16px; }
 .sec-h::before, .prosa h2::before { content: counter(sec, decimal-leading-zero); content: counter(sec, decimal-leading-zero) / ""; display: block; font-family: var(--font-mono); font-size: 12px; font-weight: 400; letter-spacing: 0; color: var(--accent); margin-bottom: 10px; }
 .bloco + .bloco .sec-h, .bloco .sec-h { margin-top: 56px; }
 
@@ -71,7 +71,7 @@
 /* texto corrido */
 .prosa { font-size: 17px; line-height: 1.7; color: var(--text); }
 .prosa > :first-child { margin-top: 56px; }
-.prosa h3 { font-size: 19px; font-weight: 600; letter-spacing: -.015em; margin: 32px 0 10px; scroll-margin-top: 100px; }
+.prosa h3 { font-size: 19px; font-weight: 600; letter-spacing: -.015em; margin: 32px 0 10px; }
 .prosa p, .prosa ul, .prosa ol, .prosa pre, .prosa blockquote, .prosa table { margin: 0 0 20px; }
 .prosa ul, .prosa ol { padding-left: 24px; }
 .prosa li + li { margin-top: 6px; }

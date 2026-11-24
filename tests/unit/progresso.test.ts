@@ -24,6 +24,21 @@ describe('progresso', () => {
     expect(s.dados.get('rm-progresso-v1')).toBe('{}');
   });
 
+  it('com armazenamento que lança, o estado em memória alterna ligado e desligado', () => {
+    const quebrado = {
+      getItem: () => {
+        throw new Error('bloqueado');
+      },
+      setItem: () => {
+        throw new Error('bloqueado');
+      },
+    };
+    let estado = ler(quebrado);
+    expect(alternar(quebrado, 'topico:rag', estado)).toBe(true);
+    estado = { 'topico:rag': true };
+    expect(alternar(quebrado, 'topico:rag', estado)).toBe(false);
+  });
+
   it('JSON corrompido vira estado vazio', () => {
     expect(ler(falso('{quebrado'))).toEqual({});
     expect(ler(falso('[1,2]'))).toEqual({});

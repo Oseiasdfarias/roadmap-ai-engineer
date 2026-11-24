@@ -18,9 +18,9 @@ export function ler(storage: Armazem): Estado {
   }
 }
 
-/** Marca ou desmarca o id e devolve o novo estado dele (true = estudado). */
-export function alternar(storage: Armazem, id: string): boolean {
-  const estado = ler(storage);
+/** Marca ou desmarca o id e devolve o novo estado dele (true = estudado). Com `atual`, parte do estado em memória e usa o armazenamento só para gravar. */
+export function alternar(storage: Armazem, id: string, atual?: Estado): boolean {
+  const estado: Estado = { ...(atual ?? ler(storage)) };
   const agora = !estado[id];
   if (agora) estado[id] = true;
   else delete estado[id];
