@@ -1,0 +1,14 @@
+:root {
+  --bg: #F6F7F9; --card: #FFFFFF; --text: #16202B; --muted: #667385; --line: #E2E7EE; --line-strong: #C9D2DC;
+  --acc: #3F6E9E; --acc-soft: #EAF1F8; --soft: #F1F4F8; --shadow: 0 1px 2px rgba(16, 24, 40, .05);
+  --il-tinta: #263241; --il-fina: #8C98A8; --il-papel: #FFFFFF; --il-acento: #4A78A8; --il-acento-esc: #1F3B5C;
+  --il-ag1: #EEF2F6; --il-ag2: #E4EAF1; --il-ag3: #DDE7F2; --il-ag4: #C9D8EA; --il-tela: #F4F7FA; --il-guia: #E2E6EC;
+  --font-titulo: 'Manrope', Inter, system-ui, sans-serif;
+  --font-texto: 'Inter', system-ui, sans-serif;
+}
+[data-theme='dark'] {
+  --bg: #0C0F14; --card: #12171E; --text: #E5EAF0; --muted: #8792A0; --line: #1E2631; --line-strong: #2C3542;
+  --acc: #86ABD6; --acc-soft: #152232; --soft: #151B23; --shadow: none;
+  --il-tinta: #D3DBE5; --il-fina: #6F7C8D; --il-papel: #161C24; --il-acento: #8FB3DA; --il-acento-esc: #B9CFE8;
+  --il-ag1: #1A212B; --il-ag2: #1F2732; --il-ag3: #1B2838; --il-ag4: #284260; --il-tela: #141A22; --il-guia: #232B36;
+}

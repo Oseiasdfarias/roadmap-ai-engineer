@@ -1,0 +1,44 @@
+---
+import IconeCanal from './IconeCanal.astro';
+import { AUTOR, PDF_URL, REPO_URL, ISSUES_URL } from '../config';
+import { url } from '../lib/url';
+const ano = new Date().getFullYear();
+const niveis = [1, 2, 3, 4];
+---
+<footer class="site">
+  <div class="grade">
+    <section>
+      <div class="marca">Roadmap <span>AI Engineer</span></div>
+      <p>Um caminho de estudo e de carreira para quem quer trabalhar com sistemas de IA, em português.</p>
+      <p>Conteúdo sob CC BY 4.0 · código sob MIT</p>
+      <p>© {ano}</p>
+    </section>
+    <nav aria-label="Roadmap">
+      <h2>Roadmap</h2>
+      <ul>
+        <li><a href={url('/')}>Mapa</a></li>
+        {niveis.map((n) => <li><a href={url(`/nivel/${n}/`)}>Nível {n}</a></li>)}
+        <li><a href={url('/fase/1/')}>Carreira</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Recursos">
+      <h2>Recursos</h2>
+      <ul>
+        <li><a href={url('/sobre/')}>Sobre</a></li>
+        {PDF_URL && <li><a href={PDF_URL}>Baixar o PDF</a></li>}
+        <li><a href={REPO_URL} target="_blank" rel="noopener">Código no GitHub</a></li>
+        <li><a href={ISSUES_URL} target="_blank" rel="noopener">Sugerir correção</a></li>
+      </ul>
+    </nav>
+    <section>
+      <h2>Autor</h2>
+      <p><strong>{AUTOR.nome}</strong><br /><span class="cargo">{AUTOR.cargo}</span></p>
+      <ul>
+        {AUTOR.canais.map((c) => (
+          <li><a href={c.url} target="_blank" rel="noopener"><IconeCanal nome={c.icone} />{c.nome}</a></li>
+        ))}
+      </ul>
+    </section>
+  </div>
+  <div class="fim">Feito por Oséias Farias · atualizado em novembro de 2026</div>
+</footer>

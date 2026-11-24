@@ -1,0 +1,20 @@
+---
+import { Search, FileDown } from '@lucide/astro';
+import ThemeToggle from './ThemeToggle.astro';
+import { PDF_URL } from '../config';
+import { url } from '../lib/url';
+---
+<header class="bar"><div class="in">
+  <a class="brand" href={url('/')}>Roadmap <span>AI Engineer</span></a>
+  <div class="prog" data-progresso-global title="Seu progresso, salvo neste navegador">
+    <div class="track"><div class="fill" data-progresso-barra></div></div>
+    <small data-progresso-texto>0 de 0 · 0%</small>
+  </div>
+  <button type="button" class="btn icon-btn" data-abrir-busca aria-label="Buscar">
+    <Search aria-hidden="true" />
+  </button>
+  {PDF_URL && (
+    <a class="btn" href={PDF_URL} title="Baixar o PDF completo"><FileDown aria-hidden="true" /> PDF</a>
+  )}
+  <ThemeToggle />
+</div></header>

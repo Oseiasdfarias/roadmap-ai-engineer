@@ -1,0 +1,11 @@
+---
+import { Sun, Moon } from '@lucide/astro';
+---
+<button type="button" class="btn icon-btn" data-alternar-tema aria-label="Alternar tema">
+  <Sun class="sun" aria-hidden="true" />
+  <Moon class="moon" aria-hidden="true" />
+</button>
+<script>
+  import { ligarBotaoTema } from '../scripts/tema';
+  ligarBotaoTema();
+</script>
