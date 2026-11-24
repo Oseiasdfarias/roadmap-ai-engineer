@@ -45,3 +45,14 @@ test('todo link absoluto em dist/ começa pela base', () => {
     }
   }
 });
+
+test('os links "Baixar o PDF" apontam para o PDF publicado e ele é servido', async ({ page, request }) => {
+  const PDF = '/roadmap-ai-engineer/pdf/roadmap-ai-engineer.pdf';
+  await page.goto('./');
+  await expect(page.locator('header').locator(`a[href="${PDF}"]`).first()).toBeVisible();
+  const rodape = page.locator('footer').getByRole('link', { name: 'Baixar o PDF' });
+  await expect(rodape.first()).toHaveAttribute('href', PDF);
+  const resp = await request.get(PDF);
+  expect(resp.status()).toBe(200);
+  expect(resp.headers()['content-type']).toContain('application/pdf');
+});

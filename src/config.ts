@@ -26,4 +26,4 @@ export const AUTOR: { nome: string; cargo: string; canais: Canal[] } = {
 
 export const REPO_URL = 'https://github.com/Oseiasdfarias/roadmap-ai-engineer';
 export const ISSUES_URL = `${REPO_URL}/issues/new/choose`;
-export const PDF_URL = '';
+export const PDF_URL = `${SITE.base}/pdf/roadmap-ai-engineer.pdf`;
