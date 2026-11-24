@@ -11,6 +11,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE } from '../config';
 import { url } from '../lib/url';
+import { todosIdsProgresso } from '../lib/conteudo';
 
 interface Props {
   titulo: string;
@@ -22,6 +23,7 @@ interface Props {
 }
 const { titulo, descricao, rotaOg, semCabecalho = false, noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const idsProgresso = await todosIdsProgresso();
 const imagemOg = rotaOg ? new URL(url('/og/' + rotaOg + '.png'), SITE.url).href : undefined;
 ---
 <!doctype html>
@@ -56,5 +58,9 @@ const imagemOg = rotaOg ? new URL(url('/og/' + rotaOg + '.png'), SITE.url).href 
     {!semCabecalho && <Header />}
     <main data-pagefind-ignore={noindex ? '' : undefined}><slot /></main>
     <Footer />
+    <script type="application/json" data-progresso-todos set:html={JSON.stringify(idsProgresso)} />
+    <script>
+      import '../scripts/progresso';
+    </script>
   </body>
 </html>

@@ -1,0 +1,22 @@
+---
+import { Check } from '@lucide/astro';
+
+interface Props {
+  /** Chave do conteúdo do painel (`data-painel`). */
+  painel: string;
+  titulo: string;
+  /** Id de progresso; ausente nos projetos, que não se marcam. */
+  progresso?: string;
+}
+const { painel, titulo, progresso } = Astro.props;
+---
+<button
+  type="button"
+  class:list={['tp', { pj: !progresso }]}
+  data-painel={painel}
+  data-progresso-id={progresso}
+  aria-haspopup="dialog"
+>
+  <span class="o">{progresso && <Check aria-hidden="true" stroke-width={3.4} />}</span>
+  {titulo}
+</button>

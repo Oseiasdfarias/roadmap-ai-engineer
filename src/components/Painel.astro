@@ -1,0 +1,110 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import { X, ArrowRight, Check } from '@lucide/astro';
+import Refs from './Refs.astro';
+import { idProgresso, rotaDe } from '../lib/conteudo';
+
+const [topicos, dicas, projetos] = await Promise.all([
+  getCollection('topicos'),
+  getCollection('dicas'),
+  getCollection('projetos'),
+]);
+const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+
+const itens = await Promise.all([
+  ...topicos.map(async (t) => {
+    const nivel = await getEntry('niveis', String(t.data.nivel));
+    return {
+      chave: idProgresso(t),
+      progresso: idProgresso(t),
+      rotulo: `Nível ${t.data.nivel} · ${cap(nivel?.data.curto ?? '')}`,
+      titulo: t.data.titulo,
+      resumo: t.data.resumo,
+      refs: t.data.referencias,
+      rota: rotaDe(t),
+    };
+  }),
+  ...dicas.map(async (d) => {
+    const fase = await getEntry('fases', String(d.data.fase));
+    return {
+      chave: idProgresso(d),
+      progresso: idProgresso(d),
+      rotulo: `Fase ${d.data.fase} · ${cap(fase?.data.nome ?? '')}`,
+      titulo: d.data.titulo,
+      resumo: d.data.resumo,
+      refs: d.data.referencias,
+      rota: rotaDe(d),
+    };
+  }),
+  ...projetos.map(async (p) => ({
+    chave: `projeto:${p.id}`,
+    progresso: undefined as string | undefined,
+    rotulo: `Projeto prático · ${p.data.codigo}`,
+    titulo: p.data.titulo,
+    resumo: p.data.resumo,
+    refs: p.data.referencias,
+    rota: rotaDe(p),
+  })),
+]);
+---
+<dialog class="painel" id="painel" aria-labelledby="painel-titulo">
+  <div class="painel-in">
+    <button type="button" class="btn icon-btn x" data-painel-fechar aria-label="Fechar painel">
+      <X aria-hidden="true" />
+    </button>
+    <div data-painel-corpo></div>
+  </div>
+</dialog>
+
+{itens.map((i) => (
+  <template data-painel-conteudo={i.chave}>
+    <p class="k">{i.rotulo}</p>
+    <h2 id="painel-titulo">{i.titulo}</h2>
+    <p class="resumo">{i.resumo}</p>
+    {i.refs.length > 0 && <h3>Onde estudar</h3>}
+    <Refs refs={i.refs} />
+    <div class="acts">
+      {i.progresso && (
+        <button type="button" class="mark" data-alternar={i.progresso} data-progresso-id={i.progresso} aria-pressed="false">
+          <span class="nao">Marcar como estudado</span>
+          <span class="sim"><Check aria-hidden="true" size={15} stroke-width={3} /> Estudado</span>
+        </button>
+      )}
+      <a class="btn" href={i.rota}>Ler o resumo completo <ArrowRight aria-hidden="true" /></a>
+    </div>
+  </template>
+))}
+
+<script>
+  import { atualizar } from '../scripts/progresso';
+  import { ligarPainel } from '../scripts/painel';
+  ligarPainel(atualizar);
+</script>
+
+<style is:global>
+  .painel {
+    position: fixed; inset: 0 0 0 auto; margin: 0; padding: 0; border: 0; border-left: 1px solid var(--line);
+    height: 100%; max-height: 100%; width: min(440px, 100%); max-width: 100%;
+    background: var(--card); color: var(--text); overflow: auto;
+  }
+  .painel[open] { animation: painel-entra .25s ease; }
+  .painel::backdrop { background: rgba(0, 0, 0, .3); }
+  @keyframes painel-entra { from { transform: translateX(100%); } to { transform: none; } }
+  html:has(dialog.painel[open]) { overflow: hidden; }
+  .painel-in { position: relative; padding: 26px 26px 40px; }
+  .painel .x { position: absolute; top: 18px; right: 18px; }
+  .painel .k { font-size: 12px; color: var(--acc); font-weight: 500; margin: 0; padding-right: 44px; }
+  .painel h2 { font-size: 24px; letter-spacing: -.02em; margin: 8px 0 12px; padding-right: 44px; }
+  .painel .resumo { color: var(--muted); line-height: 1.65; font-size: 15px; margin: 0; }
+  .painel h3 { font: 600 11px var(--font-texto); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 26px 0 10px; }
+  .painel .acts { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 22px; }
+  .painel .mark {
+    border: 1px solid var(--acc); background: transparent; color: var(--acc); border-radius: 9px;
+    padding: 9px 14px; font-size: 13.5px; font-weight: 600; cursor: pointer;
+  }
+  .painel .mark.feito { background: var(--acc); color: var(--card); }
+  .painel .mark .sim { display: none; align-items: center; gap: 6px; }
+  .painel .mark.feito .sim { display: inline-flex; }
+  .painel .mark.feito .nao { display: none; }
+  .painel .acts .btn { padding: 9px 14px; font-size: 13.5px; }
+</style>

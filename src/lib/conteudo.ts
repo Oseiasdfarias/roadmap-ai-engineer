@@ -51,3 +51,9 @@ export async function vizinhos(entry: Item): Promise<{ anterior?: Item; proximo?
   const i = lista.findIndex((x) => x.id === entry.id);
   return { anterior: i > 0 ? lista[i - 1] : undefined, proximo: i >= 0 ? lista[i + 1] : undefined };
 }
+
+/** Ids de progresso de todos os tópicos e dicas (a base da contagem do cabeçalho). */
+export async function todosIdsProgresso(): Promise<string[]> {
+  const [topicos, dicas] = await Promise.all([getCollection('topicos'), getCollection('dicas')]);
+  return [...topicos, ...dicas].map(idProgresso).sort();
+}
