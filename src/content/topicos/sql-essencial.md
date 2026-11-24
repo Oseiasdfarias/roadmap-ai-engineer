@@ -60,12 +60,11 @@ CREATE TABLE ordem (id INTEGER PRIMARY KEY, maquina_id INTEGER, status TEXT);
 INSERT INTO maquina VALUES (1, 'Compressor X200'), (2, 'Torno T5');
 INSERT INTO ordem VALUES (1, 1, 'aberta'), (2, 1, 'fechada'), (3, 2, 'aberta');
 """)
-consulta = """
+print(con.execute("""
 SELECT m.nome, COUNT(*) AS abertas
 FROM ordem o JOIN maquina m ON m.id = o.maquina_id
 WHERE o.status = 'aberta' GROUP BY m.nome ORDER BY abertas DESC
-"""
-print(con.execute(consulta).fetchall())
+""").fetchall())
 ```
 
 O resultado traz cada máquina com a quantidade de ordens abertas. Leia a consulta em voz alta: "das ordens abertas, junte com a máquina, agrupe por nome e conte".

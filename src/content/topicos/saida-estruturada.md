@@ -58,24 +58,19 @@ O ciclo mais comum é "gerar, validar, tentar de novo". O exemplo abaixo usa Pyd
 
 ```python
 import json
-from pydantic import BaseModel, ValidationError
 from typing import Literal
-
+from pydantic import BaseModel, ValidationError
 class Triagem(BaseModel):
     prioridade: Literal["baixa", "media", "alta"]
-    maquina: str
-
-respostas = iter(['{"prioridade": "urgente", "maquina": "X200"}',   # inválida
-                  '{"prioridade": "alta", "maquina": "X200"}'])     # válida
-chamar_llm = lambda aviso: next(respostas)    # simulação do LLM
-
+respostas = iter(['{"prioridade": "urgente"}', '{"prioridade": "alta"}'])
+def chamar_llm(aviso):             # simulação: troque pela chamada real
+    return next(respostas)
 aviso = "Classifique a ordem."
-for tentativa in range(3):
-    texto = chamar_llm(aviso)
+for _ in range(3):
     try:
-        print(Triagem(**json.loads(texto))); break
+        print(Triagem(**json.loads(chamar_llm(aviso)))); break
     except (ValidationError, json.JSONDecodeError) as erro:
-        aviso += f"\nSua resposta falhou: {erro}. Corrija."
+        aviso += f"\nFalhou: {erro}. Corrija."
 ```
 
 A primeira resposta tem `"urgente"`, que não está entre os valores permitidos; o Pydantic recusa, o erro volta no prompt e a segunda tentativa passa. Limite o número de tentativas e decida o que fazer se todas falharem (registrar e encaminhar para uma pessoa).

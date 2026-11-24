@@ -299,6 +299,12 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com",
   "img": "https://platform.claude.com/web-api/og/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations?design-rev=5"
  },
+ "https://platform.openai.com/docs/guides/fine-tuning": {
+  "tipo": "Docs",
+  "dominio": "platform.openai.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.openai.com",
+  "img": "https://developers.openai.com/og/api/docs/guides/model-optimization.png"
+ },
  "https://portal.ciee.org.br/": {
   "tipo": "Vagas",
   "dominio": "portal.ciee.org.br",

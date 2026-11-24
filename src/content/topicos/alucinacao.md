@@ -52,13 +52,13 @@ Tipos comuns:
 - **Excesso de confiança:** nenhuma sinalização de dúvida.
 - **Citação falsa:** link ou artigo com formato perfeito e conteúdo inexistente.
 
-Formas de reduzir, da mais forte à mais fraca:
+Formas de reduzir, em ordem sugerida de aplicação:
 
 1. **Grounding** (ancorar a resposta em fontes): entregue ao modelo o texto confiável (por exemplo, com RAG) e mande responder só com base nele.
 2. **Citações:** peça o trecho que sustenta cada afirmação, para que você (ou um programa) confira.
 3. **Permitir "não sei":** sem essa saída, o modelo tende a responder qualquer coisa.
 4. **Saída estruturada:** campos fixos e valores permitidos reduzem o espaço de invenção, e o código valida o que voltou.
-5. **Evals:** um conjunto de perguntas com resposta conhecida mede a taxa de erro antes e depois de cada mudança.
+5. **Evals:** não reduzem a alucinação por si, mas medem se as outras medidas funcionam: um conjunto de perguntas com resposta conhecida mede a taxa de erro antes e depois de cada mudança.
 
 Um exemplo de prompt que aplica as três primeiras:
 

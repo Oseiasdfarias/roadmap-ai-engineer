@@ -23,9 +23,9 @@ referencias:
     tipo: "Docs"
     idioma: "en"
     gratuito: true
-  - titulo: "Karpathy: Intro to Large Language Models"
-    url: "https://www.youtube.com/watch?v=zjkBMFhNj_g"
-    tipo: "Vídeo"
+  - titulo: "Guia de fine-tuning da OpenAI"
+    url: "https://platform.openai.com/docs/guides/fine-tuning"
+    tipo: "Docs"
     idioma: "en"
     gratuito: true
 revisado: "2026-11-24"
@@ -54,7 +54,9 @@ Analogia: o prompt é dar ao funcionário um roteiro; o RAG é dar acesso à bib
 
 **LoRA em uma frase:** em vez de reescrever todos os pesos do modelo, treina-se um pequeno conjunto de pesos extras que se soma aos originais, o que reduz muito o custo e a memória exigidos. É a técnica por trás da maioria dos ajustes feitos por equipes pequenas, com bibliotecas como a PEFT.
 
-O que um fine-tuning exige: centenas ou milhares de exemplos de boa qualidade (entrada e saída desejada), uma forma de medir o resultado (evals) antes e depois, tempo de treino (em GPU) e a manutenção a cada vez que o modelo-base mudar. Cada provedor tem regras próprias sobre quais modelos aceitam ajuste; consulte a documentação oficial dele em vez de assumir.
+**Quanto custa decidir errado.** O custo não é só a conta do treino. Há o trabalho de preparar e revisar centenas de exemplos, o tempo de GPU, os evals para provar que melhorou e o retrabalho sempre que o modelo-base muda. Em números ilustrativos, semanas de uma pessoa para ganhar o que um prompt melhor dava em um dia. Vale a pena quando o prompt e o RAG já estão medidos e esgotados e o ganho (tom, formato, custo por chamada em alto volume) justifica esse custo recorrente.
+
+O que um fine-tuning exige: centenas ou milhares de exemplos de boa qualidade (entrada e saída desejada), uma forma de medir o resultado (evals) antes e depois, tempo de treino (em GPU) e a manutenção a cada vez que o modelo-base mudar.
 
 Um esboço de como os exemplos costumam ser preparados, em formato de mensagens (JSONL, um JSON por linha):
 
@@ -86,7 +88,7 @@ Neste roadmap, nenhum projeto exige fine-tuning, e isso é proposital: no P2: RA
 
 ## Como estudar
 
-1. Veja no vídeo de Karpathy a parte sobre como o modelo é treinado e ajustado (1 hora).
+1. Leia o guia de fine-tuning de um provedor, atento a quando ele recomenda ajustar e quando não (1 hora).
 2. Leia o resumo e a introdução do artigo do LoRA, pulando as fórmulas (1 hora).
 3. Leia o guia de início rápido da PEFT (2 horas).
 4. Escreva em um parágrafo, para um caso seu, por que prompt ou RAG bastam ou não (1 hora).

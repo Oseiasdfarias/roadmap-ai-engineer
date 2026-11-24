@@ -24,7 +24,7 @@ referencias:
     tipo: "Artigo"
     idioma: "en"
     gratuito: true
-  - titulo: "Embeddings: documentação da Anthropic"
+  - titulo: "Embeddings na documentação do Claude (recomenda a Voyage AI)"
     url: "https://platform.claude.com/docs/en/build-with-claude/embeddings"
     tipo: "Docs"
     idioma: "en"
@@ -86,7 +86,7 @@ No P2: RAG de Manuais Técnicos, cada trecho do manual vira um vetor guardado no
 2. Rode o exemplo com dez frases suas e veja as pontuações (2 horas).
 3. Faça uma busca semântica sobre 50 parágrafos de um texto que você conhece (1 dia).
 4. Teste uma consulta com sigla ou código e anote onde a busca falha (2 horas).
-5. Leia a documentação do Sentence Transformers, seção de busca semântica, e a página de embeddings da Anthropic para ver como um provedor de API oferece o mesmo recurso (3 horas).
+5. Leia a documentação do Sentence Transformers, seção de busca semântica, e a página de embeddings da documentação do Claude, que explica que a Anthropic não tem modelo próprio de embeddings e recomenda a Voyage AI (3 horas).
 
 ## Como mostrar
 

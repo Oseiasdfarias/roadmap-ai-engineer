@@ -60,20 +60,17 @@ O exemplo mostra um dataclass e um modelo Pydantic lado a lado (instale com `pip
 ```python
 from dataclasses import dataclass
 from pydantic import BaseModel, ValidationError
-
 @dataclass
 class Peca:
     codigo: str
     estoque: int
-
 class Ordem(BaseModel):
     peca: str
     quantidade: int
 
 print(Peca("A-10", "muitos"))        # aceita: dataclass não valida
-dados = {"peca": "A-10", "quantidade": "três"}
 try:
-    Ordem(**dados)
+    Ordem(peca="A-10", quantidade="três")
 except ValidationError as erro:
     print(erro.error_count(), "erro de validação")
 ```

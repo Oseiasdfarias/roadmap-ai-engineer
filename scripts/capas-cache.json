@@ -478,5 +478,11 @@
   "dominio": "sbert.net",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.sbert.net",
   "img": null
+ },
+ "https://platform.openai.com/docs/guides/fine-tuning": {
+  "tipo": "Docs",
+  "dominio": "platform.openai.com",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=platform.openai.com",
+  "img": "https://developers.openai.com/og/api/docs/guides/model-optimization.png"
  }
 }

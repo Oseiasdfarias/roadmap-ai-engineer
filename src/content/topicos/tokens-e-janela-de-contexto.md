@@ -39,7 +39,7 @@ Token é o pedaço de texto que o modelo processa: pode ser uma palavra curta, p
 
 ## Por que importa para um AI Engineer
 
-Tudo em LLM é medido em tokens. O provedor cobra por token de entrada e de saída. O limite da janela decide quanto texto cabe no prompt. E a velocidade da resposta cresce com o número de tokens gerados. Quem não pensa em tokens leva dois sustos: a conta no fim do mês e o erro de "contexto excedido" no meio de um teste.
+Tudo em LLM é medido em tokens. O provedor cobra por token de entrada e de saída. O limite da janela decide quanto texto cabe no prompt. E a latência (a espera pela resposta) cresce com o número de tokens gerados. Quem não pensa em tokens leva dois sustos: a conta no fim do mês e o erro de "contexto excedido" no meio de um teste.
 
 ## Como funciona
 
@@ -47,7 +47,7 @@ O texto passa por um **tokenizador**, que o quebra em pedaços de uma lista fixa
 
 Como tokenizadores foram desenhados com muito texto em inglês, o inglês costuma render mais caracteres por token. O português tem acentos, conjugações longas e palavras compostas, e tende a gastar mais tokens para dizer o mesmo. No exemplo abaixo, a frase em inglês dá 5 tokens e a equivalente em português dá 8 (resultado deste tokenizador; outros modelos dão números diferentes). O código e os números também gastam mais tokens do que parece.
 
-Você pode ver isso rodando um tokenizador. O exemplo usa a biblioteca `tiktoken` (`pip install tiktoken`), que baixa o vocabulário na primeira execução:
+Você pode ver isso rodando um tokenizador. O exemplo usa a biblioteca `tiktoken` (`pip install tiktoken`), que baixa o vocabulário na primeira execução. Essa codificação é da OpenAI e serve aqui só para ilustrar a tokenização; o modelo que você usar tem a sua.
 
 ```python
 import tiktoken
@@ -59,6 +59,8 @@ for frase in ["Replace the oil filter.", "Troque o filtro de óleo."]:
 ```
 
 Cada modelo tem o seu tokenizador, então o número exato varia. Para o valor oficial, use a ferramenta de contagem de tokens do provedor, que a documentação indica.
+
+Para estimar custo, multiplique tokens pelo preço por token. Com números ilustrativos: se o prompt tem 2.000 tokens, a resposta 500 e o provedor cobra 3 por milhão de tokens de entrada e 15 por milhão de saída, a chamada custa 0,006 + 0,0075 = 0,0135 na moeda do preço. Preços reais ficam na página do provedor.
 
 Sobre a **janela de contexto**, pense numa mesa de trabalho: só o que cabe na mesa você consegue olhar ao mesmo tempo. Nela entram o prompt do sistema, o histórico da conversa, os documentos que você anexa e a resposta. Há também um **limite de saída**, menor que a janela, para o tamanho da resposta.
 
@@ -74,15 +76,15 @@ No P1: Assistente da Montadora, o histórico da conversa cresce a cada mensagem,
 - **Enviar o documento inteiro "porque cabe".** Cabe, mas custa mais, demora mais e pode piorar a resposta.
 - **Esquecer a saída.** Se você pede uma resposta longa e o limite de saída é curto, o texto é cortado no meio.
 - **Ignorar o histórico.** Numa conversa longa, você paga de novo por todas as mensagens antigas a cada chamada.
-- **Citar preço ou tamanho de janela de cabeça.** Valores mudam; consulte a página oficial do provedor.
+- **Citar preço ou tamanho de janela de cabeça.** Valores mudam; consulte o provedor.
 
 ## Como estudar
 
 1. Rode o exemplo com dez frases suas em português e inglês e compare (2 horas).
 2. Leia a página de contagem de tokens da documentação e conte um prompt real (2 horas).
 3. Leia a página de janelas de contexto (1 hora).
-4. Leia o resumo e as figuras de "Lost in the Middle" (1 hora).
-5. Escreva uma função que corta o histórico para caber num limite de tokens e teste com uma conversa longa (1 dia).
+4. Leia o resumo de "Lost in the Middle" (1 hora).
+5. Escreva uma função que corta o histórico para caber num limite de tokens (1 dia).
 
 ## Como mostrar
 

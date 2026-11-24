@@ -57,7 +57,9 @@ Toda aplicação de IA passa por essa chamada. Entender mensagens, memória e pa
 - `temperature` (temperatura): controla o quanto a escolha da próxima palavra varia. Perto de 0, respostas mais previsíveis e repetíveis; mais alta, mais variedade. Para extrair dados ou responder fatos, use baixa; para ideias e textos criativos, mais alta.
 - `top_p`: limita as escolhas ao grupo das palavras mais prováveis. Em geral, ajuste a temperatura ou o top_p, não os dois ao mesmo tempo.
 - `max_tokens`: teto de tokens da resposta. Se for curto demais, o texto é cortado.
-- `stop` (sequências de parada): textos que, se aparecerem, encerram a geração.
+- Sequências de parada: textos que, se aparecerem, encerram a geração. O campo se chama `stop_sequences` no SDK da Anthropic e `stop` em outros provedores; os nomes variam.
+
+Confira na documentação do modelo que você usa quais parâmetros de amostragem ele aceita: alguns modelos mais novos restringem ou ignoram temperatura e top_p.
 - **Streaming:** em vez de esperar a resposta toda, você recebe pedaços à medida que são gerados, e o usuário vê o texto "digitando". Reduz a espera percebida.
 
 Um exemplo com o SDK da Anthropic (`pip install anthropic`; a chave vai na variável `ANTHROPIC_API_KEY`; consulte na documentação o nome atual do modelo):
@@ -79,7 +81,7 @@ for temp in (0.0, 1.0):
     print(temp, resp.content[0].text)
 ```
 
-Rode várias vezes: com `temperature=0.0` os nomes se repetem; com `1.0` variam. O experimento é o seu aprendizado.
+Rode várias vezes: com `temperature=0.0` os nomes tendem a se repetir (temperatura 0 não garante resultado idêntico); com `1.0` variam. O experimento é o seu aprendizado.
 
 ## Na prática
 

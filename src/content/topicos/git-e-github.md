@@ -43,11 +43,11 @@ No dia a dia de IA, o Git protege você de um problema comum: experimentos. Voc�
 O fluxo básico tem três áreas: a pasta de trabalho, a área de preparação (staging, onde você escolhe o que entra no próximo commit) e o histórico.
 
 ```bash
-git init                         # começa um repositório
+git init -b main                 # começa um repositório (branch main)
 git add main.py README.md        # prepara arquivos
 git commit -m "Adiciona leitura do CSV"
 git switch -c ajusta-prompt      # cria e entra numa branch
-git switch main                  # volta
+git switch main                  # volta (o padrão pode ser master em instalações antigas)
 git merge ajusta-prompt          # junta a branch na atual
 git log --oneline                # vê o histórico
 ```
