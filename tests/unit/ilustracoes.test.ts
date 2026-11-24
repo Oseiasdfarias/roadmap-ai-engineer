@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, statSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 const NOMES = [
@@ -24,5 +24,8 @@ describe('ilustrações', () => {
       expect(raiz, n).toMatch(/viewBox="/);
       expect(raiz, n).not.toMatch(/\s(width|height)=/);
     }
+  });
+  it('cada SVG tem no máximo 30 KB', () => {
+    for (const n of NOMES) expect(statSync(caminho(n)).size, n).toBeLessThanOrEqual(30 * 1024);
   });
 });

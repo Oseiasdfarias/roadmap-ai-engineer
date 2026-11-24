@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-"""Exporta as ilustrações de traço de pena (scripts/ilustracoes/gerar_ilustracoes.py) para SVGs do site.
+"""Exporta as ilustrações refinadas (gerar_ilustracoes.py desta pasta) para SVGs do site.
 
 As cores fixas viram variáveis CSS (--il-*), para o mesmo desenho funcionar no tema claro e no escuro.
-Saída: um .svg por ilustração em src/assets/ilustracoes/, sem width/height fixos (só viewBox),
-para o SVG ocupar o container mantendo a proporção. O componente Ilustracao.astro os injeta inline
-(inline, e não <img>, para o texto do desenho usar a fonte carregada pela página).
+Saída: um .svg por ilustração em ./svg, sem width/height fixos (só viewBox), prontos para substituir
+os de src/assets/ilustracoes/ no site (mesmos nomes, mesmo mecanismo de cor).
 
-Uso: python3 scripts/exportar-ilustracoes.py
+Uso: python3 exportar-ilustracoes.py
 """
 import importlib.util
 import re
@@ -16,18 +15,19 @@ AQUI = Path(__file__).resolve().parent
 GERADOR = AQUI / "ilustracoes" / "gerar_ilustracoes.py"
 SAIDA = AQUI.parent / "src" / "assets" / "ilustracoes"
 
+# Hex do gerador (= tema claro de tokens.css) -> variável CSS
 CORES = {
-    "#263241": "var(--il-tinta)",
-    "#8C98A8": "var(--il-fina)",
+    "#1B2330": "var(--il-tinta)",
+    "#8893A3": "var(--il-fina)",
     "#FFFFFF": "var(--il-papel)",
-    "#4A78A8": "var(--il-acento)",
-    "#1F3B5C": "var(--il-acento-esc)",
-    "#EEF2F6": "var(--il-ag1)",
-    "#E4EAF1": "var(--il-ag2)",
-    "#DDE7F2": "var(--il-ag3)",
-    "#C9D8EA": "var(--il-ag4)",
-    "#F4F7FA": "var(--il-tela)",
-    "#E2E6EC": "var(--il-guia)",
+    "#2F5FB3": "var(--il-acento)",
+    "#1F3F7A": "var(--il-acento-esc)",
+    "#F1F3F7": "var(--il-ag1)",
+    "#E8ECF2": "var(--il-ag2)",
+    "#E3EBF8": "var(--il-ag3)",
+    "#CBDAF2": "var(--il-ag4)",
+    "#F7F8FA": "var(--il-tela)",
+    "#E3E7ED": "var(--il-guia)",
 }
 
 
@@ -40,6 +40,9 @@ def main() -> None:
         s = fn()
         for hexa, var in CORES.items():
             s = s.replace(f'"{hexa}"', f'"{var}"')
+        sobra = re.findall(r'"#[0-9A-Fa-f]{3,8}"', s)
+        if sobra:
+            raise SystemExit(f"{nome}: cor sem variável: {sorted(set(sobra))}")
         raiz = re.match(r"<svg\b[^>]*>", s).group(0)
         nova = re.sub(r'\s(?:width|height)="[^"]*"', "", raiz)
         s = nova + s[len(raiz):]

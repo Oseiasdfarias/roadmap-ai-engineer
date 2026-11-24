@@ -7,7 +7,8 @@
 .item-cab h1 { font-size: clamp(36px, 5vw, 60px); font-weight: 600; letter-spacing: -.045em; line-height: 1.02; margin: 0; text-wrap: balance; }
 .resumo { margin: 28px 0 0; padding: 2px 0 2px 22px; border-left: 2px solid var(--accent); font-size: 20px; line-height: 1.6; color: var(--text-2); max-width: 64ch; }
 .item-vis { border: 1px solid var(--line); background: var(--surface-2); border-radius: 20px; padding: 28px; display: grid; place-items: center; aspect-ratio: 1; }
-.item-vis.largo { aspect-ratio: auto; padding: 24px 18px; align-self: center; }
+.item-vis.largo { aspect-ratio: auto; padding: 16px 8px; align-self: center; }
+.item-cab:has(.item-vis.largo) { grid-template-columns: minmax(0, 1fr) 360px; }
 .item-vis.fase-num { font-family: var(--font-mono); font-weight: 500; font-size: 88px; line-height: 1; letter-spacing: -.06em; color: var(--accent); align-content: center; gap: 12px; }
 .item-vis.fase-num small { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 
@@ -91,7 +92,7 @@
 .prosa hr { border: 0; border-top: 1px solid var(--line); margin: 40px 0; }
 
 @media (max-width: 860px) {
-  .item-cab { grid-template-columns: 1fr; gap: 28px; padding: 12px 0 36px; }
+  .item-cab, .item-cab:has(.item-vis.largo) { grid-template-columns: 1fr; gap: 28px; padding: 12px 0 36px; }
   .item-vis { display: none; }
   .resumo { font-size: 18px; }
 }

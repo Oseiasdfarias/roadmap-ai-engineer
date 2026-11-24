@@ -13,8 +13,8 @@
 .lp .track { flex: 1; height: 4px; border-radius: 9px; background: var(--line-strong); overflow: hidden; }
 .lp [data-progresso-barra] { display: block; height: 100%; background: var(--accent); width: 0; border-radius: 9px; transition: width .3s; }
 .lp small { font-family: var(--font-mono); font-size: 12px; color: var(--text-2); white-space: nowrap; }
-.pg-lado { background: var(--surface-2); border-left: 1px solid var(--line); display: grid; place-items: center; padding: 32px; min-width: 0; }
-.pg-lado .ilus-svg { max-width: 440px; }
+.pg-lado { background: var(--surface-2); border-left: 1px solid var(--line); display: grid; place-items: center; padding: 24px 12px; min-width: 0; }
+.pg-lado .ilus-svg { max-width: 560px; }
 .pg-num { font-family: var(--font-mono); font-weight: 500; font-size: clamp(96px, 12vw, 168px); line-height: 1; letter-spacing: -.06em; color: var(--accent); }
 .pg-num small { display: block; font-size: 12px; letter-spacing: .02em; color: var(--muted); text-align: center; margin-top: 14px; }
 
@@ -71,8 +71,8 @@
 @media (max-width: 760px) {
   .detail { padding: 20px 16px 72px; }
   .pg-cab-txt { padding: 28px 20px 26px; }
-  .pg-lado { padding: 20px; }
-  .pg-lado .ilus-svg { max-width: 280px; }
+  .pg-lado { padding: 12px 8px; }
+  .pg-lado .ilus-svg { max-width: 420px; }
   .cols { padding: 24px 20px 18px; }
   .cross { padding: 24px 20px; }
   .pg-sec { margin-top: 56px; }
