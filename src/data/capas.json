@@ -29,6 +29,12 @@
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=aws.amazon.com",
   "img": "https://a0.awsstatic.com/libra-css/images/logos/aws_logo_smile_1200x630.png"
  },
+ "https://capd.mit.edu/resources/resumes/": {
+  "tipo": "Artigo",
+  "dominio": "capd.mit.edu",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=capd.mit.edu",
+  "img": "https://cdn.uconnectlabs.com/wp-content/uploads/sites/123/2021/06/FindAJobOrInternship_CareerServices_LydiaHuth_1.png"
+ },
  "https://careerservices.fas.harvard.edu/channels/create-a-resume-cv-or-cover-letter/": {
   "tipo": "Artigo",
   "dominio": "careerservices.fas.harvard.edu",
@@ -250,12 +256,6 @@
   "dominio": "cursoemvideo.com",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.cursoemvideo.com",
   "img": "https://www.cursoemvideo.com/wp-content/uploads/2019/08/guana6.png"
- },
- "https://www.google.com/about/careers/applications/how-we-hire/": {
-  "tipo": "Artigo",
-  "dominio": "google.com",
-  "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.google.com",
-  "img": "https://www.gstatic.com/hiring/CportalUi/meta/og_image_google_careers.png"
  },
  "https://www.gov.br/anpd/pt-br/assuntos/regulacao/agenda-regulatoria-1": {
   "tipo": "Artigo",

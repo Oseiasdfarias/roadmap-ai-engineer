@@ -29,8 +29,8 @@ referencias:
     tipo: "Artigo"
     idioma: "en"
     gratuito: true
-  - titulo: "Google Careers: How we hire"
-    url: "https://www.google.com/about/careers/applications/how-we-hire/"
+  - titulo: "MIT CAPD: Resumes"
+    url: "https://capd.mit.edu/resources/resumes/"
     tipo: "Artigo"
     idioma: "en"
     gratuito: true
@@ -49,7 +49,7 @@ O currículo é um documento de uma página que mostra, em poucos segundos de le
 
 ## Por que importa
 
-No Brasil, boa parte das vagas de estágio e de tecnologia passa por plataformas de recrutamento como Gupy, que leem o seu currículo e comparam o texto com a descrição da vaga antes de alguém abri-lo. Depois dessa triagem, quem recruta lê rápido e procura evidência, não adjetivo.
+No Brasil, boa parte das vagas de estágio e de tecnologia passa por plataformas de recrutamento como Gupy, que podem ler o seu currículo e comparar o texto com a descrição da vaga antes de alguém abri-lo. Depois dessa triagem, quem recruta lê rápido e procura evidência, não adjetivo.
 
 Um currículo claro não garante entrevista. Ele evita que você seja descartado por motivo de forma, e dá ao entrevistador perguntas concretas para fazer.
 
@@ -71,11 +71,11 @@ Uma linha de projeto, antes:
 
 O problema: diz quais ferramentas você usou, mas não diz para quê, que decisão você tomou nem se funcionou.
 
-A mesma linha, depois:
+A mesma linha, depois (números ilustrativos):
 
 > Criei uma busca com citação de página em 12 manuais técnicos públicos (Python, PostgreSQL com pgvector). Troquei o corte de texto em tamanho fixo por corte por seção e subi o acerto da busca (recall@5) de 62% para 81% em 30 perguntas de teste.
 
-Agora a linha tem o problema (achar informação em manuais), a decisão (como cortar o texto) e o resultado medido. Os números precisam ser seus e estar no README do projeto, porque o entrevistador vai perguntar como você mediu.
+Agora a linha tem o problema (achar informação em manuais), a decisão (como cortar o texto) e o resultado medido. Recall@5 é a fração das perguntas de teste em que o trecho certo aparece entre os cinco primeiros resultados. No seu currículo, os números precisam ser seus e estar no README do projeto (o arquivo de apresentação do repositório), porque o entrevistador vai perguntar como você mediu.
 
 ## Erros comuns
 

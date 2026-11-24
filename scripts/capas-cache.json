@@ -328,5 +328,11 @@
   "dominio": "gupy.io",
   "icone": "https://www.google.com/s2/favicons?sz=64&domain=www.gupy.io",
   "img": "https://3299491.fs1.hubspotusercontent-na1.net/hubfs/3299491/trilhas-de-aprendizagem.jpg"
+ },
+ "https://capd.mit.edu/resources/resumes/": {
+  "tipo": "Artigo",
+  "dominio": "capd.mit.edu",
+  "icone": "https://www.google.com/s2/favicons?sz=64&domain=capd.mit.edu",
+  "img": "https://cdn.uconnectlabs.com/wp-content/uploads/sites/123/2021/06/FindAJobOrInternship_CareerServices_LydiaHuth_1.png"
  }
 }
