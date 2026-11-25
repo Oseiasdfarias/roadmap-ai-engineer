@@ -266,6 +266,42 @@ function home(perfil: Perfil | null, est: Estimativa[], dados: Dados | null): vo
   }
 }
 
+/** Painel de nível da home: esconde o que o perfil manda pular e mostra os próximos tópicos no lugar. */
+function painelNiveis(marcas: Record<string, Marca> | null): void {
+  const base = document.querySelector<HTMLElement>('[data-base-url]')?.dataset.baseUrl ?? '/';
+  for (const painel of todos('[data-nivel-painel]')) {
+    const max = Number(painel.querySelector<HTMLElement>('[data-painel-max]')?.dataset.painelMax ?? 5);
+    let ocultos = 0;
+    let total = 0;
+    for (const grupo of painel.querySelectorAll<HTMLElement>('[data-painel-grupo]')) {
+      const itens = [...grupo.querySelectorAll<HTMLElement>('[data-painel-topico]')];
+      const restantes = itens.filter((li) => !marcas || marcas[li.dataset.painelTopico!] !== 'pular');
+      ocultos += itens.length - restantes.length;
+      total += itens.length;
+      itens.forEach((li) => (li.hidden = !restantes.slice(0, max).includes(li)));
+      grupo.hidden = restantes.length === 0;
+      const mais = grupo.querySelector<HTMLElement>('[data-painel-mais]');
+      if (mais) {
+        mais.hidden = restantes.length <= max;
+        const n = mais.querySelector('[data-painel-mais-n]');
+        if (n) n.textContent = String(restantes.length - max);
+      }
+    }
+    const nt = painel.querySelector<HTMLElement>('[data-painel-ntopicos]');
+    if (nt) texto(nt, marcas && ocultos ? `${total - ocultos} de ${total} tópicos para você` : null);
+    const aviso = painel.querySelector<HTMLElement>('[data-painel-ocultos]');
+    if (aviso) {
+      aviso.hidden = ocultos === 0;
+      if (ocultos) {
+        aviso.replaceChildren(
+          `${ocultos} ${ocultos === 1 ? 'tópico que você já domina está oculto' : 'tópicos que você já domina estão ocultos'}. `,
+          Object.assign(document.createElement('a'), { href: `${base}nivel/${painel.dataset.nivelPainel}/`, textContent: 'Ver o nível completo' }),
+        );
+      }
+    }
+  }
+}
+
 export function aplicar(): void {
   const perfil = lerPerfil();
   const dados = dadosBase();
@@ -274,6 +310,7 @@ export function aplicar(): void {
       ? estimar(dados.topicos, dados.niveis, classificar(dados.topicos, perfil.blocos, undefined, perfil.nivel), perfil.horas, perfil.nivel)
       : [];
   etiquetas(perfil, dados);
+  painelNiveis(perfil && dados ? classificar(dados.topicos, perfil.blocos, undefined, perfil.nivel) : null);
   duracoes(perfil, est);
   linhaDoTempo(perfil, est);
   carreira(perfil, dados);

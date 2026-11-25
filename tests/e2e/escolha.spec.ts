@@ -97,3 +97,19 @@ test('estudante continua vendo estágio na home', async ({ page }) => {
   await expect(page.locator('#carreira h2')).toHaveText('O caminho até a vaga, fase por fase.');
   await expect(page.getByRole('button', { name: 'Mostrar todas as fases' })).toBeHidden();
 });
+
+test('painel do nível esconde o que o perfil manda pular', async ({ page }) => {
+  await page.goto('./');
+  const painel = page.locator('[data-nivel-painel="1"]');
+  await expect(painel.locator('[data-painel-topico="python-fundamentos"]')).toBeVisible();
+  await page.locator('#escolha').getByText('Dev de outra área', { exact: true }).click();
+  await expect(painel.locator('[data-painel-topico="python-fundamentos"]')).toBeHidden();
+  await expect(painel.locator('[data-painel-topico="git-e-github"]')).toBeHidden();
+  await expect(painel.locator('[data-painel-topico="python-poo-e-tipos"]')).toBeVisible();
+  await expect(painel.locator('[data-painel-ocultos]')).toContainText('4 tópicos que você já domina estão ocultos');
+  await expect(painel.locator('[data-painel-ntopicos]')).toHaveText('9 de 13 tópicos para você');
+  await page.locator('#escolha').getByRole('button', { name: 'Voltar ao roteiro padrão' }).click();
+  await expect(painel.locator('[data-painel-topico="python-fundamentos"]')).toBeVisible();
+  await expect(painel.locator('[data-painel-ocultos]')).toBeHidden();
+  await expect(painel.locator('[data-painel-ntopicos]')).toHaveText('13 tópicos');
+});

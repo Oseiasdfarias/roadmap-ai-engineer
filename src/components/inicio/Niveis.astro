@@ -26,20 +26,21 @@ import PerfilCarreira from '../PerfilCarreira.astro';
       <div class="nv-corpo">
         <div class="nv-meta">
           <span class="etq">Nível {n.meta.id} · você está aqui</span>
-          <span class="dur"><span data-perfil-duracao={n.meta.id}>{n.meta.duracao}</span> · {n.ids.length} tópicos</span>
+          <span class="dur"><span data-perfil-duracao={n.meta.id}>{n.meta.duracao}</span> · <span data-painel-ntopicos>{n.ids.length} tópicos</span></span>
           <span class="cont" data-progresso-conta={n.ids.join(',')}><span data-progresso-texto>0 / {n.ids.length}</span></span>
         </div>
         <h2>{cap(n.meta.nome)}</h2>
         <p class="obj">{n.meta.objetivo}</p>
-        <div class="nv-cols">
+        <p class="nv-ocultos" data-painel-ocultos hidden></p>
+        <div class="nv-cols" data-painel-max={MAX_POR_GRUPO}>
           {n.grupos.map((g) => (
-            <div>
+            <div data-painel-grupo>
               <h3>{g.grupo}</h3>
               <ul class="topicos">
-                {g.itens.slice(0, MAX_POR_GRUPO).map((t) => {
+                {g.itens.map((t, j) => {
                   const id = idProgresso(t);
                   return (
-                    <li>
+                    <li data-painel-topico={t.id} hidden={j >= MAX_POR_GRUPO}>
                       <button type="button" class="chk" data-alternar={id} data-progresso-id={id} aria-pressed="false" aria-label={`Marcar como estudado: ${t.data.titulo}`}>
                         <Check aria-hidden="true" stroke-width={3.6} />
                       </button>
@@ -50,9 +51,7 @@ import PerfilCarreira from '../PerfilCarreira.astro';
                     </li>
                   );
                 })}
-                {g.itens.length > MAX_POR_GRUPO && (
-                  <li class="mais"><a href={url(`/nivel/${n.meta.id}/`)}>+ {g.itens.length - MAX_POR_GRUPO} tópicos</a></li>
-                )}
+                <li class="mais" data-painel-mais hidden={g.itens.length <= MAX_POR_GRUPO}><a href={url(`/nivel/${n.meta.id}/`)}>+ <span data-painel-mais-n>{g.itens.length - MAX_POR_GRUPO}</span> tópicos</a></li>
               </ul>
             </div>
           ))}
@@ -114,6 +113,9 @@ import PerfilCarreira from '../PerfilCarreira.astro';
   .topicos .tp-nome { flex: 1; min-width: 0; text-align: left; background: none; border: 0; padding: 10px 0; font-size: 14px; color: var(--text); cursor: pointer; border-radius: 6px; }
   .topicos .tp-nome:hover { color: var(--accent); }
   .topicos .tp-nome.feito { color: var(--muted); }
+  .topicos li[hidden], [data-painel-grupo][hidden], .nv-ocultos[hidden] { display: none; }
+  .nv-ocultos { font-size: 13.5px; color: var(--text-2); margin: 0 0 18px; }
+  .nv-ocultos a { color: var(--link); }
   .topicos .mais { padding: 10px 0 10px 34px; font-size: 14px; }
   .topicos .mais a { color: var(--accent); text-decoration: none; }
   .topicos .mais a:hover { text-decoration: underline; }
