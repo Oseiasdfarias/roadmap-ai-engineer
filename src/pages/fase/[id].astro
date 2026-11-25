@@ -36,6 +36,9 @@ const rotulo = (f: NonNullable<typeof prev>) => `Fase ${f.data.id} · ${cap(f.da
         </div>
         <h1>{cap(d.nome)}</h1>
         <p class="obj">{d.objetivo}</p>
+        {d.id <= 2 && (
+          <p class="nota-perfil" data-nota-perfil>Já trabalha com desenvolvimento ou dados? O estágio pode não ser o seu caminho. <a href={url('/calculadora/')}>Veja a trilha para o seu perfil</a>.</p>
+        )}
         <div class="lp" data-progresso-conta={ids.join(',')}>
           <div class="track" role="progressbar" aria-label="Progresso da fase" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
             <span data-progresso-barra></span>

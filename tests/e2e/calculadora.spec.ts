@@ -136,3 +136,24 @@ test.describe('correções da revisão', () => {
     await expect(page.locator('[aria-live] button')).toHaveCount(0);
   });
 });
+
+test.describe('home e fases apontam para a calculadora', () => {
+  const CALC = '/roadmap-ai-engineer/calculadora/';
+  test('abertura, carreira e faixa final da home', async ({ page }) => {
+    await page.goto('./');
+    await expect(page.locator('.hero-ctas').getByRole('link', { name: 'Ajustar ao meu perfil' })).toHaveAttribute('href', CALC);
+    await expect(page.locator('#carreira').locator(`a[href="${CALC}"]`)).toHaveCount(1);
+    await expect(page.locator('footer').getByRole('link', { name: 'Calcular minha trilha' })).toHaveAttribute('href', CALC);
+    await expect(page.locator('#tempo')).not.toContainText('1º semestre');
+  });
+  test('fases 1 e 2 têm a nota para outros perfis; fase 3 não', async ({ page }) => {
+    for (const f of [1, 2]) {
+      await page.goto(`./fase/${f}/`);
+      await expect(page.locator(`[data-nota-perfil] a[href="${CALC}"]`)).toBeVisible();
+    }
+    await page.goto('./fase/2/');
+    await expect(page.locator('main')).not.toContainText('1º semestre da faculdade');
+    await page.goto('./fase/3/');
+    await expect(page.locator('[data-nota-perfil]')).toHaveCount(0);
+  });
+});

@@ -15,6 +15,6 @@ export const BARRAS_NIVEL: BarraNivel[] = [
 
 export const BARRAS_FASE: BarraFase[] = [
   { fase: 1, inicio: 0, fim: 4, rotulo: 'Fundamentos' },
-  { fase: 2, inicio: 4, fim: 17, rotulo: 'Estágio, desde o 1º semestre' },
+  { fase: 2, inicio: 4, fim: 17, rotulo: 'Estágio ou primeira vaga' },
   { fase: 3, inicio: 17, fim: 24, rotulo: 'Júnior, depois 4 e 5' },
 ];

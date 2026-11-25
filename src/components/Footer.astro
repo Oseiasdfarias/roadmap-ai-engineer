@@ -26,6 +26,7 @@ const iniciais = AUTOR.nome.split(/\s+/).map((p) => p[0]).slice(0, 2).join('').t
       </div>
       <div class="cta-botoes">
         <a class="bt-pri" href={url('/nivel/1/')}>Abrir o nível 1</a>
+        <a class="bt-sec" href={url('/calculadora/')}>Calcular minha trilha</a>
         {PDF_URL && <a class="bt-sec" href={PDF_URL}><Download aria-hidden="true" />Baixar o PDF</a>}
       </div>
     </div>
