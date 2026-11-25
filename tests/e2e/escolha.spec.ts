@@ -113,3 +113,12 @@ test('painel do nível esconde o que o perfil manda pular', async ({ page }) => 
   await expect(painel.locator('[data-painel-ocultos]')).toBeHidden();
   await expect(painel.locator('[data-painel-ntopicos]')).toHaveText('13 tópicos');
 });
+
+test('ajuste de nível em destaque: primeiro botão da abertura e no menu', async ({ page }) => {
+  await page.goto('./');
+  const primeiro = page.locator('.hero-ctas a').first();
+  await expect(primeiro).toHaveText('Ajustar ao meu nível');
+  await primeiro.click();
+  await expect(page.locator('#escolha')).toBeInViewport();
+  await expect(page.locator('.nav a.nav-destaque')).toHaveAttribute('href', '/roadmap-ai-engineer/calculadora/');
+});

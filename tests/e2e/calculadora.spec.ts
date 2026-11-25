@@ -143,7 +143,7 @@ test.describe('home e fases apontam para a calculadora', () => {
   const CALC = '/roadmap-ai-engineer/calculadora/';
   test('abertura, carreira e faixa final da home', async ({ page }) => {
     await page.goto('./');
-    await expect(page.locator('.hero-ctas').getByRole('link', { name: 'Ajustar ao meu perfil' })).toHaveAttribute('href', '#escolha');
+    await expect(page.locator('.hero-ctas').getByRole('link', { name: 'Ajustar ao meu nível' })).toHaveAttribute('href', '#escolha');
     await expect(page.locator('#carreira').locator(`a[href="${CALC}"]:visible`)).toHaveCount(1);
     await expect(page.locator('footer').getByRole('link', { name: 'Calcular minha trilha' })).toHaveAttribute('href', CALC);
     await expect(page.locator('#tempo')).not.toContainText('1º semestre');

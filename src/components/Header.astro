@@ -1,5 +1,5 @@
 ---
-import { Search, FileDown } from '@lucide/astro';
+import { Search, FileDown, SlidersHorizontal } from '@lucide/astro';
 import ThemeToggle from './ThemeToggle.astro';
 import { PDF_URL } from '../config';
 import { url } from '../lib/url';
@@ -12,7 +12,6 @@ const itens = [
   { rotulo: 'Níveis', href: ancora('niveis') },
   { rotulo: 'Portfólio', href: ancora('portfolio') },
   { rotulo: 'Carreira', href: ancora('carreira') },
-  { rotulo: 'Calculadora', href: url('/calculadora/') },
 ];
 ---
 <header class="bar"><div class="in">
@@ -22,6 +21,7 @@ const itens = [
   </a>
   <nav class="nav" aria-label="Principal">
     {itens.map((i) => <a href={i.href}>{i.rotulo}</a>)}
+    <a class="nav-destaque" href={url('/calculadora/')}><SlidersHorizontal aria-hidden="true" />Calculadora</a>
   </nav>
   <div class="prog" data-progresso-global title="Seu progresso, salvo neste navegador">
     <div class="track" role="progressbar" aria-label="Progresso geral" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-progresso-trilha><div class="fill" data-progresso-barra></div></div>
