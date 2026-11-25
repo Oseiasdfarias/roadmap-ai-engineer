@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { alternar, contar, ler } from '../../src/lib/progresso';
+import { alternar, contar, ler, marcarVarios } from '../../src/lib/progresso';
 
 function falso(inicial?: string) {
   const dados = new Map<string, string>();
@@ -52,5 +52,16 @@ describe('progresso', () => {
 
   it('lista vazia não divide por zero', () => {
     expect(contar({}, [])).toEqual({ feitos: 0, total: 0, pct: 0 });
+  });
+
+  it('marcarVarios acrescenta sem desmarcar o que já estava', () => {
+    const s = falso('{"topico:a":true}');
+    marcarVarios(s, ['topico:b', 'topico:a']);
+    expect(ler(s)).toEqual({ 'topico:a': true, 'topico:b': true });
+  });
+
+  it('marcarVarios com armazenamento que lança não quebra', () => {
+    const s = { getItem: () => null, setItem: () => { throw new Error('cheio'); } };
+    expect(() => marcarVarios(s, ['x'])).not.toThrow();
   });
 });

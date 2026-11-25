@@ -1,0 +1,88 @@
+import { expect, test, type Page } from '@playwright/test';
+
+const PAG = './calculadora/';
+const primeiroNumero = async (page: Page) => Number((await page.locator('[data-calc-total]').textContent())!.match(/\d+/)![0]);
+
+test('padrão: estudante, 12 h, nada marcado, tudo a estudar', async ({ page }) => {
+  const erros: string[] = [];
+  page.on('pageerror', (e) => erros.push(e.message));
+  await page.goto(PAG);
+  await expect(page.getByRole('heading', { level: 1, name: 'Calcule a sua trilha' })).toBeVisible();
+  await expect(page.getByRole('radio', { name: 'Estudante' })).toBeChecked();
+  await expect(page.locator('[data-calc-horas]')).toHaveValue('12');
+  await expect(page.locator('[data-calc-bloco]:checked')).toHaveCount(0);
+  await expect(page.locator('[data-calc-total]')).toContainText('meses');
+  await expect(page.locator('[data-calc-marca="rag"]')).toHaveText('Estudar');
+  await expect(page.locator('[data-calc-resultado]')).toHaveAttribute('aria-live', 'polite');
+  await expect(page.locator('[data-calc-nojs]')).toBeHidden();
+  expect(erros).toEqual([]);
+});
+
+test('preset dev marca blocos, pula tópicos e troca a carreira', async ({ page }) => {
+  await page.goto(PAG);
+  await page.getByRole('radio', { name: 'Dev de outra área' }).check();
+  for (const id of ['python-basico', 'git', 'apis-web']) await expect(page.locator(`[data-calc-bloco="${id}"]`)).toBeChecked();
+  await expect(page.locator('[data-calc-marca="python-fundamentos"]')).toHaveText('Pular');
+  await expect(page.locator('[data-calc-marca="testes-e-evals-no-projeto"]')).toHaveText('Revisar');
+  await expect(page.locator('[data-calc-carreira]:visible h3')).not.toContainText(/estágio/i);
+  await expect(page.locator('[data-calc-aviso="python-fundamentos"]')).toBeVisible();
+});
+
+test('trocar a situação reaplica o preset', async ({ page }) => {
+  await page.goto(PAG);
+  await page.getByRole('radio', { name: 'Dev de outra área' }).check();
+  await page.locator('[data-calc-bloco="git"]').uncheck();
+  await page.getByRole('radio', { name: 'Dados/ML' }).check();
+  await expect(page.locator('[data-calc-bloco="git"]')).toBeChecked();
+  await expect(page.locator('[data-calc-bloco="dados-ml"]')).toBeChecked();
+});
+
+test('mais horas encurtam o total', async ({ page }) => {
+  await page.goto(PAG);
+  const com12 = await primeiroNumero(page);
+  await page.locator('[data-calc-horas]').fill('40');
+  await expect.poll(() => primeiroNumero(page)).toBeLessThan(com12);
+});
+
+test('a URL define e corrige o perfil', async ({ page }) => {
+  await page.goto(`${PAG}?s=dev&h=20&b=git`);
+  await expect(page.locator('[data-calc-horas]')).toHaveValue('20');
+  await expect(page.locator('[data-calc-bloco]:checked')).toHaveCount(1);
+  await expect(page.locator('[data-calc-bloco="git"]')).toBeChecked();
+  const erros: string[] = [];
+  page.on('pageerror', (e) => erros.push(e.message));
+  await page.goto(`${PAG}?h=abc&s=zzz`);
+  await expect(page.getByRole('radio', { name: 'Estudante' })).toBeChecked();
+  await expect(page.locator('[data-calc-horas]')).toHaveValue('12');
+  expect(erros).toEqual([]);
+});
+
+test('lembra o perfil ao voltar', async ({ page }) => {
+  await page.goto(PAG);
+  await page.getByRole('radio', { name: 'Dev de outra área' }).check();
+  await page.goto(PAG);
+  await expect(page.getByRole('radio', { name: 'Dev de outra área' })).toBeChecked();
+});
+
+test('marcar o que já domino grava no progresso', async ({ page }) => {
+  await page.goto(PAG);
+  await page.getByRole('radio', { name: 'Dev de outra área' }).check();
+  await page.locator('[data-calc-marcar-concluidos]').click();
+  const prog = await page.evaluate(() => JSON.parse(localStorage.getItem('rm-progresso-v1') ?? '{}'));
+  expect(prog['topico:python-fundamentos']).toBe(true);
+  expect(prog['topico:rag']).toBeUndefined();
+});
+
+test('campos têm rótulo', async ({ page }) => {
+  await page.goto(PAG);
+  await expect(page.getByLabel('Horas por semana')).toBeVisible();
+  await expect(page.getByRole('checkbox', { name: 'Docker' })).toBeVisible();
+});
+
+test.describe('sem JavaScript', () => {
+  test.use({ javaScriptEnabled: false });
+  test('mostra aviso', async ({ page }) => {
+    await page.goto(PAG);
+    await expect(page.getByText('A calculadora precisa de JavaScript')).toBeVisible();
+  });
+});

@@ -1,0 +1,206 @@
+---
+import { getEntry } from 'astro:content';
+import { BookOpen, Check, Link2, RotateCcw, SkipForward, TriangleAlert } from '@lucide/astro';
+import Base from '../layouts/Base.astro';
+import Migalha from '../components/Migalha.astro';
+import { BLOCOS, SITUACOES } from '../data/blocos';
+import { CARREIRA } from '../data/carreira-perfis';
+import { dadosTrilha } from '../lib/dados-trilha';
+import { url } from '../lib/url';
+import '../styles/detalhe.css';
+
+const dados = await dadosTrilha();
+// Valida no build que toda dica citada existe; guarda título e link.
+const carreira = await Promise.all(
+  SITUACOES.map(async (s) => {
+    const c = CARREIRA[s.id];
+    const dicas = await Promise.all(
+      c.dicas.map(async (slug) => {
+        const e = await getEntry('dicas', slug);
+        if (!e) throw new Error(`carreira-perfis: dica inexistente "${slug}"`);
+        return { titulo: e.data.titulo, href: url(`/carreira/${slug}/`) };
+      }),
+    );
+    return { id: s.id, ...c, dicas };
+  }),
+);
+const rotuloTopico = Object.fromEntries(dados.topicos.map((t) => [t.id, t.titulo]));
+---
+<Base titulo="Calculadora de trilha | Roadmap AI Engineer" descricao="Ajuste o roadmap ao seu ponto de partida: o que pular, o que revisar, quanto tempo leva e que caminho de carreira faz sentido." rotaOg="sobre">
+  <div class="topo-grade" aria-hidden="true"></div>
+  <div class="detail calc">
+    <Migalha itens={[{ rotulo: 'Mapa', href: url('/') }, { rotulo: 'Calculadora' }]} />
+    <header class="calc-cab">
+      <div class="kicker">Calculadora</div>
+      <h1>Calcule a sua trilha</h1>
+      <p>Diga de onde você parte e quanto tempo tem por semana. A calculadora indica o que pular, o que revisar e quanto tempo o roteiro tende a levar. É uma estimativa: serve para planejar, não é prazo.</p>
+    </header>
+
+    <p class="calc-nojs" data-calc-nojs>A calculadora precisa de JavaScript. Sem ele, use a <a href={url('/#tempo')}>linha do tempo de referência</a>, pensada para 10 a 15 horas por semana.</p>
+
+    <div class="calc-grade">
+      <form class="calc-form" data-calc-form onsubmit="return false">
+        <fieldset>
+          <legend><span class="n">01</span> Sua situação hoje</legend>
+          <div class="calc-sit">
+            {SITUACOES.map((s, i) => (
+              <label class="calc-op">
+                <input type="radio" name="situacao" value={s.id} data-calc-situacao checked={i === 0} />
+                <span>{s.rotulo}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="n">02</span> Tempo de estudo</legend>
+          <label class="calc-horas">
+            <span>Horas por semana</span>
+            <input type="number" min="3" max="40" step="1" value="12" inputmode="numeric" data-calc-horas />
+          </label>
+          <p class="calc-nota">De 3 a 40. A referência do roteiro é de 10 a 15.</p>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="n">03</span> O que você já domina</legend>
+          <p class="calc-nota">A situação já marca alguns blocos. Ajuste ao que você usa no dia a dia, não ao que viu uma vez.</p>
+          <div class="calc-blocos">
+            {BLOCOS.map((b) => (
+              <label class="calc-op">
+                <input type="checkbox" value={b.id} data-calc-bloco={b.id} />
+                <span>{b.rotulo}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      </form>
+
+      <section class="calc-res" data-calc-resultado aria-live="polite" aria-label="Resultado">
+        <div class="calc-total-caixa">
+          <div class="kicker">Estimativa</div>
+          <p class="calc-total" data-calc-total>18 a 24 meses</p>
+          <p class="calc-nota" data-calc-resumo></p>
+        </div>
+
+        <div class="calc-regua" data-calc-regua aria-hidden="true">
+          {dados.niveis.map((n) => (
+            <div class="calc-faixa">
+              <span class="calc-faixa-rot">0{n.nivel} {n.curto}</span>
+              <span class="calc-faixa-trilho"><span class={`calc-barra n${n.nivel}`} data-calc-barra={n.nivel}></span></span>
+              <span class="calc-faixa-meses" data-calc-meses={n.nivel}></span>
+            </div>
+          ))}
+        </div>
+
+        <div class="calc-acoes">
+          <button type="button" class="btn" data-calc-marcar-concluidos><Check aria-hidden="true" /> Marcar o que já domino como concluído</button>
+          <button type="button" class="btn" data-calc-link><Link2 aria-hidden="true" /> Copiar link</button>
+          <span class="calc-nota" data-calc-feedback role="status"></span>
+        </div>
+
+        {carreira.map((c) => (
+          <div class="calc-carreira" data-calc-carreira={c.id} hidden={c.id !== 'estudante'}>
+            <div class="kicker">Carreira</div>
+            <h3>{c.titulo}</h3>
+            <p>{c.texto}</p>
+            <ul>
+              {c.dicas.map((d) => <li><a href={d.href}>{d.titulo}</a></li>)}
+            </ul>
+          </div>
+        ))}
+      </section>
+    </div>
+
+    <section class="calc-niveis" aria-label="Tópicos por nível">
+      {dados.niveis.map((n) => (
+        <div class="calc-nivel">
+          <h2><a href={n.href}>Nível {n.nivel} · {n.titulo}</a> <span class="calc-nivel-meses" data-calc-meses-texto={n.nivel}></span></h2>
+          <ul>
+            {dados.topicos.filter((t) => t.nivel === n.nivel).map((t) => (
+              <li data-calc-item={t.id} data-marca="estudar">
+                <a href={t.href}>{t.titulo}</a>
+                <span class="calc-aviso" data-calc-aviso={t.id} hidden><TriangleAlert aria-hidden="true" /> <span></span></span>
+                <span class="calc-marca">
+                  <SkipForward class="i-pular" aria-hidden="true" />
+                  <RotateCcw class="i-revisar" aria-hidden="true" />
+                  <BookOpen class="i-estudar" aria-hidden="true" />
+                  <span data-calc-marca={t.id}>Estudar</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </section>
+  </div>
+  <script type="application/json" id="dados-trilha" set:html={JSON.stringify({ ...dados, rotulos: rotuloTopico })} />
+</Base>
+<script>
+  import '../scripts/calculadora';
+</script>
+
+<style is:global>
+  .calc-cab { max-width: 760px; margin: 8px 0 40px; }
+  .calc-cab h1 { font-size: clamp(34px, 5vw, 56px); font-weight: 600; letter-spacing: -.045em; line-height: 1.02; margin: 0 0 16px; }
+  .calc-cab p { font-size: 16px; line-height: 1.65; color: var(--text-2); margin: 0; }
+  .calc-nojs[hidden] { display: none; }
+  .calc-nojs { border: 1px solid var(--line); background: var(--surface); border-radius: 14px; padding: 16px 20px; }
+  .calc-grade { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 28px; align-items: start; }
+  .calc-form { display: flex; flex-direction: column; gap: 16px; }
+  .calc-form fieldset { border: 1px solid var(--line); background: var(--surface); border-radius: 20px; padding: 22px 24px; margin: 0; min-width: 0; }
+  .calc-form legend { font-size: 15px; font-weight: 600; padding: 0 6px; margin-left: -6px; }
+  .calc-form legend .n, .calc-res .n { font-family: var(--font-mono); font-size: 12px; color: var(--accent); margin-right: 6px; }
+  .calc-sit, .calc-blocos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+  .calc-op { display: flex; gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; font-size: 14px; cursor: pointer; min-height: 44px; }
+  .calc-op:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+  .calc-op:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .calc-op input { accent-color: var(--accent); margin: 0; }
+  .calc-horas { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 12px; font-size: 14px; }
+  .calc-horas input { width: 96px; font: inherit; font-family: var(--font-mono); font-size: 16px; color: var(--text); background: var(--surface-2); border: 1px solid var(--line-strong); border-radius: 10px; padding: 9px 12px; }
+  .calc-nota { font-size: 13px; line-height: 1.55; color: var(--text-2); margin: 10px 0 0; }
+  .calc-res { position: sticky; top: calc(var(--header-h, 64px) + 16px); border: 1px solid var(--line); background: var(--surface); border-radius: 20px; padding: 26px; display: flex; flex-direction: column; gap: 22px; }
+  .calc-total { font-size: clamp(32px, 4vw, 46px); font-weight: 600; letter-spacing: -.04em; margin: 0; line-height: 1; }
+  .calc-regua { display: flex; flex-direction: column; gap: 10px; padding-top: 18px; border-top: 1px solid var(--line); }
+  .calc-faixa { display: grid; grid-template-columns: 112px minmax(0, 1fr) 82px; gap: 12px; align-items: center; font-size: 13px; }
+  .calc-faixa-rot { font-weight: 600; color: var(--link); white-space: nowrap; }
+  .calc-faixa-trilho { position: relative; height: 26px; border-radius: 8px; background: var(--section-alt); }
+  .calc-barra { position: absolute; top: 0; bottom: 0; border-radius: 8px; transition: left .3s, width .3s; }
+  .calc-barra.n1 { background: var(--tl-1); } .calc-barra.n2 { background: var(--tl-2); } .calc-barra.n3 { background: var(--tl-3); }
+  .calc-barra.n4 { background: var(--tl-4); border: 1px solid var(--tl-4-line); }
+  .calc-faixa-meses { font-family: var(--font-mono); font-size: 12px; color: var(--text-2); text-align: right; }
+  .calc-acoes { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .calc-acoes .btn svg { width: 15px; height: 15px; }
+  .calc-acoes .calc-nota { margin: 0; }
+  .calc-carreira { padding-top: 18px; border-top: 1px dashed var(--line-strong); }
+  .calc-carreira h3 { font-size: 19px; font-weight: 600; letter-spacing: -.02em; margin: 0 0 8px; }
+  .calc-carreira p { font-size: 14.5px; line-height: 1.65; color: var(--text-2); margin: 0 0 10px; }
+  .calc-carreira ul { margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.8; }
+  .calc-carreira a, .calc-nivel a { color: var(--link); }
+  .calc-niveis { margin-top: 56px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .calc-nivel { border: 1px solid var(--line); background: var(--surface); border-radius: 20px; padding: 22px 24px; }
+  .calc-nivel h2 { font-size: 17px; font-weight: 600; letter-spacing: -.02em; margin: 0 0 12px; display: flex; justify-content: space-between; gap: 12px; }
+  .calc-nivel h2 a { text-decoration: none; }
+  .calc-nivel-meses { font-family: var(--font-mono); font-size: 12px; font-weight: 400; color: var(--text-2); white-space: nowrap; }
+  .calc-nivel ul { list-style: none; margin: 0; padding: 0; }
+  .calc-nivel li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; align-items: center; padding: 9px 0; border-top: 1px solid var(--line); font-size: 14px; }
+  .calc-nivel li a { text-decoration: none; }
+  .calc-nivel li[data-marca="pular"] > a { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--line-strong); }
+  .calc-marca { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 12px; border-radius: 999px; padding: 3px 10px; border: 1px solid var(--line); grid-column: 2; grid-row: 1; }
+  .calc-marca svg { width: 13px; height: 13px; display: none; }
+  li[data-marca="pular"] .i-pular, li[data-marca="revisar"] .i-revisar, li[data-marca="estudar"] .i-estudar { display: inline; }
+  li[data-marca="estudar"] .calc-marca { color: var(--accent); border-color: var(--career-line); background: var(--accent-soft); }
+  li[data-marca="revisar"] .calc-marca { color: var(--text); border-color: var(--line-strong); }
+  li[data-marca="pular"] .calc-marca { color: var(--text-2); }
+  .calc-aviso { grid-column: 1 / -1; font-size: 12.5px; color: var(--text-2); display: inline-flex; gap: 6px; align-items: center; }
+  .calc-aviso[hidden] { display: none; }
+  .calc-aviso svg { width: 13px; height: 13px; flex: none; }
+  @media (max-width: 960px) {
+    .calc-grade, .calc-niveis { grid-template-columns: minmax(0, 1fr); }
+    .calc-res { position: static; }
+  }
+  @media (max-width: 520px) {
+    .calc-sit, .calc-blocos { grid-template-columns: minmax(0, 1fr); }
+    .calc-faixa { grid-template-columns: 92px minmax(0, 1fr) 70px; }
+    .calc-res, .calc-form fieldset, .calc-nivel { padding: 18px; }
+  }
+</style>

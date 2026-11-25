@@ -37,3 +37,15 @@ export function contar(estado: Estado, ids: string[]): { feitos: number; total: 
   const total = ids.length;
   return { feitos, total, pct: total ? Math.round((100 * feitos) / total) : 0 };
 }
+
+/** Marca todos os ids como estudados, sem desmarcar nenhum. */
+export function marcarVarios(storage: Armazem, ids: string[]): Estado {
+  const estado: Estado = { ...ler(storage) };
+  for (const id of ids) estado[id] = true;
+  try {
+    storage.setItem(CHAVE_PROGRESSO, JSON.stringify(estado));
+  } catch {
+    /* armazenamento indisponível */
+  }
+  return estado;
+}
