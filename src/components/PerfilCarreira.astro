@@ -1,0 +1,44 @@
+---
+import { getEntry } from 'astro:content';
+import { ArrowRight } from '@lucide/astro';
+import { CARREIRA } from '../data/carreira-perfis';
+import type { Situacao } from '../data/blocos';
+import { url } from '../lib/url';
+
+/** Quadros de carreira por perfil (exceto estudante), escondidos até o script de perfil mostrar o da pessoa. */
+const situacoes: Situacao[] = ['dev', 'dados', 'fora'];
+const quadros = await Promise.all(
+  situacoes.map(async (s) => ({
+    s,
+    ...CARREIRA[s],
+    dicas: await Promise.all(
+      CARREIRA[s].dicas.map(async (slug) => {
+        const e = await getEntry('dicas', slug);
+        if (!e) throw new Error(`PerfilCarreira: dica inexistente "${slug}"`);
+        return { titulo: e.data.titulo, href: url(`/carreira/${slug}/`) };
+      }),
+    ),
+  })),
+);
+---
+{quadros.map((q) => (
+  <div class="perfil-carreira" data-perfil-carreira={q.s} hidden>
+    <p class="perfil-carreira-aviso">Ajustado ao seu perfil · <a href={url('/calculadora/')}>alterar</a></p>
+    <p class="perfil-carreira-t">{q.titulo}</p>
+    <p>{q.texto}</p>
+    <ul>{q.dicas.map((d) => <li><a href={d.href}>{d.titulo} <ArrowRight aria-hidden="true" /></a></li>)}</ul>
+  </div>
+))}
+
+<style is:global>
+  .perfil-carreira { margin-top: 18px; border: 1px solid var(--career-line); background: var(--accent-soft); border-radius: 16px; padding: 18px 20px; max-width: 600px; }
+  .perfil-carreira[hidden] { display: none; }
+  .perfil-carreira p { margin: 0 0 8px; font-size: 14.5px; line-height: 1.6; color: var(--text-2); }
+  .perfil-carreira .perfil-carreira-aviso { font-family: var(--font-mono); font-size: 12px; color: var(--accent); }
+  .perfil-carreira .perfil-carreira-aviso a { color: inherit; }
+  .perfil-carreira .perfil-carreira-t { font-size: 17px; font-weight: 600; letter-spacing: -.02em; color: var(--text); }
+  .perfil-carreira ul { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 16px; }
+  .perfil-carreira li a { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; color: var(--link); font-weight: 500; text-decoration: none; }
+  .perfil-carreira li a:hover { text-decoration: underline; }
+  .perfil-carreira li svg { width: 13px; height: 13px; }
+</style>

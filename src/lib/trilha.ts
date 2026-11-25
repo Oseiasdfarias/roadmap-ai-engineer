@@ -111,3 +111,25 @@ export function perfilDaURL(q: URLSearchParams): Perfil {
 export function perfilParaURL(p: Perfil): string {
   return new URLSearchParams({ s: p.situacao, h: String(p.horas), b: p.blocos.join(',') }).toString();
 }
+
+export const CHAVE_PERFIL = 'rm-perfil-v1';
+
+/** Início e fim (em meses) de cada nível: em sequência, com sobreposição de até 1 mês (metade do nível, se ele for curto). */
+export function posicoes(est: Estimativa[]): { nivel: number; inicio: number; fim: number }[] {
+  let fimAnterior = 0;
+  return est.map((n, i) => {
+    const inicio = i === 0 ? 0 : Math.max(0, fimAnterior - Math.min(1, n.meses / 2));
+    fimAnterior = inicio + n.meses;
+    return { nivel: n.nivel, inicio, fim: fimAnterior };
+  });
+}
+
+/** Perfil salvo pela calculadora, ou null se não houver (ou se o armazenamento falhar). */
+export function lerPerfilSalvo(storage: Pick<Storage, 'getItem'>): Perfil | null {
+  try {
+    const bruto = storage.getItem(CHAVE_PERFIL);
+    return bruto ? perfilDaURL(new URLSearchParams(bruto)) : null;
+  } catch {
+    return null;
+  }
+}

@@ -93,7 +93,7 @@ test.describe('ligações', () => {
     await page.getByRole('navigation', { name: 'Principal' }).getByRole('link', { name: 'Calculadora' }).click();
     await expect(page).toHaveURL(/\/roadmap-ai-engineer\/calculadora\//);
     await page.goto('./');
-    await expect(page.locator('#tempo a[href="/roadmap-ai-engineer/calculadora/"]')).toHaveCount(1);
+    await expect(page.locator('#tempo a[href="/roadmap-ai-engineer/calculadora/"]:visible')).toHaveCount(1);
   });
 
   test('sem perfil salvo, nenhuma etiqueta', async ({ page }) => {
@@ -102,7 +102,8 @@ test.describe('ligações', () => {
   });
 
   test('com perfil dev, etiquetas no tópico e no nível', async ({ page }) => {
-    await page.goto('./calculadora/?s=dev');
+    await page.goto('./calculadora/');
+    await page.getByRole('radio', { name: 'Dev de outra área' }).check();
     await page.goto('./topico/python-fundamentos/');
     const etq = page.locator('[data-etiqueta-perfil]');
     await expect(etq).toBeVisible();
@@ -118,7 +119,8 @@ test.describe('ligações', () => {
 
 test.describe('correções da revisão', () => {
   test('parâmetro estranho na URL não apaga o perfil salvo', async ({ page }) => {
-    await page.goto('./calculadora/?s=dev');
+    await page.goto('./calculadora/');
+    await page.getByRole('radio', { name: 'Dev de outra área' }).check();
     await page.goto('./calculadora/?utm_source=linkedin');
     await expect(page.getByRole('radio', { name: 'Dev de outra área' })).toBeChecked();
   });
@@ -142,7 +144,7 @@ test.describe('home e fases apontam para a calculadora', () => {
   test('abertura, carreira e faixa final da home', async ({ page }) => {
     await page.goto('./');
     await expect(page.locator('.hero-ctas').getByRole('link', { name: 'Ajustar ao meu perfil' })).toHaveAttribute('href', CALC);
-    await expect(page.locator('#carreira').locator(`a[href="${CALC}"]`)).toHaveCount(1);
+    await expect(page.locator('#carreira').locator(`a[href="${CALC}"]:visible`)).toHaveCount(1);
     await expect(page.locator('footer').getByRole('link', { name: 'Calcular minha trilha' })).toHaveAttribute('href', CALC);
     await expect(page.locator('#tempo')).not.toContainText('1º semestre');
   });

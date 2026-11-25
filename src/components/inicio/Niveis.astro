@@ -25,7 +25,7 @@ const niveis = await Promise.all(
       <div class="nv-corpo">
         <div class="nv-meta">
           <span class="etq">Nível {n.meta.id} · você está aqui</span>
-          <span class="dur">{n.meta.duracao} · {n.ids.length} tópicos</span>
+          <span class="dur"><span data-perfil-duracao={n.meta.id}>{n.meta.duracao}</span> · {n.ids.length} tópicos</span>
           <span class="cont" data-progresso-conta={n.ids.join(',')}><span data-progresso-texto>0 / {n.ids.length}</span></span>
         </div>
         <h2>{cap(n.meta.nome)}</h2>
@@ -78,7 +78,7 @@ const niveis = await Promise.all(
           <div class="topo"><span class="k">Nível {n.meta.id}</span><span class="c" data-progresso-conta={n.ids.join(',')}><span data-progresso-texto>0 / {n.ids.length}</span></span></div>
           <h3>{cap(n.meta.nome)}</h3>
           <p>{n.meta.objetivo}</p>
-          <div class="pe"><span>{n.meta.duracao} · Fase {n.fase.id} · {cap(n.fase.nome)}</span><ArrowRight aria-hidden="true" /></div>
+          <div class="pe"><span><span data-perfil-duracao={n.meta.id}>{n.meta.duracao}</span> · Fase {n.fase.id} · {cap(n.fase.nome)}</span><ArrowRight aria-hidden="true" /></div>
         </a>
       </article>
     ))}

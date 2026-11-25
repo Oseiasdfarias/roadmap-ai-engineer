@@ -13,6 +13,7 @@ import Busca from '../components/Busca.astro';
 import { SITE } from '../config';
 import { url } from '../lib/url';
 import { todosIdsProgresso } from '../lib/conteudo';
+import { dadosTrilha } from '../lib/dados-trilha';
 
 interface Props {
   titulo: string;
@@ -25,6 +26,11 @@ interface Props {
 const { titulo, descricao, rotaOg, semCabecalho = false, noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, SITE.url).href;
 const idsProgresso = await todosIdsProgresso();
+const trilha = await dadosTrilha();
+const trilhaBase = {
+  topicos: trilha.topicos.map(({ id, nivel, tempo }) => ({ id, nivel, tempo, prerequisitos: [] })),
+  niveis: trilha.niveis.map(({ nivel, duracao }) => ({ nivel, duracao })),
+};
 const imagemOg = rotaOg ? new URL(url('/og/' + rotaOg + '.png'), SITE.url).href : undefined;
 ---
 <!doctype html>
@@ -60,11 +66,12 @@ const imagemOg = rotaOg ? new URL(url('/og/' + rotaOg + '.png'), SITE.url).href 
     <main data-pagefind-body={noindex ? undefined : ''} data-pagefind-ignore={noindex ? '' : undefined}><slot /></main>
     <Footer />
     <Busca />
+    <script type="application/json" data-trilha-base set:html={JSON.stringify(trilhaBase)} />
     <script type="application/json" data-progresso-todos set:html={JSON.stringify(idsProgresso)} />
     <script>
       import '../scripts/progresso';
       import '../scripts/cabecalho';
-      import '../scripts/etiqueta-perfil';
+      import '../scripts/perfil-site';
     </script>
   </body>
 </html>

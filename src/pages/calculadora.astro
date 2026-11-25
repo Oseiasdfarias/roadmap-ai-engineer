@@ -33,7 +33,7 @@ const rotuloTopico = Object.fromEntries(dados.topicos.map((t) => [t.id, t.titulo
     <header class="calc-cab">
       <div class="kicker">Calculadora</div>
       <h1>Calcule a sua trilha</h1>
-      <p>Diga de onde você parte e quanto tempo tem por semana. A calculadora indica o que pular, o que revisar e quanto tempo o roteiro tende a levar. É uma estimativa: serve para planejar, não é prazo.</p>
+      <p>Diga de onde você parte e quanto tempo tem por semana. A calculadora indica o que pular, o que revisar e quanto tempo o roteiro tende a levar. É uma estimativa: serve para planejar, não é prazo. O resto do site passa a seguir o seu perfil: prazos, linha do tempo e caminho de carreira.</p>
     </header>
 
     <p class="calc-nojs" data-calc-nojs>A calculadora precisa de JavaScript. Sem ele, use a <a href={url('/#tempo')}>linha do tempo de referência</a>, pensada para 10 a 15 horas por semana.</p>
@@ -95,6 +95,7 @@ const rotuloTopico = Object.fromEntries(dados.topicos.map((t) => [t.id, t.titulo
         <div class="calc-acoes">
           <button type="button" class="btn" data-calc-marcar-concluidos><Check aria-hidden="true" /> Marcar o que já domino como concluído</button>
           <button type="button" class="btn" data-calc-link><Link2 aria-hidden="true" /> Copiar link</button>
+          <button type="button" class="btn" data-calc-padrao><RotateCcw aria-hidden="true" /> Voltar ao roteiro padrão</button>
           <span class="calc-nota" data-calc-feedback role="status"></span>
         </div>
 

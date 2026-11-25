@@ -24,7 +24,7 @@ test.describe('nova página inicial', () => {
     for (let n = 1; n <= 4; n++) {
       await expect(barras.nth(n - 1)).toHaveAttribute('href', `/roadmap-ai-engineer/nivel/${n}/`);
     }
-    await expect(page.locator('#tempo a.tl-fase')).toHaveCount(3);
+    await expect(page.locator('#tempo a.tl-fase[data-fase]')).toHaveCount(3);
   });
 
   test('o rodapé tem a chamada e os cinco canais com as URLs exatas', async ({ page }) => {

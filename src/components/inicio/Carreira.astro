@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { url } from '../../lib/url';
+import PerfilCarreira from '../PerfilCarreira.astro';
 
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const fases = (await getCollection('fases')).sort((a, b) => a.data.id - b.data.id);
@@ -10,8 +11,9 @@ const fases = (await getCollection('fases')).sort((a, b) => a.data.id - b.data.i
     <div class="carr-intro">
       <div class="kicker">04 — Carreira</div>
       <h2>O caminho até a vaga, fase por fase.</h2>
-      <p>Vaga júnior de AI Engineer é rara. O caminho mais comum passa por estágio e por desenvolvimento antes de IA.</p>
-      <p class="carr-perfil">Já é dev ou trabalha com dados? <a href={url('/calculadora/')}>Veja o caminho para o seu perfil</a>.</p>
+      <p data-perfil-generico>Vaga júnior de AI Engineer é rara. O caminho mais comum passa por estágio e por desenvolvimento antes de IA.</p>
+      <p class="carr-perfil" data-perfil-generico>Já é dev ou trabalha com dados? <a href={url('/calculadora/')}>Veja o caminho para o seu perfil</a>.</p>
+      <PerfilCarreira />
     </div>
     <ol class="fases">
       {fases.map((f) => (
@@ -31,6 +33,7 @@ const fases = (await getCollection('fases')).sort((a, b) => a.data.id - b.data.i
   .carr { max-width: 1240px; margin: 0 auto; padding: 0 32px 112px; }
   .carr-grade { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 48px; align-items: start; border-top: 1px solid var(--line); padding-top: 64px; }
   .carr h2 { font-size: clamp(30px, 4vw, 44px); font-weight: 600; letter-spacing: -.04em; line-height: 1.05; margin: 0; text-wrap: balance; }
+  .carr-intro > p[hidden] { display: none; }
   .carr-intro > p.carr-perfil { margin-top: 12px; }
   .carr-perfil a { color: var(--accent); font-weight: 500; }
   .carr-intro > p { font-size: 15px; line-height: 1.6; color: var(--text-2); margin: 18px 0 0; }

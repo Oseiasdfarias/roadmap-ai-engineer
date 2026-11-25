@@ -40,7 +40,7 @@ const secCrit = projetos.length > 0 ? '03' : '02';
     <header class="pg-cab">
       <div class="pg-cab-txt">
         <div class="pg-meta">
-          <span class="etq">Nível {d.id} · {d.duracao}</span>
+          <span class="etq">Nível {d.id} · <span data-perfil-duracao={d.id}>{d.duracao}</span></span>
           <span class="dur">Nível {d.id} de 4 · {ids.length} tópicos</span>
         </div>
         <h1>{cap(d.nome)}</h1>

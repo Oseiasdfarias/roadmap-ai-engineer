@@ -1,6 +1,7 @@
 import { PRESETS, type Situacao } from '../data/blocos';
 import { marcarVarios } from '../lib/progresso';
 import {
+  CHAVE_PERFIL,
   classificar,
   dependentes,
   estimar,
@@ -13,7 +14,6 @@ import {
 } from '../lib/trilha';
 import type { DadosTrilha } from '../lib/dados-trilha';
 
-export const CHAVE_PERFIL = 'rm-perfil-v1';
 const ROTULO: Record<Marca, string> = { pular: 'Pular', revisar: 'Revisar', estudar: 'Estudar' };
 
 function armazem(): Pick<Storage, 'getItem' | 'setItem'> {
@@ -64,7 +64,7 @@ function iniciar(): void {
 
   let marcasAtuais: Record<string, Marca> = {};
 
-  function desenhar(): void {
+  function desenhar(salvar = true): void {
     const p = ler();
     const marcas = classificar(dados.topicos, p.blocos);
     marcasAtuais = marcas;
@@ -117,16 +117,19 @@ function iniciar(): void {
     });
 
     const qs = perfilParaURL(p);
-    try {
-      st.setItem(CHAVE_PERFIL, qs);
-    } catch {
-      /* sem armazenamento: vale só nesta página */
+    // Só grava quando a pessoa mexe: abrir o link de outra pessoa não troca o perfil salvo.
+    if (salvar) {
+      try {
+        st.setItem(CHAVE_PERFIL, qs);
+      } catch {
+        /* sem armazenamento: vale só nesta página */
+      }
     }
     history.replaceState(null, '', `${location.pathname}?${qs}${location.hash}`);
   }
 
   aplicar(inicial);
-  desenhar();
+  desenhar(false);
 
   radios.forEach((r) =>
     r.addEventListener('change', () => {
@@ -136,14 +139,25 @@ function iniciar(): void {
       desenhar();
     }),
   );
-  blocosEl.forEach((b) => b.addEventListener('change', desenhar));
-  horasEl.addEventListener('input', desenhar);
+  blocosEl.forEach((b) => b.addEventListener('change', () => desenhar()));
+  horasEl.addEventListener('input', () => desenhar());
   horasEl.addEventListener('change', () => {
     horasEl.value = String(limitarHoras(horasEl.value));
     desenhar();
   });
 
   const feedback = document.querySelector<HTMLElement>('[data-calc-feedback]')!;
+  document.querySelector('[data-calc-padrao]')?.addEventListener('click', () => {
+    try {
+      localStorage.removeItem(CHAVE_PERFIL);
+    } catch {
+      /* sem armazenamento */
+    }
+    aplicar(perfilDaURL(new URLSearchParams('')));
+    desenhar(false);
+    history.replaceState(null, '', location.pathname);
+    feedback.textContent = 'Perfil apagado. O site voltou ao roteiro padrão.';
+  });
   document.querySelector('[data-calc-marcar-concluidos]')?.addEventListener('click', () => {
     const ids = Object.entries(marcasAtuais)
       .filter(([, m]) => m === 'pular')

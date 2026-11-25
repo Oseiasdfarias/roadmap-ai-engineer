@@ -22,12 +22,13 @@ const col = (inicio: number, fim: number) => `grid-column: ${inicio + 2} / ${fim
     <div class="sec-cab">
       <div>
         <div class="kicker">01 — Linha do tempo</div>
-        <h2>Meses, com 10 a 15 horas por semana.</h2>
+        <h2 data-perfil-tl-titulo>Meses, com 10 a 15 horas por semana.</h2>
+        <p class="tl-aviso" data-perfil-aviso hidden>Ajustado ao seu perfil · <a href={url('/calculadora/')}>alterar</a></p>
       </div>
-      <p>Os níveis se sobrepõem e a carreira corre por baixo deles. Esta é a referência para quem começa do zero. <a class="tl-calc" href={url('/calculadora/')}>Seu ponto de partida é outro? Calcule sua trilha <ArrowRight aria-hidden="true" /></a></p>
+      <p>Os níveis se sobrepõem e a carreira corre por baixo deles. <span data-perfil-generico>Esta é a referência para quem começa do zero. <a class="tl-calc" href={url('/calculadora/')}>Seu ponto de partida é outro? Calcule sua trilha <ArrowRight aria-hidden="true" /></a></span></p>
     </div>
     <div class="tl-caixa" tabindex="0" role="region" aria-label="Linha do tempo em meses (role para ver tudo)">
-      <div class="tl">
+      <div class="tl" data-perfil-tl>
         <div class="tl-reg" aria-hidden="true">
           <span>mês</span>
           {meses.map((m) => <span>{m % PASSO_REGUA === 0 ? m : ''}</span>)}
@@ -36,7 +37,7 @@ const col = (inicio: number, fim: number) => `grid-column: ${inicio + 2} / ${fim
           {barras.map((b, i) => (
             <li class="tl-linha">
               <span class="tl-rot">{i === 0 ? 'Estudo' : ''}</span>
-              <a class={`tl-barra n${b.nivel}`} style={col(b.inicio, b.fim)} href={b.href}>{b.rotulo}</a>
+              <a class={`tl-barra n${b.nivel}`} data-nivel={b.nivel} style={col(b.inicio, b.fim)} href={b.href}>{b.rotulo}</a>
             </li>
           ))}
         </ul>
@@ -44,8 +45,9 @@ const col = (inicio: number, fim: number) => `grid-column: ${inicio + 2} / ${fim
           <li class="tl-linha">
             <span class="tl-rot acc">Carreira</span>
             {BARRAS_FASE.map((f) => (
-              <a class={`tl-fase f${f.fase}`} style={col(f.inicio, f.fim)} href={url(`/fase/${f.fase}/`)}>{f.fase} {f.rotulo}</a>
+              <a class={`tl-fase f${f.fase}`} data-fase={f.fase} style={col(f.inicio, f.fim)} href={url(`/fase/${f.fase}/`)}>{f.fase} {f.rotulo}</a>
             ))}
+            <a class="tl-fase tl-perfil" data-perfil-tl-carreira hidden href={url('/calculadora/')}></a>
           </li>
         </ul>
       </div>
@@ -64,7 +66,7 @@ const col = (inicio: number, fim: number) => `grid-column: ${inicio + 2} / ${fim
   .tl-calc svg { width: 14px; height: 14px; }
   .tl-caixa { border: 1px solid var(--line); border-radius: 20px; background: var(--surface); padding: 28px 28px 24px; overflow-x: auto; }
   .tl { min-width: 860px; }
-  .tl-reg, .tl-linha { display: grid; grid-template-columns: 120px repeat(24, minmax(0, 1fr)); align-items: center; }
+  .tl-reg, .tl-linha { display: grid; grid-template-columns: 120px repeat(var(--tl-meses, 24), minmax(0, 1fr)); align-items: center; }
   .tl-reg { font-family: var(--font-mono); font-size: 11px; color: var(--muted); padding-bottom: 10px; border-bottom: 1px solid var(--line); margin-bottom: 14px; }
   .tl-lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
   .tl-rot { font-size: 13px; font-weight: 600; color: var(--link); }
@@ -75,6 +77,10 @@ const col = (inicio: number, fim: number) => `grid-column: ${inicio + 2} / ${fim
   .tl-barra.n3 { background: var(--tl-3); color: var(--tl-3-ink); }
   .tl-barra.n4 { background: var(--tl-4); color: var(--tl-4-ink); border: 1px solid var(--tl-4-line); padding: 10px 13px; }
   .tl-barra:hover { transform: translateY(-2px); filter: brightness(1.08); }
+  .tl-aviso { font-family: var(--font-mono); font-size: 12px; color: var(--accent); margin: 12px 0 0; }
+  .tl-aviso[hidden], .tl-fase[hidden], .sec-cab [data-perfil-generico][hidden] { display: none; }
+  .tl-aviso a { color: inherit; }
+  .tl-fase.tl-perfil { border-radius: 8px; background: var(--accent-soft); }
   .tl-carreira { margin-top: 14px; padding-top: 16px; border-top: 1px dashed var(--line-strong); }
   .tl-fase { border: 1px solid var(--career-line); color: var(--career-ink); padding: 10px 13px; font-size: 13px; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: background .2s; }
   .tl-fase:hover { background: var(--accent-soft); }

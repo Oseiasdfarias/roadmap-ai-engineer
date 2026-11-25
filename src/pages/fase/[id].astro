@@ -4,6 +4,7 @@ import { ArrowRight } from '@lucide/astro';
 import Base from '../../layouts/Base.astro';
 import Migalha from '../../components/Migalha.astro';
 import LinhaTopico from '../../components/LinhaTopico.astro';
+import PerfilCarreira from '../../components/PerfilCarreira.astro';
 import AnteriorProximo from '../../components/AnteriorProximo.astro';
 import { dicasDaFase, idProgresso } from '../../lib/conteudo';
 import { url } from '../../lib/url';
@@ -39,6 +40,7 @@ const rotulo = (f: NonNullable<typeof prev>) => `Fase ${f.data.id} · ${cap(f.da
         {d.id <= 2 && (
           <p class="nota-perfil" data-nota-perfil>Já trabalha com desenvolvimento ou dados? O estágio pode não ser o seu caminho. <a href={url('/calculadora/')}>Veja a trilha para o seu perfil</a>.</p>
         )}
+        {d.id <= 2 && <PerfilCarreira />}
         <div class="lp" data-progresso-conta={ids.join(',')}>
           <div class="track" role="progressbar" aria-label="Progresso da fase" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
             <span data-progresso-barra></span>
@@ -66,7 +68,7 @@ const rotulo = (f: NonNullable<typeof prev>) => `Fase ${f.data.id} · ${cap(f.da
               {niveis.map((n) => n && (
                 <li>
                   <a href={url(`/nivel/${n.data.id}/`)}>
-                    <span><span class="k">{n.data.duracao}</span>Nível {n.data.id} · {cap(n.data.curto)}</span>
+                    <span><span class="k" data-perfil-duracao={n.data.id}>{n.data.duracao}</span>Nível {n.data.id} · {cap(n.data.curto)}</span>
                     <ArrowRight aria-hidden="true" />
                   </a>
                 </li>

@@ -12,6 +12,9 @@ import {
   parseSemanas,
   perfilDaURL,
   perfilParaURL,
+  posicoes,
+  lerPerfilSalvo,
+  CHAVE_PERFIL,
   total,
   type TopicoEntrada,
 } from '../../src/lib/trilha';
@@ -134,5 +137,34 @@ describe('URL', () => {
   it('ida e volta', () => {
     const p = { situacao: 'dados' as const, horas: 20, blocos: ['git', 'sql'] };
     expect(perfilDaURL(new URLSearchParams(perfilParaURL(p)))).toEqual(p);
+  });
+});
+
+describe('posições na linha do tempo', () => {
+  it('níveis em sequência com sobreposição de até 1 mês', () => {
+    const est = [
+      { nivel: 1, meses: 5, min: 4, max: 7 },
+      { nivel: 2, meses: 2.5, min: 2, max: 4 },
+      { nivel: 3, meses: 0.5, min: 1, max: 1 },
+    ];
+    const p = posicoes(est);
+    expect(p[0]).toEqual({ nivel: 1, inicio: 0, fim: 5 });
+    expect(p[1]).toEqual({ nivel: 2, inicio: 4, fim: 6.5 });
+    expect(p[2].inicio).toBeCloseTo(6.25);
+    expect(p[2].fim).toBeCloseTo(6.75);
+  });
+});
+
+describe('perfil salvo', () => {
+  const st = (v: string | null) => ({ getItem: (k: string) => (k === CHAVE_PERFIL ? v : null) });
+  it('sem perfil devolve null', () => {
+    expect(lerPerfilSalvo(st(null))).toBeNull();
+    expect(lerPerfilSalvo(st(''))).toBeNull();
+  });
+  it('com perfil devolve o perfil', () => {
+    expect(lerPerfilSalvo(st('s=dev&h=20&b=git'))).toEqual({ situacao: 'dev', horas: 20, blocos: ['git'] });
+  });
+  it('armazenamento que lança devolve null', () => {
+    expect(lerPerfilSalvo({ getItem: () => { throw new Error('x'); } })).toBeNull();
   });
 });
