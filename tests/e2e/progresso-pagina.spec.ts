@@ -34,3 +34,16 @@ test('a barra de progresso do topo leva ao mapa', async ({ page }) => {
   await page.locator('.bar a.prog').click();
   await expect(page).toHaveURL(/\/progresso\/$/);
 });
+
+test('home tem o resumo do mapa com botão em destaque para o mapa completo', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('rm-progresso-v1', JSON.stringify({ 'topico:rag': true })));
+  await page.goto('./');
+  const sec = page.locator('#mapa-resumo');
+  await expect(sec.locator('.mapa-q[data-tipo="topico"]')).toHaveCount(38);
+  await expect(sec.locator('.mapa-q[data-tipo="dica"]')).toHaveCount(17);
+  await expect(sec.locator('.mapa-q[data-progresso-id="topico:rag"]')).toHaveClass(/feito/);
+  const cta = sec.getByRole('link', { name: 'Abrir o mapa completo' });
+  await expect(cta).toHaveClass(/mres-cta/);
+  await cta.click();
+  await expect(page).toHaveURL(/\/progresso\/$/);
+});

@@ -1,0 +1,99 @@
+---
+import { getCollection } from 'astro:content';
+import { LayoutGrid, ArrowRight } from '@lucide/astro';
+import { dicasDaFase, idProgresso, todosIdsProgresso, topicosDoNivel } from '../../lib/conteudo';
+import { url } from '../../lib/url';
+import '../../styles/mapa.css';
+
+const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+const niveis = await Promise.all(
+  (await getCollection('niveis'))
+    .sort((a, b) => a.data.id - b.data.id)
+    .map(async (n) => {
+      const grupos = await topicosDoNivel(n.data.id);
+      return { d: n.data, grupos, ids: grupos.flatMap((g) => g.itens.map(idProgresso)) };
+    }),
+);
+const dicas = (await Promise.all((await getCollection('fases')).sort((a, b) => a.data.id - b.data.id).map((f) => dicasDaFase(f.data.id)))).flat();
+const todos = await todosIdsProgresso();
+---
+<section id="mapa-resumo" class="mres" aria-labelledby="mres-titulo">
+  <div class="mres-in">
+    <div class="mres-cab">
+      <div>
+        <div class="kicker">Seu mapa</div>
+        <h2 id="mres-titulo">Tudo o que você já estudou, num só lugar.</h2>
+        <p>Cada quadrado é um tópico. Azul é concluído. <span data-perfil-aviso hidden>Hachurado é o que o seu perfil permite pular.</span></p>
+      </div>
+      <div class="mres-num">
+        <b data-progresso-conta={todos.join(',')} data-progresso-formato="de"><span data-progresso-texto>0 de {todos.length}</span></b>
+        <span>itens concluídos</span>
+      </div>
+    </div>
+
+    <div class="mres-grade">
+      {niveis.map((n) => (
+        <div class="mres-linha">
+          <a class="mres-rot" href={url(`/nivel/${n.d.id}/`)}><span class="k">0{n.d.id}</span> {cap(n.d.curto)}</a>
+          <ul class="mapa-qs mres-qs">
+            {n.grupos.map((g, gi) =>
+              g.itens.map((t, ti) => (
+                <li class={gi > 0 && ti === 0 ? 'mres-sep' : undefined}>
+                  <a class="mapa-q" data-tipo="topico" href={url(`/topico/${t.id}/`)} data-progresso-id={idProgresso(t)} data-marca-topico={t.id} data-titulo={t.data.titulo} aria-label={t.data.titulo}>
+                    <span class="sr-only estado-feito"> (estudado)</span>
+                  </a>
+                </li>
+              )),
+            )}
+          </ul>
+          <small class="mres-conta" data-progresso-conta={n.ids.join(',')}><span data-progresso-texto>0 / {n.ids.length}</span></small>
+        </div>
+      ))}
+      <div class="mres-linha">
+        <a class="mres-rot" href="#carreira"><span class="k">→</span> Carreira</a>
+        <ul class="mapa-qs mres-qs">
+          {dicas.map((x) => (
+            <li>
+              <a class="mapa-q" data-tipo="dica" href={url(`/carreira/${x.id}/`)} data-progresso-id={idProgresso(x)} data-titulo={x.data.titulo} aria-label={x.data.titulo}>
+                <span class="sr-only estado-feito"> (estudado)</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <small class="mres-conta" data-progresso-conta={dicas.map(idProgresso).join(',')}><span data-progresso-texto>0 / {dicas.length}</span></small>
+      </div>
+    </div>
+
+    <a class="mres-cta" href={url('/progresso/')}><LayoutGrid aria-hidden="true" /> Abrir o mapa completo <ArrowRight aria-hidden="true" /></a>
+  </div>
+</section>
+
+<style is:global>
+  .mres { border-top: 1px solid var(--line); background: var(--section-alt); }
+  .mres-in { max-width: 1240px; margin: 0 auto; padding: 72px 32px; }
+  .mres-cab { display: flex; justify-content: space-between; align-items: end; gap: 24px 40px; flex-wrap: wrap; margin-bottom: 28px; }
+  .mres-cab h2 { font-size: clamp(28px, 3.6vw, 40px); font-weight: 600; letter-spacing: -.04em; line-height: 1.08; margin: 0 0 10px; max-width: 640px; }
+  .mres-cab p { font-size: 15px; line-height: 1.6; color: var(--text-2); margin: 0; }
+  .mres [hidden] { display: none !important; }
+  .mres-num { text-align: right; }
+  .mres-num b { display: block; font-size: 40px; font-weight: 600; letter-spacing: -.04em; line-height: 1; }
+  .mres-num > span { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+  .mres-grade { border: 1px solid var(--line); background: var(--surface); border-radius: 20px; padding: 22px 24px; display: flex; flex-direction: column; gap: 12px; }
+  .mres-linha { display: grid; grid-template-columns: 140px minmax(0, 1fr) 56px; gap: 16px; align-items: center; }
+  .mres-rot { font-size: 14px; font-weight: 600; color: var(--text); text-decoration: none; white-space: nowrap; }
+  .mres-rot:hover { color: var(--accent); }
+  .mres-rot .k { font-family: var(--font-mono); font-size: 12px; font-weight: 400; color: var(--accent); margin-right: 4px; }
+  .mres-qs .mres-sep { margin-left: 10px; }
+  .mres-conta { font-family: var(--font-mono); font-size: 12px; color: var(--muted); text-align: right; }
+  .mres-cta { margin-top: 24px; display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 26px; border-radius: 12px; font-size: 16px; font-weight: 600; text-decoration: none; background: var(--accent); color: var(--accent-ink); box-shadow: 0 0 0 4px var(--accent-soft), 0 8px 24px -8px var(--accent); transition: transform .2s, box-shadow .2s; }
+  .mres-cta:hover { transform: translateY(-2px); box-shadow: 0 0 0 6px var(--accent-soft), 0 12px 28px -8px var(--accent); }
+  .mres-cta svg { width: 18px; height: 18px; }
+  @media (max-width: 640px) {
+    .mres-in { padding: 56px 16px; }
+    .mres-num { text-align: left; }
+    .mres-linha { grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+    .mres-linha .mres-qs { grid-column: 1 / -1; grid-row: 2; }
+    .mres-grade { padding: 18px; }
+    .mres-cta { width: 100%; justify-content: center; }
+  }
+</style>

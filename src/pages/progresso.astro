@@ -7,6 +7,7 @@ import LinhaTopico from '../components/LinhaTopico.astro';
 import { dicasDaFase, idProgresso, todosIdsProgresso, topicosDoNivel } from '../lib/conteudo';
 import { url } from '../lib/url';
 import '../styles/detalhe.css';
+import '../styles/mapa.css';
 
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const niveis = await Promise.all(
@@ -165,15 +166,6 @@ const idsDicas = fases.flatMap((f) => f.ids);
   .mapa-conta small { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
   .mapa-grupo { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 12px; align-items: center; padding: 6px 0; }
   .mapa-grupo-t { font-size: 12.5px; color: var(--text-2); }
-  .mapa-qs { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 5px; }
-  .mapa-q { position: relative; display: block; width: 22px; height: 22px; border-radius: 5px; border: 1.5px solid var(--line-strong); background: var(--surface-2); transition: transform .12s, background .15s; }
-  .mapa-q:hover, .mapa-q:focus-visible { transform: scale(1.15); border-color: var(--accent); outline: none; z-index: 2; }
-  .mapa-q.feito { background: var(--accent); border-color: var(--accent); }
-  .mapa-q[data-marca="pular"]:not(.feito) { background: repeating-linear-gradient(135deg, var(--line) 0 3px, transparent 3px 6px); border-style: dashed; }
-  .mapa-q[data-marca="revisar"]:not(.feito)::before { content: ""; position: absolute; inset: 6px; border-radius: 50%; background: var(--accent); opacity: .55; }
-  .mapa-q.demo { display: inline-block; width: 16px; height: 16px; }
-  .mapa-q.demo[data-marca="revisar"]::before { inset: 4px; }
-  .mapa-q[data-titulo]:hover::after, .mapa-q[data-titulo]:focus-visible::after { content: attr(data-titulo); position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%) scale(.87); white-space: nowrap; font-size: 13px; padding: 6px 10px; border-radius: 8px; background: var(--text); color: var(--bg); pointer-events: none; }
   .mapa-lista { margin-top: 14px; border-top: 1px solid var(--line); }
   .mapa-abrir { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 12px 0 2px; font-size: 13.5px; font-weight: 500; color: var(--link); }
   .mapa-abrir::-webkit-details-marker { display: none; }
@@ -184,6 +176,5 @@ const idsDicas = fases.flatMap((f) => f.ids);
   @media (max-width: 520px) {
     .mapa-grupo { grid-template-columns: minmax(0, 1fr); gap: 6px; }
     .mapa-resumo { min-width: 0; width: 100%; }
-    .mapa-q[data-titulo]:hover::after, .mapa-q[data-titulo]:focus-visible::after { display: none; }
   }
 </style>

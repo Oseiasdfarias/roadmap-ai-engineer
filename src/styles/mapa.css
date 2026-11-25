@@ -1,0 +1,13 @@
+/* Quadrados do mapa de progresso (página /progresso/ e resumo da home). */
+.mapa-qs { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 5px; }
+.mapa-q { position: relative; display: block; width: 22px; height: 22px; border-radius: 5px; border: 1.5px solid var(--line-strong); background: var(--surface-2); transition: transform .12s, background .15s; }
+.mapa-q:hover, .mapa-q:focus-visible { transform: scale(1.15); border-color: var(--accent); outline: none; z-index: 2; }
+.mapa-q.feito { background: var(--accent); border-color: var(--accent); }
+.mapa-q[data-marca="pular"]:not(.feito) { background: repeating-linear-gradient(135deg, var(--line) 0 3px, transparent 3px 6px); border-style: dashed; }
+.mapa-q[data-marca="revisar"]:not(.feito)::before { content: ""; position: absolute; inset: 6px; border-radius: 50%; background: var(--accent); opacity: .55; }
+.mapa-q.demo { display: inline-block; width: 16px; height: 16px; }
+.mapa-q.demo[data-marca="revisar"]::before { inset: 4px; }
+.mapa-q[data-titulo]:hover::after, .mapa-q[data-titulo]:focus-visible::after { content: attr(data-titulo); position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%) scale(.87); white-space: nowrap; font-size: 13px; padding: 6px 10px; border-radius: 8px; background: var(--text); color: var(--bg); pointer-events: none; }
+@media (max-width: 520px) {
+  .mapa-q[data-titulo]:hover::after, .mapa-q[data-titulo]:focus-visible::after { display: none; }
+}
