@@ -74,6 +74,15 @@ export function faseAtual(perfil: Perfil, niveis: NivelBase[]): number {
   return CARREIRA[perfil.situacao].fase ?? niveis.find((n) => n.nivel === perfil.nivel)?.fase ?? 1;
 }
 
+/** Elementos que só recebem a marca como atributo (quadrados do mapa de progresso). */
+function marcasEmAtributo(marcas: Record<string, Marca> | null): void {
+  todos('[data-marca-topico]').forEach((el) => {
+    const m = marcas?.[el.dataset.marcaTopico!];
+    if (m && m !== 'estudar') el.dataset.marca = m;
+    else delete el.dataset.marca;
+  });
+}
+
 function etiquetas(perfil: Perfil | null, dados: Dados | null): void {
   const els = todos('[data-etiqueta-topico]');
   if (!els.length) return;
@@ -310,7 +319,9 @@ export function aplicar(): void {
       ? estimar(dados.topicos, dados.niveis, classificar(dados.topicos, perfil.blocos, undefined, perfil.nivel), perfil.horas, perfil.nivel)
       : [];
   etiquetas(perfil, dados);
-  painelNiveis(perfil && dados ? classificar(dados.topicos, perfil.blocos, undefined, perfil.nivel) : null);
+  const marcasTodas = perfil && dados ? classificar(dados.topicos, perfil.blocos, undefined, perfil.nivel) : null;
+  painelNiveis(marcasTodas);
+  marcasEmAtributo(marcasTodas);
   duracoes(perfil, est);
   linhaDoTempo(perfil, est);
   carreira(perfil, dados);

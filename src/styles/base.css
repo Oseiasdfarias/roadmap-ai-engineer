@@ -33,6 +33,9 @@ html { scroll-padding-top: calc(var(--header-h, 84px) + 16px); }
 .nav a.nav-destaque { display: inline-flex; align-items: center; gap: 6px; color: var(--accent); font-weight: 600; border: 1px solid var(--career-line); background: var(--accent-soft); border-radius: 999px; padding: 6px 12px; margin: 4px 0; }
 .nav a.nav-destaque svg { width: 14px; height: 14px; }
 .nav a.nav-destaque:hover { border-color: var(--accent); }
+.prog { text-decoration: none; color: inherit; border-radius: 8px; }
+.prog:hover .track { background: var(--line-strong); }
+.prog:hover small { color: var(--accent); }
 .prog { flex: 1 1 110px; min-width: 90px; max-width: 220px; margin-left: auto; display: flex; align-items: center; gap: 10px; }
 .prog .track { flex: 1; height: 4px; border-radius: 9px; background: var(--line); overflow: hidden; }
 .prog .fill { height: 100%; width: 0; background: var(--accent); border-radius: 9px; transition: width .3s; }

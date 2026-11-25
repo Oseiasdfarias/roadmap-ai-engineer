@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { GraduationCap, Code2, ChartNoAxesCombined, Compass, SlidersHorizontal, RotateCcw, Pencil } from '@lucide/astro';
+import { GraduationCap, Code2, ChartNoAxesCombined, Compass, SlidersHorizontal, RotateCcw, Pencil, LayoutGrid } from '@lucide/astro';
 import { SITUACOES } from '../../data/blocos';
 import { url } from '../../lib/url';
 
@@ -38,6 +38,7 @@ const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
       <div class="esc-acoes">
         <button type="button" class="btn" data-escolha-alterar aria-expanded="false" aria-controls="escolha-form"><Pencil aria-hidden="true" /> <span data-rotulo>Alterar</span></button>
         <a class="btn" data-resumo-refinar href={url('/calculadora/')}><SlidersHorizontal aria-hidden="true" /> Refinar na calculadora</a>
+        <a class="btn" href={url('/progresso/')}><LayoutGrid aria-hidden="true" /> Ver meu progresso</a>
         <button type="button" class="btn" data-escolha-padrao><RotateCcw aria-hidden="true" /> Voltar ao roteiro padrão</button>
       </div>
     </div>

@@ -1,0 +1,189 @@
+---
+import { getCollection } from 'astro:content';
+import { ArrowRight, ChevronDown, SlidersHorizontal } from '@lucide/astro';
+import Base from '../layouts/Base.astro';
+import Migalha from '../components/Migalha.astro';
+import LinhaTopico from '../components/LinhaTopico.astro';
+import { dicasDaFase, idProgresso, todosIdsProgresso, topicosDoNivel } from '../lib/conteudo';
+import { url } from '../lib/url';
+import '../styles/detalhe.css';
+
+const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+const niveis = await Promise.all(
+  (await getCollection('niveis'))
+    .sort((a, b) => a.data.id - b.data.id)
+    .map(async (n) => {
+      const grupos = await topicosDoNivel(n.data.id);
+      return { d: n.data, grupos, ids: grupos.flatMap((g) => g.itens.map(idProgresso)) };
+    }),
+);
+const fases = await Promise.all(
+  (await getCollection('fases'))
+    .sort((a, b) => a.data.id - b.data.id)
+    .map(async (f) => {
+      const dicas = await dicasDaFase(f.data.id);
+      return { d: f.data, dicas, ids: dicas.map(idProgresso) };
+    }),
+);
+const todos = await todosIdsProgresso();
+const idsTopicos = niveis.flatMap((n) => n.ids);
+const idsDicas = fases.flatMap((f) => f.ids);
+---
+<Base titulo="Seu progresso | Roadmap AI Engineer" descricao="Mapa do que você já estudou no roadmap: todos os tópicos e dicas de carreira, por nível e subgrupo." rotaOg="sobre">
+  <div class="topo-grade" aria-hidden="true"></div>
+  <div class="detail mapa">
+    <Migalha itens={[{ rotulo: 'Mapa', href: url('/') }, { rotulo: 'Progresso' }]} />
+    <header class="mapa-cab">
+      <div>
+        <div class="kicker">Progresso</div>
+        <h1>Seu progresso</h1>
+        <p>Cada quadrado é um tópico. Clique para abrir, ou abra a lista do nível para marcar o que já estudou. Tudo fica salvo neste navegador.</p>
+      </div>
+      <div class="mapa-resumo">
+        <div class="mapa-num" data-progresso-conta={todos.join(',')} data-progresso-formato="de"><span data-progresso-texto>0 de {todos.length}</span></div>
+        <div class="mapa-num-rot">itens concluídos</div>
+        <div class="mapa-sub">
+          <span data-progresso-conta={idsTopicos.join(',')} data-progresso-formato="de"><span data-progresso-texto>0 de {idsTopicos.length}</span></span> tópicos ·{' '}
+          <span data-progresso-conta={idsDicas.join(',')} data-progresso-formato="de"><span data-progresso-texto>0 de {idsDicas.length}</span></span> dicas de carreira
+        </div>
+        <p class="mapa-proximo" data-mapa-proximo hidden>Próximo: <a href={url('/')}></a> <ArrowRight aria-hidden="true" /></p>
+        <p class="mapa-perfil" data-perfil-aviso hidden><SlidersHorizontal aria-hidden="true" /> Ajustado ao seu perfil · <a href={url('/calculadora/')}>alterar</a></p>
+      </div>
+    </header>
+
+    <ul class="mapa-legenda" aria-label="Legenda">
+      <li><span class="mapa-q demo feito" aria-hidden="true"></span> Concluído</li>
+      <li><span class="mapa-q demo" aria-hidden="true"></span> A estudar</li>
+      <li data-perfil-aviso hidden><span class="mapa-q demo" data-marca="revisar" aria-hidden="true"></span> Revisar</li>
+      <li data-perfil-aviso hidden><span class="mapa-q demo" data-marca="pular" aria-hidden="true"></span> Pode pular</li>
+    </ul>
+
+    <section class="mapa-sec" aria-labelledby="mapa-estudo">
+      <h2 id="mapa-estudo" class="mapa-sec-t"><span class="n">01</span> Estudo</h2>
+      <div class="mapa-niveis">
+        {niveis.map((n) => (
+          <article class="mapa-nivel" data-mapa-nivel={n.d.id}>
+            <header class="mapa-nivel-cab">
+              <h3><a href={url(`/nivel/${n.d.id}/`)}><span class="k">Nível {n.d.id}</span> {cap(n.d.nome)}</a></h3>
+              <span class="mapa-conta" data-progresso-conta={n.ids.join(',')}>
+                <span class="track" role="progressbar" aria-label={`Progresso do nível ${n.d.id}`} aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span data-progresso-barra></span></span>
+                <small data-progresso-texto>0 / {n.ids.length}</small>
+              </span>
+            </header>
+            {n.grupos.map((g) => (
+              <div class="mapa-grupo">
+                <span class="mapa-grupo-t">{g.grupo}</span>
+                <ul class="mapa-qs">
+                  {g.itens.map((t) => (
+                    <li>
+                      <a class="mapa-q" data-tipo="topico" href={url(`/topico/${t.id}/`)} data-progresso-id={idProgresso(t)} data-marca-topico={t.id} data-titulo={t.data.titulo} aria-label={t.data.titulo}>
+                        <span class="sr-only estado-feito"> (estudado)</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+            <details class="mapa-lista">
+              <summary class="mapa-abrir">Ver e marcar os tópicos <ChevronDown aria-hidden="true" /></summary>
+              {n.grupos.map((g) => (
+                <section class="mapa-lista-g">
+                  <h4>{g.grupo}</h4>
+                  <div class="linhas">{g.itens.map((t) => <LinhaTopico entry={t} />)}</div>
+                </section>
+              ))}
+            </details>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="mapa-sec" aria-labelledby="mapa-carreira">
+      <h2 id="mapa-carreira" class="mapa-sec-t"><span class="n">02</span> Carreira</h2>
+      <div class="mapa-niveis">
+        {fases.map((f) => (
+          <article class="mapa-nivel mapa-fase" data-mapa-fase={f.d.id}>
+            <header class="mapa-nivel-cab">
+              <h3><a href={url(`/fase/${f.d.id}/`)}><span class="k">Fase {f.d.id}</span> {cap(f.d.nome)}</a></h3>
+              <span class="mapa-conta" data-progresso-conta={f.ids.join(',')}>
+                <span class="track" role="progressbar" aria-label={`Progresso da fase ${f.d.id}`} aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span data-progresso-barra></span></span>
+                <small data-progresso-texto>0 / {f.ids.length}</small>
+              </span>
+            </header>
+            <ul class="mapa-qs">
+              {f.dicas.map((x) => (
+                <li>
+                  <a class="mapa-q" data-tipo="dica" href={url(`/carreira/${x.id}/`)} data-progresso-id={idProgresso(x)} data-titulo={x.data.titulo} aria-label={x.data.titulo}>
+                    <span class="sr-only estado-feito"> (estudado)</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <details class="mapa-lista">
+              <summary class="mapa-abrir">Ver e marcar as dicas <ChevronDown aria-hidden="true" /></summary>
+              <div class="linhas">{f.dicas.map((x) => <LinhaTopico entry={x} />)}</div>
+            </details>
+          </article>
+        ))}
+      </div>
+    </section>
+  </div>
+</Base>
+<script>
+  import '../scripts/progresso-pagina';
+</script>
+
+<style is:global>
+  .mapa-cab { display: flex; justify-content: space-between; gap: 32px; flex-wrap: wrap; align-items: end; margin: 8px 0 28px; }
+  .mapa-cab h1 { font-size: clamp(34px, 5vw, 56px); font-weight: 600; letter-spacing: -.045em; line-height: 1.02; margin: 0 0 14px; }
+  .mapa-cab p { font-size: 16px; line-height: 1.6; color: var(--text-2); margin: 0; max-width: 560px; }
+  .mapa-resumo { border: 1px solid var(--line); background: var(--surface); border-radius: 20px; padding: 22px 24px; min-width: 300px; }
+  .mapa-num { font-size: 40px; font-weight: 600; letter-spacing: -.04em; line-height: 1; }
+  .mapa-num-rot { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .mapa-sub { font-size: 13.5px; color: var(--text-2); margin-top: 12px; }
+  .mapa-resumo .mapa-proximo, .mapa-resumo .mapa-perfil { margin: 12px 0 0; font-size: 14px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; max-width: none; }
+  .mapa-proximo a { color: var(--accent); font-weight: 600; }
+  .mapa-perfil { font-family: var(--font-mono); font-size: 12px !important; color: var(--accent) !important; }
+  .mapa-perfil a { color: inherit; }
+  .mapa-resumo svg { width: 14px; height: 14px; }
+  .mapa [hidden] { display: none !important; }
+  .mapa-legenda { list-style: none; margin: 0 0 32px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 13px; color: var(--text-2); }
+  .mapa-legenda li { display: inline-flex; align-items: center; gap: 8px; }
+  .mapa-sec { margin-bottom: 48px; }
+  .mapa-sec-t { font-size: 22px; font-weight: 600; letter-spacing: -.03em; margin: 0 0 16px; }
+  .mapa-sec-t .n { font-family: var(--font-mono); font-size: 13px; color: var(--accent); margin-right: 8px; }
+  .mapa-niveis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .mapa-nivel { border: 1px solid var(--line); background: var(--surface); border-radius: 20px; padding: 20px 22px; min-width: 0; }
+  .mapa-nivel-cab { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 14px; }
+  .mapa-nivel h3 { font-size: 17px; font-weight: 600; letter-spacing: -.02em; margin: 0; }
+  .mapa-nivel h3 a { text-decoration: none; color: var(--text); }
+  .mapa-nivel h3 a:hover { color: var(--accent); }
+  .mapa-nivel h3 .k { font-family: var(--font-mono); font-size: 12px; font-weight: 400; color: var(--accent); margin-right: 6px; }
+  .mapa-conta { display: inline-flex; align-items: center; gap: 10px; flex: none; }
+  .mapa-conta .track { width: 72px; height: 4px; border-radius: 9px; background: var(--line); overflow: hidden; display: block; }
+  .mapa-conta .track > span { display: block; height: 100%; width: 0; background: var(--accent); transition: width .3s; }
+  .mapa-conta small { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+  .mapa-grupo { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 12px; align-items: center; padding: 6px 0; }
+  .mapa-grupo-t { font-size: 12.5px; color: var(--text-2); }
+  .mapa-qs { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 5px; }
+  .mapa-q { position: relative; display: block; width: 22px; height: 22px; border-radius: 5px; border: 1.5px solid var(--line-strong); background: var(--surface-2); transition: transform .12s, background .15s; }
+  .mapa-q:hover, .mapa-q:focus-visible { transform: scale(1.15); border-color: var(--accent); outline: none; z-index: 2; }
+  .mapa-q.feito { background: var(--accent); border-color: var(--accent); }
+  .mapa-q[data-marca="pular"]:not(.feito) { background: repeating-linear-gradient(135deg, var(--line) 0 3px, transparent 3px 6px); border-style: dashed; }
+  .mapa-q[data-marca="revisar"]:not(.feito)::before { content: ""; position: absolute; inset: 6px; border-radius: 50%; background: var(--accent); opacity: .55; }
+  .mapa-q.demo { display: inline-block; width: 16px; height: 16px; }
+  .mapa-q.demo[data-marca="revisar"]::before { inset: 4px; }
+  .mapa-q[data-titulo]:hover::after, .mapa-q[data-titulo]:focus-visible::after { content: attr(data-titulo); position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%) scale(.87); white-space: nowrap; font-size: 13px; padding: 6px 10px; border-radius: 8px; background: var(--text); color: var(--bg); pointer-events: none; }
+  .mapa-lista { margin-top: 14px; border-top: 1px solid var(--line); }
+  .mapa-abrir { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 12px 0 2px; font-size: 13.5px; font-weight: 500; color: var(--link); }
+  .mapa-abrir::-webkit-details-marker { display: none; }
+  .mapa-abrir svg { width: 15px; height: 15px; transition: transform .2s; }
+  .mapa-lista[open] .mapa-abrir svg { transform: rotate(180deg); }
+  .mapa-lista-g h4 { font-family: var(--font-mono); font-size: 11.5px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 16px 0 4px; }
+  @media (max-width: 960px) { .mapa-niveis { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 520px) {
+    .mapa-grupo { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+    .mapa-resumo { min-width: 0; width: 100%; }
+    .mapa-q[data-titulo]:hover::after, .mapa-q[data-titulo]:focus-visible::after { display: none; }
+  }
+</style>

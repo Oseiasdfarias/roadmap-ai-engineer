@@ -23,10 +23,10 @@ const itens = [
     {itens.map((i) => <a href={i.href}>{i.rotulo}</a>)}
     <a class="nav-destaque" href={url('/calculadora/')}><SlidersHorizontal aria-hidden="true" />Calculadora</a>
   </nav>
-  <div class="prog" data-progresso-global title="Seu progresso, salvo neste navegador">
+  <a class="prog" href={url('/progresso/')} data-progresso-global title="Ver o mapa do seu progresso">
     <div class="track" role="progressbar" aria-label="Progresso geral" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-progresso-trilha><div class="fill" data-progresso-barra></div></div>
     <small data-progresso-texto>0 / {total}</small>
-  </div>
+  </a>
   <div class="acoes">
     <button type="button" class="btn busca-btn" data-abrir-busca aria-label="Buscar">
       <Search aria-hidden="true" /><span class="rot">Buscar</span><kbd aria-hidden="true">/</kbd>
