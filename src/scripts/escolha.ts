@@ -58,7 +58,7 @@ function iniciar(): void {
     horas.value = String(limitarHoras(horas.value));
     salvar();
   });
-  alterar?.addEventListener('click', () => mostrarForm(form.hidden));
+  alterar?.addEventListener('click', () => mostrarForm(!!form.hidden));
   document.querySelector('[data-escolha-padrao]')?.addEventListener('click', () => {
     try {
       localStorage.removeItem(CHAVE_PERFIL);

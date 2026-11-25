@@ -29,6 +29,8 @@ test('escolher dev e nível 3 ajusta a home inteira; voltar ao padrão restaura'
   await expect(cta).toHaveText('Continuar pelo nível 3');
   await expect(cta).toHaveAttribute('href', '/roadmap-ai-engineer/nivel/3/');
   await expect(page.locator('[data-periodo-nome="1"]')).toHaveText('Já domina');
+  await expect(page.locator('[data-estacao="2"]')).toHaveClass(/atual/);
+  await expect(page.locator('[data-estacao="3"]')).toHaveClass(/proxima/);
   await expect(page.locator('[data-nivel-painel="3"]')).toBeVisible();
   await expect(page.locator('[data-perfil-ja="1"]')).toBeVisible();
   await expect(page.locator('#tempo .tl-barra[data-nivel="1"]')).toBeHidden();
@@ -65,4 +67,33 @@ test('calculadora: nível 3 pula os tópicos dos níveis 1 e 2', async ({ page }
   await expect(page.locator('[data-calc-marca="rag"]')).toHaveText('Pular');
   await expect(page.locator('[data-calc-marca="fastapi"]')).toHaveText('Estudar');
   await expect(page.locator('[data-calc-meses="1"]')).toHaveText('já domina');
+});
+
+test('perfil avançado: nada de estágio ou júnior visível na home', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('rm-perfil-v1', 's=dev&h=12&b=python-basico,git&n=3'));
+  await page.goto('./');
+  const visiveis = await page.evaluate(() => {
+    const out: string[] = [];
+    const w = document.createTreeWalker(document.querySelector('main')!, NodeFilter.SHOW_TEXT);
+    let n: Node | null;
+    while ((n = w.nextNode())) {
+      const t = n.textContent!.trim();
+      if (t && n.parentElement!.checkVisibility() && /est[aá]gi|j[uú]nior|gradua|faculdade/i.test(t)) out.push(t);
+    }
+    return out;
+  });
+  // O quadro de carreira do perfil pode citar "sem passar por estágio"; o resto não.
+  expect(visiveis.filter((t) => !/sem passar por estágio/.test(t))).toEqual([]);
+  await expect(page.locator('#carreira h2')).toHaveText('Seu caminho até IA, a partir de onde você está.');
+  await expect(page.locator('#carreira [data-fase-item="2"]')).toBeHidden();
+  await page.getByRole('button', { name: 'Mostrar todas as fases' }).click();
+  await expect(page.locator('#carreira [data-fase-item="2"]')).toBeVisible();
+});
+
+test('estudante continua vendo estágio na home', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('rm-perfil-v1', 's=estudante&h=12&b=&n=1'));
+  await page.goto('./');
+  await expect(page.locator('#carreira [data-fase-item="2"]')).toBeVisible();
+  await expect(page.locator('#carreira h2')).toHaveText('O caminho até a vaga, fase por fase.');
+  await expect(page.getByRole('button', { name: 'Mostrar todas as fases' })).toBeHidden();
 });

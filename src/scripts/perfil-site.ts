@@ -196,6 +196,20 @@ function carreira(perfil: Perfil | null, dados: Dados | null): void {
   });
   // Rótulo de carreira nos cards de nível: o caminho do perfil para quem não passa por estágio.
   const semFases = perfil && CARREIRA[perfil.situacao].fase !== null;
+  const inicioFase = semFases ? CARREIRA[perfil!.situacao].fase! : 1;
+  const titulo = document.querySelector<HTMLElement>('[data-perfil-carr-titulo]');
+  if (titulo) texto(titulo, semFases ? 'Seu caminho até IA, a partir de onde você está.' : null);
+  const nota = document.querySelector<HTMLElement>('[data-fases-nota]');
+  const botao = document.querySelector<HTMLButtonElement>('[data-fases-todas]');
+  const todasAbertas = botao?.getAttribute('aria-expanded') === 'true';
+  if (nota) nota.hidden = !semFases;
+  todos('[data-fase-item]').forEach((li) => (li.hidden = !!semFases && !todasAbertas && Number(li.dataset.faseItem) < inicioFase));
+  // Subtítulos das estações: sem estágio nem júnior para quem já trabalha na área.
+  const niveisPorId = new Map((dados?.niveis ?? []).map((n) => [String(n.nivel), n.curto]));
+  todos('[data-periodo-sub]').forEach((el) => {
+    const curto = niveisPorId.get(el.dataset.periodoSub!);
+    texto(el, semFases && curto ? curto.charAt(0).toUpperCase() + curto.slice(1) : null);
+  });
   todos('[data-perfil-fase-rot]').forEach((el) => texto(el, semFases ? CARREIRA[perfil!.situacao].curto : null));
 }
 
@@ -216,7 +230,6 @@ function home(perfil: Perfil | null, est: Estimativa[], dados: Dados | null): vo
   }
   // Estações da abertura: meses da pessoa no lugar dos anos.
   const pos = posicoes(est);
-  const fimEstudo = Math.max(0, ...pos.map((p) => p.fim));
   for (const el of todos('[data-periodo-nome]')) {
     if (!perfil) {
       texto(el, null);
@@ -227,7 +240,7 @@ function home(perfil: Perfil | null, est: Estimativa[], dados: Dados | null): vo
     const e = est.find((x) => x.nivel === nv);
     if (nv && e && e.meses === 0) texto(el, 'Já domina');
     else if (nv && p) texto(el, `Mês ${Math.floor(p.inicio)}`);
-    else texto(el, `Mês ${Math.ceil(fimEstudo)}+`);
+    else texto(el, null);
   }
   // Cards de nível anteriores ao de partida.
   todos('[data-perfil-ja]').forEach((el) => (el.hidden = !perfil || Number(el.dataset.perfilJa) >= nivel));
@@ -274,4 +287,12 @@ aplicar();
 document.addEventListener('perfil:mudou', aplicar);
 window.addEventListener('storage', (e) => {
   if (e.key === 'rm-perfil-v1' || e.key === null) aplicar();
+});
+
+document.querySelector<HTMLButtonElement>('[data-fases-todas]')?.addEventListener('click', (e) => {
+  const b = e.currentTarget as HTMLButtonElement;
+  const abrir = b.getAttribute('aria-expanded') !== 'true';
+  b.setAttribute('aria-expanded', String(abrir));
+  b.textContent = abrir ? 'Mostrar só o meu caminho' : 'Mostrar todas as fases';
+  aplicar();
 });

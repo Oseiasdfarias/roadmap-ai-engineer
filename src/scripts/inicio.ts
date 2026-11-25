@@ -50,8 +50,12 @@ function atualizar(): void {
   // Estações: a mais avançada com algum progresso fica cheia e a linha acompanha até ela.
   const estacoes = [...document.querySelectorAll<HTMLElement>('[data-estacao]')];
   let ultima = 0;
+  const partidaEst = nivelDoPerfil();
   estacoes.forEach((e, i) => {
     if (lista(e, 'data-ids').some((id) => estado[id])) ultima = i;
+    // O nível de partida do perfil conta como alcançado.
+    const nv = Number(e.querySelector<HTMLElement>('[data-periodo-nome]')?.dataset.periodoNome ?? 0);
+    if (nv && nv <= partidaEst && i > ultima) ultima = i;
   });
   estacoes.forEach((e, i) => {
     e.classList.toggle('atual', i <= ultima);

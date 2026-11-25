@@ -10,11 +10,13 @@ const fases = (await getCollection('fases')).sort((a, b) => a.data.id - b.data.i
   <div class="carr-grade">
     <div class="carr-intro">
       <div class="kicker">04 — Carreira</div>
-      <h2>O caminho até a vaga, fase por fase.</h2>
+      <h2 data-perfil-carr-titulo>O caminho até a vaga, fase por fase.</h2>
       <p data-perfil-generico>Vaga júnior de AI Engineer é rara. O caminho mais comum passa por estágio e por desenvolvimento antes de IA.</p>
       <p class="carr-perfil" data-perfil-generico>Já é dev ou trabalha com dados? <a href={url('/calculadora/')}>Veja o caminho para o seu perfil</a>.</p>
       <PerfilCarreira />
     </div>
+    <div class="fases-col">
+    <p class="fases-nota" data-fases-nota hidden>As fases para quem ainda está entrando na área ficam ocultas. Pelo seu perfil, o caminho parte da transição para IA. <button type="button" class="fases-todas" data-fases-todas aria-expanded="false">Mostrar todas as fases</button></p>
     <ol class="fases">
       {fases.map((f) => (
         <li data-fase-item={f.data.id}>
@@ -26,6 +28,7 @@ const fases = (await getCollection('fases')).sort((a, b) => a.data.id - b.data.i
         </li>
       ))}
     </ol>
+    </div>
   </div>
 </section>
 
@@ -35,6 +38,9 @@ const fases = (await getCollection('fases')).sort((a, b) => a.data.id - b.data.i
   .carr h2 { font-size: clamp(30px, 4vw, 44px); font-weight: 600; letter-spacing: -.04em; line-height: 1.05; margin: 0; text-wrap: balance; }
   .aqui-tag { font-family: var(--font-mono); font-size: 11px; font-weight: 500; color: var(--accent); border: 1px solid var(--career-line); background: var(--accent-soft); border-radius: 999px; padding: 2px 8px; margin-left: 8px; vertical-align: middle; letter-spacing: 0; }
   .aqui-tag[hidden] { display: none; }
+  .fases li[hidden], .fases-nota[hidden] { display: none; }
+  .fases-nota { font-size: 14px; line-height: 1.6; color: var(--text-2); margin: 0 0 16px; padding: 14px 16px; border: 1px dashed var(--line-strong); border-radius: 12px; }
+  .fases-todas { font: inherit; color: var(--link); background: none; border: 0; padding: 0; margin-left: 4px; text-decoration: underline; cursor: pointer; }
   .fases li.aqui { box-shadow: inset 3px 0 0 var(--accent); }
   .carr-intro > p[hidden] { display: none; }
   .carr-intro > p.carr-perfil { margin-top: 12px; }

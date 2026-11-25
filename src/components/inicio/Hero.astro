@@ -77,7 +77,7 @@ const numeros = [
           <a href={e.href}>
             <span class="num">{e.n}</span>
             <span class="nome" data-periodo-nome={e.p.nivel ?? 0}>{e.p.nome}</span>
-            <span class="sub">{e.p.sub}</span>
+            <span class="sub" data-periodo-sub={e.p.nivel ?? 0}>{e.p.sub}</span>
           </a>
         </li>
       ))}
