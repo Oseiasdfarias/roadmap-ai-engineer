@@ -64,8 +64,8 @@ const numeros = [
     </ul>
     <p class="hero-nota">Cada tópico tem um resumo completo e as fontes certas para estudar.</p>
     <div class="hero-ctas">
-      <a class="bt-pri" href={url('/nivel/1/')}>Começar pelo nível 1</a>
-      <a class="bt-sec" href={url('/calculadora/')}>Ajustar ao meu perfil</a>
+      <a class="bt-pri" data-perfil-cta href={url('/nivel/1/')}>Começar pelo nível 1</a>
+      <a class="bt-sec" href="#escolha">Ajustar ao meu perfil</a>
       {PDF_URL && <a class="bt-sec" href={PDF_URL}><Download aria-hidden="true" />Baixar o PDF</a>}
     </div>
   </div>
@@ -76,7 +76,7 @@ const numeros = [
         <li data-periodo data-estacao={i} data-ids={e.ids.join(',')} class:list={['est', { atual: i === 0, proxima: i === 1 }]}>
           <a href={e.href}>
             <span class="num">{e.n}</span>
-            <span class="nome">{e.p.nome}</span>
+            <span class="nome" data-periodo-nome={e.p.nivel ?? 0}>{e.p.nome}</span>
             <span class="sub">{e.p.sub}</span>
           </a>
         </li>

@@ -8,6 +8,7 @@ import {
   limitarHoras,
   perfilDaURL,
   perfilParaURL,
+  posicoes,
   total,
   type Marca,
   type Perfil,
@@ -40,6 +41,7 @@ function iniciar(): void {
   const radios = [...form.querySelectorAll<HTMLInputElement>('[data-calc-situacao]')];
   const horasEl = form.querySelector<HTMLInputElement>('[data-calc-horas]')!;
   const blocosEl = [...form.querySelectorAll<HTMLInputElement>('[data-calc-bloco]')];
+  const niveisEl = [...form.querySelectorAll<HTMLInputElement>('[data-calc-nivel]')];
 
   // A URL vence; sem query, o perfil salvo; sem nada, o padrão.
   const q = new URLSearchParams(location.search);
@@ -55,20 +57,26 @@ function iniciar(): void {
     radios.forEach((r) => (r.checked = r.value === p.situacao));
     horasEl.value = String(p.horas);
     blocosEl.forEach((b) => (b.checked = p.blocos.includes(b.value)));
+    niveisEl.forEach((r) => (r.checked = r.value === String(p.nivel)));
   }
 
   function ler(): Perfil {
     const situacao = (radios.find((r) => r.checked)?.value ?? 'estudante') as Situacao;
-    return { situacao, horas: limitarHoras(horasEl.value), blocos: blocosEl.filter((b) => b.checked).map((b) => b.value) };
+    return {
+      situacao,
+      horas: limitarHoras(horasEl.value),
+      blocos: blocosEl.filter((b) => b.checked).map((b) => b.value),
+      nivel: Number(niveisEl.find((r) => r.checked)?.value ?? 1),
+    };
   }
 
   let marcasAtuais: Record<string, Marca> = {};
 
   function desenhar(salvar = true): void {
     const p = ler();
-    const marcas = classificar(dados.topicos, p.blocos);
+    const marcas = classificar(dados.topicos, p.blocos, undefined, p.nivel);
     marcasAtuais = marcas;
-    const est = estimar(dados.topicos, dados.niveis, marcas, p.horas);
+    const est = estimar(dados.topicos, dados.niveis, marcas, p.horas, p.nivel);
     const t = total(est);
     document.querySelector('[data-calc-total]')!.textContent = faixaTexto(t.min, t.max);
 
@@ -78,19 +86,17 @@ function iniciar(): void {
       `${conta.estudar} tópicos para estudar, ${conta.revisar} para revisar e ${conta.pular} para pular, com ${p.horas} horas por semana. Os projetos de cada nível continuam na conta.`;
 
     // Níveis em sequência, com sobreposição de até 1 mês, como na linha do tempo da home.
-    const soma = est.reduce((s, n) => s + n.meses, 0);
-    let inicio = 0;
-    let fimAnterior = 0;
-    const escala = Math.max(soma, 1);
+    const pos = posicoes(est);
+    const escala = Math.max(1, ...pos.map((x) => x.fim));
     for (const n of est) {
-      inicio = Math.max(0, fimAnterior - Math.min(1, n.meses / 2));
+      const x = pos.find((q) => q.nivel === n.nivel)!;
       const barra = document.querySelector<HTMLElement>(`[data-calc-barra="${n.nivel}"]`);
       if (barra) {
-        barra.style.left = `${(100 * inicio) / escala}%`;
+        barra.hidden = n.meses === 0;
+        barra.style.left = `${(100 * x.inicio) / escala}%`;
         barra.style.width = `${Math.max(2, (100 * n.meses) / escala)}%`;
       }
-      fimAnterior = inicio + n.meses;
-      const txt = faixaTexto(n.min, n.max);
+      const txt = n.meses === 0 ? 'já domina' : faixaTexto(n.min, n.max);
       const m = document.querySelector(`[data-calc-meses="${n.nivel}"]`);
       if (m) m.textContent = txt;
       const m2 = document.querySelector(`[data-calc-meses-texto="${n.nivel}"]`);
@@ -140,6 +146,7 @@ function iniciar(): void {
     }),
   );
   blocosEl.forEach((b) => b.addEventListener('change', () => desenhar()));
+  niveisEl.forEach((r) => r.addEventListener('change', () => desenhar()));
   horasEl.addEventListener('input', () => desenhar());
   horasEl.addEventListener('change', () => {
     horasEl.value = String(limitarHoras(horasEl.value));

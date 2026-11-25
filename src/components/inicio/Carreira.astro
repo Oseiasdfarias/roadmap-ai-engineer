@@ -17,10 +17,10 @@ const fases = (await getCollection('fases')).sort((a, b) => a.data.id - b.data.i
     </div>
     <ol class="fases">
       {fases.map((f) => (
-        <li>
+        <li data-fase-item={f.data.id}>
           <a href={url(`/fase/${f.data.id}/`)}>
             <span class="n">{String(f.data.id).padStart(2, '0')}</span>
-            <span class="tx"><span class="t">{cap(f.data.nome)}</span><span class="d">{f.data.objetivo}</span></span>
+            <span class="tx"><span class="t">{cap(f.data.nome)} <span class="aqui-tag" data-perfil-aqui hidden>você está aqui</span></span><span class="d">{f.data.objetivo}</span></span>
             <span class="q">{f.data.quando.toLowerCase()}</span>
           </a>
         </li>
@@ -33,6 +33,9 @@ const fases = (await getCollection('fases')).sort((a, b) => a.data.id - b.data.i
   .carr { max-width: 1240px; margin: 0 auto; padding: 0 32px 112px; }
   .carr-grade { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 48px; align-items: start; border-top: 1px solid var(--line); padding-top: 64px; }
   .carr h2 { font-size: clamp(30px, 4vw, 44px); font-weight: 600; letter-spacing: -.04em; line-height: 1.05; margin: 0; text-wrap: balance; }
+  .aqui-tag { font-family: var(--font-mono); font-size: 11px; font-weight: 500; color: var(--accent); border: 1px solid var(--career-line); background: var(--accent-soft); border-radius: 999px; padding: 2px 8px; margin-left: 8px; vertical-align: middle; letter-spacing: 0; }
+  .aqui-tag[hidden] { display: none; }
+  .fases li.aqui { box-shadow: inset 3px 0 0 var(--accent); }
   .carr-intro > p[hidden] { display: none; }
   .carr-intro > p.carr-perfil { margin-top: 12px; }
   .carr-perfil a { color: var(--accent); font-weight: 500; }

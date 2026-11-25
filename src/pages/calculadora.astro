@@ -53,7 +53,20 @@ const rotuloTopico = Object.fromEntries(dados.topicos.map((t) => [t.id, t.titulo
         </fieldset>
 
         <fieldset>
-          <legend><span class="n">02</span> Tempo de estudo</legend>
+          <legend><span class="n">02</span> Em que nível você está</legend>
+          <div class="calc-sit">
+            {dados.niveis.map((n) => (
+              <label class="calc-op">
+                <input type="radio" name="nivel" value={n.nivel} data-calc-nivel checked={n.nivel === 1} />
+                <span>Nível {n.nivel} · {n.curto.charAt(0).toUpperCase() + n.curto.slice(1)}</span>
+              </label>
+            ))}
+          </div>
+          <p class="calc-nota">Os níveis anteriores contam como dominados e saem do prazo.</p>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="n">03</span> Tempo de estudo</legend>
           <label class="calc-horas">
             <span>Horas por semana</span>
             <input type="number" min="3" max="40" step="1" value="12" inputmode="numeric" data-calc-horas />
@@ -62,7 +75,7 @@ const rotuloTopico = Object.fromEntries(dados.topicos.map((t) => [t.id, t.titulo
         </fieldset>
 
         <fieldset>
-          <legend><span class="n">03</span> O que você já domina</legend>
+          <legend><span class="n">04</span> O que você já domina</legend>
           <p class="calc-nota">A situação já marca alguns blocos. Ajuste ao que você usa no dia a dia, não ao que viu uma vez.</p>
           <div class="calc-blocos">
             {BLOCOS.map((b) => (
@@ -165,6 +178,7 @@ const rotuloTopico = Object.fromEntries(dados.topicos.map((t) => [t.id, t.titulo
   .calc-faixa { display: grid; grid-template-columns: 112px minmax(0, 1fr) 82px; gap: 12px; align-items: center; font-size: 13px; }
   .calc-faixa-rot { font-weight: 600; color: var(--link); white-space: nowrap; }
   .calc-faixa-trilho { position: relative; height: 26px; border-radius: 8px; background: var(--section-alt); }
+  .calc-barra[hidden] { display: none; }
   .calc-barra { position: absolute; top: 0; bottom: 0; border-radius: 8px; transition: left .3s, width .3s; }
   .calc-barra.n1 { background: var(--tl-1); } .calc-barra.n2 { background: var(--tl-2); } .calc-barra.n3 { background: var(--tl-3); }
   .calc-barra.n4 { background: var(--tl-4); border: 1px solid var(--tl-4-line); }

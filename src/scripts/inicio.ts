@@ -1,4 +1,14 @@
 import { CHAVE_PROGRESSO, ler, type Estado } from '../lib/progresso';
+import { CHAVE_PERFIL, lerPerfilSalvo } from '../lib/trilha';
+
+/** Nível de partida do perfil salvo (1 sem perfil). */
+function nivelDoPerfil(): number {
+  try {
+    return lerPerfilSalvo(localStorage)?.nivel ?? 1;
+  } catch {
+    return 1;
+  }
+}
 
 function estadoAtual(): Estado {
   try {
@@ -14,7 +24,9 @@ const lista = (el: HTMLElement | undefined, atributo: string) =>
 /** Nível "atual": o primeiro cujo conjunto de tópicos ainda não está 100% marcado (o último, se todos estiverem). */
 function nivelAtual(estado: Estado): string {
   const paineis = [...document.querySelectorAll<HTMLElement>('[data-nivel-painel]')];
+  const inicio = nivelDoPerfil();
   const achado = paineis.find((p) => {
+    if (Number(p.dataset.nivelPainel) < inicio) return false;
     const ids = lista(p, 'data-nivel-ids');
     return ids.some((i) => !estado[i]);
   });
@@ -48,9 +60,11 @@ function atualizar(): void {
   // Rota da abertura: nível cheio quando completo; o traço de acento vai até o primeiro nível incompleto.
   const nos = [...document.querySelectorAll<HTMLElement>('[data-rota-nivel]')];
   let primeiroIncompleto = -1;
+  const partida = nivelDoPerfil();
   nos.forEach((no, i) => {
     const ids = lista(no, 'data-ids');
-    const completo = ids.length > 0 && ids.every((id) => estado[id]);
+    // Níveis antes do de partida contam como completos.
+    const completo = i + 1 < partida || (ids.length > 0 && ids.every((id) => estado[id]));
     no.classList.toggle('completo', completo);
     if (!completo && primeiroIncompleto < 0) primeiroIncompleto = i;
   });
@@ -64,8 +78,9 @@ function atualizar(): void {
 
 atualizar();
 document.addEventListener('progresso:atualizado', atualizar);
+document.addEventListener('perfil:mudou', atualizar);
 window.addEventListener('storage', (e) => {
-  if (e.key === CHAVE_PROGRESSO || e.key === null) atualizar();
+  if (e.key === CHAVE_PROGRESSO || e.key === CHAVE_PERFIL || e.key === null) atualizar();
 });
 
 // Entrada suave das seções ao rolar; desligada com prefers-reduced-motion.

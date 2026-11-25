@@ -1,0 +1,126 @@
+---
+import { getCollection } from 'astro:content';
+import { GraduationCap, Code2, ChartNoAxesCombined, Compass, SlidersHorizontal, RotateCcw, Pencil } from '@lucide/astro';
+import { SITUACOES } from '../../data/blocos';
+import { url } from '../../lib/url';
+
+const descricao: Record<string, string> = {
+  estudante: 'Graduação ou curso, começando do zero ou quase.',
+  dev: 'Já trabalho com desenvolvimento de software.',
+  dados: 'Trabalho com dados, análise ou machine learning.',
+  fora: 'Venho de outra área e quero migrar para tecnologia.',
+};
+const icones = { estudante: GraduationCap, dev: Code2, dados: ChartNoAxesCombined, fora: Compass };
+const niveis = (await getCollection('niveis')).sort((a, b) => a.data.id - b.data.id);
+const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+---
+<section id="escolha" class="escolha" aria-labelledby="escolha-titulo">
+  <div class="esc-in">
+    <div class="esc-cab">
+      <div class="kicker" data-sem-perfil>Comece por aqui</div>
+      <div class="kicker" data-perfil-aviso hidden>Ajustado ao seu perfil</div>
+      <h2 id="escolha-titulo">
+        <span data-sem-perfil>Onde você está hoje?</span>
+        <span data-perfil-aviso hidden>Sua trilha</span>
+      </h2>
+      <p data-sem-perfil>Escolha o seu ponto de partida e o nível em que está. A página se ajusta na hora: prazos, linha do tempo, tópicos que dá para pular e o caminho de carreira.</p>
+    </div>
+
+    <div class="esc-resumo" data-perfil-resumo data-perfil-aviso hidden>
+      <div class="esc-resumo-linha">
+        <strong data-resumo="situacao"></strong>
+        <span data-resumo="nivel"></span>
+        <span data-resumo="horas"></span>
+      </div>
+      <p class="esc-total"><span data-resumo="total"></span></p>
+      <p class="esc-det"><span data-resumo="topicos"></span>.</p>
+      <p class="esc-det">Carreira: <span data-resumo="carreira"></span>.</p>
+      <div class="esc-acoes">
+        <button type="button" class="btn" data-escolha-alterar aria-expanded="false" aria-controls="escolha-form"><Pencil aria-hidden="true" /> <span data-rotulo>Alterar</span></button>
+        <a class="btn" data-resumo-refinar href={url('/calculadora/')}><SlidersHorizontal aria-hidden="true" /> Refinar na calculadora</a>
+        <button type="button" class="btn" data-escolha-padrao><RotateCcw aria-hidden="true" /> Voltar ao roteiro padrão</button>
+      </div>
+    </div>
+
+    <form id="escolha-form" class="esc-form" data-escolha-form onsubmit="return false">
+      <fieldset>
+        <legend>Você é</legend>
+        <div class="esc-sit">
+          {SITUACOES.map((s) => {
+            const Icone = icones[s.id];
+            return (
+              <label class="esc-card">
+                <input type="radio" name="esc-situacao" value={s.id} data-escolha-situacao />
+                <Icone aria-hidden="true" />
+                <span class="t">{s.rotulo}</span>
+                <span class="d">{descricao[s.id]}</span>
+              </label>
+            );
+          })}
+        </div>
+      </fieldset>
+      <div class="esc-linha">
+        <fieldset>
+          <legend>Em que nível você está?</legend>
+          <div class="esc-niveis">
+            {niveis.map((n) => (
+              <label class="esc-nivel">
+                <input type="radio" name="esc-nivel" value={n.data.id} data-escolha-nivel checked={n.data.id === 1} />
+                <span><b>{n.data.id}</b> {cap(n.data.curto)}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+        <label class="esc-horas">
+          <span>Horas por semana</span>
+          <input type="number" min="3" max="40" step="1" value="12" inputmode="numeric" data-escolha-horas />
+        </label>
+      </div>
+      <p class="esc-nota">Níveis anteriores contam como dominados. Para marcar o que você já sabe bloco por bloco, use a <a href={url('/calculadora/')}>calculadora</a>.</p>
+    </form>
+  </div>
+</section>
+
+<style is:global>
+  .escolha { border-top: 1px solid var(--line); }
+  .esc-in { max-width: 1240px; margin: 0 auto; padding: 72px 32px; }
+  .esc-cab { max-width: 720px; margin-bottom: 28px; }
+  .esc-cab h2 { font-size: clamp(30px, 4vw, 44px); font-weight: 600; letter-spacing: -.04em; line-height: 1.05; margin: 0 0 12px; }
+  .esc-cab p { font-size: 16px; line-height: 1.6; color: var(--text-2); margin: 0; }
+  .escolha [hidden] { display: none !important; }
+  .esc-form fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .esc-form legend { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-bottom: 10px; padding: 0; }
+  .esc-sit { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+  .esc-card { position: relative; display: grid; gap: 6px; border: 1px solid var(--line); background: var(--surface); border-radius: 16px; padding: 18px; cursor: pointer; transition: border-color .15s, transform .15s; }
+  .esc-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .esc-card:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+  .esc-card:has(input:focus-visible), .esc-nivel:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .esc-card input, .esc-nivel input { position: absolute; opacity: 0; pointer-events: none; }
+  .esc-card svg { width: 22px; height: 22px; color: var(--accent); }
+  .esc-card .t { font-size: 16px; font-weight: 600; letter-spacing: -.01em; }
+  .esc-card .d { font-size: 13.5px; line-height: 1.5; color: var(--text-2); }
+  .esc-linha { display: flex; flex-wrap: wrap; gap: 20px 40px; align-items: end; margin-top: 22px; }
+  .esc-niveis { display: flex; flex-wrap: wrap; gap: 8px; }
+  .esc-nivel { position: relative; border: 1px solid var(--line-strong); border-radius: 999px; padding: 9px 16px; font-size: 14px; cursor: pointer; min-height: 40px; display: inline-flex; align-items: center; }
+  .esc-nivel b { font-family: var(--font-mono); color: var(--accent); margin-right: 4px; }
+  .esc-nivel:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+  .esc-horas { display: flex; flex-direction: column; gap: 10px; font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+  .esc-horas input { width: 96px; font: inherit; font-family: var(--font-mono); font-size: 16px; color: var(--text); background: var(--surface-2); border: 1px solid var(--line-strong); border-radius: 10px; padding: 8px 12px; }
+  .esc-nota { font-size: 13px; color: var(--text-2); margin: 18px 0 0; }
+  .esc-nota a { color: var(--link); }
+  .esc-resumo { border: 1px solid var(--career-line); background: var(--surface); border-radius: 20px; padding: 24px 26px; margin-bottom: 24px; }
+  .esc-resumo-linha { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline; font-size: 14px; color: var(--text-2); }
+  .esc-resumo-linha strong { font-size: 16px; color: var(--text); }
+  .esc-resumo-linha span::before { content: "·"; margin-right: 14px; color: var(--muted); }
+  .esc-total { font-size: clamp(28px, 3.6vw, 40px); font-weight: 600; letter-spacing: -.04em; margin: 10px 0 6px; }
+  .esc-det { font-size: 14.5px; color: var(--text-2); margin: 4px 0 0; }
+  .esc-acoes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .esc-acoes .btn svg { width: 15px; height: 15px; }
+  @media (max-width: 960px) { .esc-sit { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 520px) {
+    .esc-in { padding: 56px 16px; }
+    .esc-sit { grid-template-columns: minmax(0, 1fr); }
+    .esc-resumo-linha { flex-direction: column; gap: 2px; }
+    .esc-resumo-linha span::before { content: none; }
+  }
+</style>

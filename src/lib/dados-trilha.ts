@@ -5,7 +5,7 @@ import { url } from './url';
 
 export type DadosTrilha = {
   topicos: (TopicoEntrada & { titulo: string; href: string })[];
-  niveis: (NivelEntrada & { titulo: string; curto: string; href: string })[];
+  niveis: (NivelEntrada & { titulo: string; curto: string; href: string; fase: number })[];
 };
 
 /** Tópicos e níveis que a calculadora e as etiquetas de perfil usam no navegador. */
@@ -27,6 +27,6 @@ export async function dadosTrilha(): Promise<DadosTrilha> {
     }
   }
   const niveis = niveisCol
-    .map(({ id, data }) => ({ nivel: Number(id), duracao: data.duracao, titulo: data.nome, curto: data.curto, href: url(`/nivel/${id}/`) }));
+    .map(({ id, data }) => ({ nivel: Number(id), duracao: data.duracao, titulo: data.nome, curto: data.curto, href: url(`/nivel/${id}/`), fase: data.fase }));
   return { topicos, niveis };
 }

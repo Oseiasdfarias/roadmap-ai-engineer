@@ -16,6 +16,7 @@ const niveis = await Promise.all(
     return { meta, fase, grupos, dicas, ids };
   }),
 );
+import PerfilCarreira from '../PerfilCarreira.astro';
 ---
 <section id="niveis" class="niveis rv">
   <div class="kicker">02 — Níveis</div>
@@ -59,13 +60,16 @@ const niveis = await Promise.all(
       </div>
       <aside class="nv-lado" aria-label="Ao mesmo tempo, na carreira">
         <div class="rot">Ao mesmo tempo, na carreira</div>
-        <div class="fase-t">Fase {n.fase.id} · {cap(n.fase.nome)}</div>
-        <p>{n.fase.objetivo}</p>
-        <ul class="dicas">
-          {n.dicas.map((d) => (
-            <li><a href={rotaDe(d)}>{d.data.titulo}<ArrowUpRight aria-hidden="true" /></a></li>
-          ))}
-        </ul>
+        <div data-perfil-generico>
+          <div class="fase-t">Fase {n.fase.id} · {cap(n.fase.nome)}</div>
+          <p>{n.fase.objetivo}</p>
+          <ul class="dicas">
+            {n.dicas.map((d) => (
+              <li><a href={rotaDe(d)}>{d.data.titulo}<ArrowUpRight aria-hidden="true" /></a></li>
+            ))}
+          </ul>
+        </div>
+        <PerfilCarreira />
         <a class="abrir" href={url(`/nivel/${n.meta.id}/`)}>Abrir o nível {n.meta.id} completo</a>
       </aside>
     </article>
@@ -75,10 +79,10 @@ const niveis = await Promise.all(
     {niveis.map((n, i) => (
       <article class="nv-card" data-nivel-card={n.meta.id} hidden={i === 0}>
         <a class="nv-card-link" href={url(`/nivel/${n.meta.id}/`)}>
-          <div class="topo"><span class="k">Nível {n.meta.id}</span><span class="c" data-progresso-conta={n.ids.join(',')}><span data-progresso-texto>0 / {n.ids.length}</span></span></div>
+          <div class="topo"><span class="k">Nível {n.meta.id} <span class="nv-ja" data-perfil-ja={n.meta.id} hidden>· já domina</span></span><span class="c" data-progresso-conta={n.ids.join(',')}><span data-progresso-texto>0 / {n.ids.length}</span></span></div>
           <h3>{cap(n.meta.nome)}</h3>
           <p>{n.meta.objetivo}</p>
-          <div class="pe"><span><span data-perfil-duracao={n.meta.id}>{n.meta.duracao}</span> · Fase {n.fase.id} · {cap(n.fase.nome)}</span><ArrowRight aria-hidden="true" /></div>
+          <div class="pe"><span><span data-perfil-duracao={n.meta.id}>{n.meta.duracao}</span> · <span data-perfil-fase-rot>Fase {n.fase.id} · {cap(n.fase.nome)}</span></span><ArrowRight aria-hidden="true" /></div>
         </a>
       </article>
     ))}
@@ -129,6 +133,8 @@ const niveis = await Promise.all(
   .nv-card-link { display: flex; flex-direction: column; gap: 12px; padding: 32px; min-height: 260px; height: 100%; text-decoration: none; color: inherit; border-radius: 20px; }
   .nv-card .topo { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 12px; }
   .nv-card .k { color: var(--accent); }
+  .nv-ja[hidden], .nv-lado [data-perfil-generico][hidden] { display: none; }
+  .nv-lado .perfil-carreira { margin-top: 10px; background: transparent; }
   .nv-card .c { color: var(--muted); }
   .nv-card h3 { font-size: 24px; font-weight: 600; letter-spacing: -.025em; margin: 6px 0 0; }
   .nv-card p { font-size: 14px; line-height: 1.6; color: var(--text-2); margin: 0; }

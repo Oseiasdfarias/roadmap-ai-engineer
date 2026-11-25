@@ -29,7 +29,7 @@ const idsProgresso = await todosIdsProgresso();
 const trilha = await dadosTrilha();
 const trilhaBase = {
   topicos: trilha.topicos.map(({ id, nivel, tempo }) => ({ id, nivel, tempo, prerequisitos: [] })),
-  niveis: trilha.niveis.map(({ nivel, duracao }) => ({ nivel, duracao })),
+  niveis: trilha.niveis.map(({ nivel, duracao, curto, fase }) => ({ nivel, duracao, curto, fase })),
 };
 const imagemOg = rotaOg ? new URL(url('/og/' + rotaOg + '.png'), SITE.url).href : undefined;
 ---
@@ -61,7 +61,7 @@ const imagemOg = rotaOg ? new URL(url('/og/' + rotaOg + '.png'), SITE.url).href 
       })();
     </script>
   </head>
-  <body>
+  <body data-base-url={url('/')}>
     {!semCabecalho && <Header />}
     <main data-pagefind-body={noindex ? undefined : ''} data-pagefind-ignore={noindex ? '' : undefined}><slot /></main>
     <Footer />

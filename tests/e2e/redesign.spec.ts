@@ -11,10 +11,10 @@ const CANAIS: Record<string, string> = {
 test.describe('nova página inicial', () => {
   test('mostra as seções 01 a 04 na ordem', async ({ page }) => {
     await page.goto('./');
-    const kickers = await page.locator('main .kicker').allTextContents();
+    const kickers = await page.locator('main section:not(#escolha) .kicker').allTextContents();
     expect(kickers).toEqual(['01 — Linha do tempo', '02 — Níveis', '03 — Portfólio', '04 — Carreira']);
     const ids = await page.locator('main > section[id]').evaluateAll((els) => els.map((e) => e.id));
-    expect(ids).toEqual(['tempo', 'niveis', 'portfolio', 'carreira']);
+    expect(ids).toEqual(['escolha', 'tempo', 'niveis', 'portfolio', 'carreira']);
   });
 
   test('a linha do tempo tem quatro barras de nível com os links certos', async ({ page }) => {

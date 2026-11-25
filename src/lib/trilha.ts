@@ -3,7 +3,8 @@ import { BLOCOS, PRESETS, SITUACOES, type Bloco, type Situacao } from '../data/b
 export type Marca = 'pular' | 'revisar' | 'estudar';
 export type TopicoEntrada = { id: string; nivel: number; tempo: string; prerequisitos: string[] };
 export type NivelEntrada = { nivel: number; duracao: string };
-export type Perfil = { situacao: Situacao; horas: number; blocos: string[] };
+/** `nivel`: nível em que a pessoa está (1 a 4); os anteriores contam como dominados. */
+export type Perfil = { situacao: Situacao; horas: number; blocos: string[]; nivel: number };
 export type Estimativa = { nivel: number; meses: number; min: number; max: number };
 
 /** Horas por semana da referência do roteiro (10 a 15 h). */
@@ -39,11 +40,16 @@ export function limitarHoras(h: unknown): number {
   return Math.min(40, Math.max(3, Math.round(n)));
 }
 
-export function classificar(topicos: TopicoEntrada[], blocos: string[], blocosDef: Bloco[] = BLOCOS): Record<string, Marca> {
+export function classificar(
+  topicos: TopicoEntrada[],
+  blocos: string[],
+  blocosDef: Bloco[] = BLOCOS,
+  nivelInicial = 1,
+): Record<string, Marca> {
   const marcas: Record<string, Marca> = {};
-  for (const t of topicos) marcas[t.id] = 'estudar';
+  for (const t of topicos) marcas[t.id] = t.nivel > 0 && t.nivel < nivelInicial ? 'pular' : 'estudar';
   const ativos = blocosDef.filter((b) => blocos.includes(b.id));
-  for (const b of ativos) for (const id of b.revisar) if (id in marcas) marcas[id] = 'revisar';
+  for (const b of ativos) for (const id of b.revisar) if (id in marcas && marcas[id] !== 'pular') marcas[id] = 'revisar';
   for (const b of ativos) for (const id of b.pular) if (id in marcas) marcas[id] = 'pular';
   return marcas;
 }
@@ -72,6 +78,7 @@ export function estimar(
   niveis: NivelEntrada[],
   marcas: Record<string, Marca>,
   horas: number,
+  nivelInicial = 1,
 ): Estimativa[] {
   // Aceita fração (a calibração usa 12,5); fora de 3 a 40 ou inválido, limita como o campo.
   const h = Number.isFinite(horas) ? Math.min(40, Math.max(3, horas)) : HORAS_PADRAO;
@@ -79,6 +86,7 @@ export function estimar(
   return [...niveis]
     .sort((a, b) => a.nivel - b.nivel)
     .map(({ nivel, duracao }) => {
+      if (nivel < nivelInicial) return { nivel, meses: 0, min: 0, max: 0 };
       const doNivel = topicos.filter((t) => t.nivel === nivel);
       const todo = doNivel.reduce((s, t) => s + parseSemanas(t.tempo), 0);
       const resta = doNivel.reduce((s, t) => s + parseSemanas(t.tempo) * PESO[marcas[t.id] ?? 'estudar'], 0);
@@ -105,11 +113,13 @@ export function perfilDaURL(q: URLSearchParams): Perfil {
   const validos = new Set(BLOCOS.map((x) => x.id));
   const blocos =
     b === null ? [...PRESETS[situacao]] : b.split(',').filter((id, i, arr) => validos.has(id) && arr.indexOf(id) === i);
-  return { situacao, horas, blocos };
+  const n = Number(q.get('n'));
+  const nivel = Number.isInteger(n) && n >= 1 && n <= 4 ? n : 1;
+  return { situacao, horas, blocos, nivel };
 }
 
 export function perfilParaURL(p: Perfil): string {
-  return new URLSearchParams({ s: p.situacao, h: String(p.horas), b: p.blocos.join(',') }).toString();
+  return new URLSearchParams({ s: p.situacao, h: String(p.horas), b: p.blocos.join(','), n: String(p.nivel) }).toString();
 }
 
 export const CHAVE_PERFIL = 'rm-perfil-v1';
@@ -117,8 +127,11 @@ export const CHAVE_PERFIL = 'rm-perfil-v1';
 /** Início e fim (em meses) de cada nível: em sequência, com sobreposição de até 1 mês (metade do nível, se ele for curto). */
 export function posicoes(est: Estimativa[]): { nivel: number; inicio: number; fim: number }[] {
   let fimAnterior = 0;
-  return est.map((n, i) => {
-    const inicio = i === 0 ? 0 : Math.max(0, fimAnterior - Math.min(1, n.meses / 2));
+  let primeiro = true;
+  return est.map((n) => {
+    if (n.meses <= 0) return { nivel: n.nivel, inicio: fimAnterior, fim: fimAnterior };
+    const inicio = primeiro ? 0 : Math.max(0, fimAnterior - Math.min(1, n.meses / 2));
+    primeiro = false;
     fimAnterior = inicio + n.meses;
     return { nivel: n.nivel, inicio, fim: fimAnterior };
   });

@@ -125,6 +125,7 @@ describe('URL', () => {
       situacao: 'estudante',
       horas: 3,
       blocos: ['git'],
+      nivel: 1,
     });
   });
   it('sem b usa o preset da situação', () => {
@@ -135,7 +136,7 @@ describe('URL', () => {
     expect(perfilDaURL(new URLSearchParams('s=dev&b=')).blocos).toEqual([]);
   });
   it('ida e volta', () => {
-    const p = { situacao: 'dados' as const, horas: 20, blocos: ['git', 'sql'] };
+    const p = { situacao: 'dados' as const, horas: 20, blocos: ['git', 'sql'], nivel: 3 };
     expect(perfilDaURL(new URLSearchParams(perfilParaURL(p)))).toEqual(p);
   });
 });
@@ -162,9 +163,34 @@ describe('perfil salvo', () => {
     expect(lerPerfilSalvo(st(''))).toBeNull();
   });
   it('com perfil devolve o perfil', () => {
-    expect(lerPerfilSalvo(st('s=dev&h=20&b=git'))).toEqual({ situacao: 'dev', horas: 20, blocos: ['git'] });
+    expect(lerPerfilSalvo(st('s=dev&h=20&b=git'))).toEqual({ situacao: 'dev', horas: 20, blocos: ['git'], nivel: 1 });
   });
   it('armazenamento que lança devolve null', () => {
     expect(lerPerfilSalvo({ getItem: () => { throw new Error('x'); } })).toBeNull();
+  });
+});
+
+describe('nível de partida', () => {
+  it('URL lê n entre 1 e 4; inválido vira 1', () => {
+    expect(perfilDaURL(new URLSearchParams('n=3')).nivel).toBe(3);
+    expect(perfilDaURL(new URLSearchParams('n=9')).nivel).toBe(1);
+    expect(perfilDaURL(new URLSearchParams('n=abc')).nivel).toBe(1);
+    expect(perfilDaURL(new URLSearchParams('')).nivel).toBe(1);
+  });
+  it('tópicos de níveis anteriores viram pular', () => {
+    const m = classificar(TOPICOS, [], BLOCOS, 3);
+    expect(m['rag']).toBe('pular');
+    expect(m['python-fundamentos']).toBe('pular');
+    expect(m['fastapi']).toBe('estudar');
+  });
+  it('níveis anteriores saem do prazo e da linha do tempo', () => {
+    const m = classificar(TOPICOS, [], BLOCOS, 3);
+    const e = estimar(TOPICOS, NIVEIS, m, 12.5, 3);
+    expect(e[0]).toEqual({ nivel: 1, meses: 0, min: 0, max: 0 });
+    expect(e[1].meses).toBe(0);
+    expect(e[2].meses).toBeCloseTo(7.5);
+    const p = posicoes(e);
+    expect(p[2]).toEqual({ nivel: 3, inicio: 0, fim: 7.5 });
+    expect(total(e).min).toBe(Math.floor((7.5 + 3.5) * 0.85));
   });
 });
