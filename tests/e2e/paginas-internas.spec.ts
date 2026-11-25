@@ -136,3 +136,21 @@ test.describe('cabeçalho em larguras intermediárias', () => {
     });
   }
 });
+
+test.describe('menu no celular', () => {
+  for (const w of [320, 390]) {
+    test(`todos os links cabem sem rolagem: ${w} px`, async ({ page }) => {
+      await page.setViewportSize({ width: w, height: 800 });
+      await page.goto('./');
+      const r = await page.evaluate(() => {
+        const nav = document.querySelector<HTMLElement>('.bar .nav')!;
+        const caixa = nav.getBoundingClientRect();
+        const links = [...nav.querySelectorAll('a')].map((a) => a.getBoundingClientRect());
+        return { sw: nav.scrollWidth, cw: nav.clientWidth, fora: links.filter((l) => l.left < caixa.left - 1 || l.right > caixa.right + 1).length, n: links.length };
+      });
+      expect(r.n).toBe(5);
+      expect(r.sw).toBeLessThanOrEqual(r.cw);
+      expect(r.fora).toBe(0);
+    });
+  }
+});

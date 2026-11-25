@@ -19,7 +19,7 @@ h1, h2, h3, h4, h5 { font-family: var(--font-titulo); }
 /* barra superior */
 /* --header-h: altura real do cabeçalho fixo (o script da home a atualiza com ResizeObserver) */
 :root { --header-h: 69px; }
-@media (max-width: 860px) { :root { --header-h: 139px; } }
+@media (max-width: 860px) { :root { --header-h: 180px; } }
 html { scroll-padding-top: calc(var(--header-h, 84px) + 16px); }
 .bar { position: sticky; top: 0; z-index: 6; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
 .bar .in { max-width: 1240px; margin: 0 auto; padding: 12px 32px; display: flex; align-items: center; gap: 28px; }
@@ -69,9 +69,10 @@ html { scroll-padding-top: calc(var(--header-h, 84px) + 16px); }
   .bar .in { padding: 10px 16px; gap: 10px 14px; flex-wrap: wrap; }
   .brand { margin-right: auto; }
   .brand small { display: none; }
-  .nav { order: 4; flex-basis: 100%; gap: 20px; overflow-x: auto; scrollbar-width: none; }
-  .nav a.nav-destaque { order: -1; }
-  .nav a { white-space: nowrap; }
+  /* Celular: a calculadora ocupa a primeira linha; os quatro links dividem a segunda, sem rolagem. */
+  .nav { order: 4; flex-basis: 100%; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 12px; }
+  .nav a.nav-destaque { order: -1; flex-basis: 100%; justify-content: center; margin: 0 0 4px; padding: 8px 12px; }
+  .nav a { white-space: nowrap; padding: 8px 0; }
   .prog { order: 5; flex-basis: 100%; max-width: none; margin-left: 0; }
   .busca-btn .rot, .busca-btn kbd { display: none; }
   .busca-btn { width: 44px; padding: 0; justify-content: center; }
