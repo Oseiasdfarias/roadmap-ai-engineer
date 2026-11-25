@@ -106,3 +106,6 @@
 @media (prefers-reduced-motion: reduce) {
   .relacionados a:hover { transform: none; }
 }
+.etq-perfil { margin: 18px 0 0; display: inline-flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; border: 1px solid var(--career-line); background: var(--accent-soft); border-radius: 12px; padding: 10px 16px; font-size: 14px; color: var(--text); }
+.etq-perfil[hidden] { display: none; }
+.etq-perfil a { color: var(--link); font-weight: 500; }

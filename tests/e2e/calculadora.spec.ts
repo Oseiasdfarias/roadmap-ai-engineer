@@ -86,3 +86,32 @@ test.describe('sem JavaScript', () => {
     await expect(page.getByText('A calculadora precisa de JavaScript')).toBeVisible();
   });
 });
+
+test.describe('ligações', () => {
+  test('cabeçalho e linha do tempo levam à calculadora', async ({ page }) => {
+    await page.goto('./sobre/');
+    await page.getByRole('navigation', { name: 'Principal' }).getByRole('link', { name: 'Calculadora' }).click();
+    await expect(page).toHaveURL(/\/roadmap-ai-engineer\/calculadora\//);
+    await page.goto('./');
+    await expect(page.locator('#tempo a[href="/roadmap-ai-engineer/calculadora/"]')).toHaveCount(1);
+  });
+
+  test('sem perfil salvo, nenhuma etiqueta', async ({ page }) => {
+    await page.goto('./topico/python-fundamentos/');
+    await expect(page.locator('[data-etiqueta-perfil]')).toBeHidden();
+  });
+
+  test('com perfil dev, etiquetas no tópico e no nível', async ({ page }) => {
+    await page.goto('./calculadora/?s=dev');
+    await page.goto('./topico/python-fundamentos/');
+    const etq = page.locator('[data-etiqueta-perfil]');
+    await expect(etq).toBeVisible();
+    await expect(etq).toContainText(/pular/i);
+    await expect(etq.getByRole('link', { name: /ajustar/i })).toHaveAttribute('href', '/roadmap-ai-engineer/calculadora/');
+    await page.goto('./topico/rag/');
+    await expect(page.locator('[data-etiqueta-perfil]')).toBeHidden();
+    await page.goto('./nivel/1/');
+    await expect(page.locator('[data-etiqueta-topico="python-fundamentos"]')).toBeVisible();
+    await expect(page.locator('[data-etiqueta-topico="embeddings"]')).toBeHidden();
+  });
+});

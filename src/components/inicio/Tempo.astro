@@ -1,5 +1,6 @@
 ---
 import { getEntry } from 'astro:content';
+import { ArrowRight } from '@lucide/astro';
 import { BARRAS_FASE, BARRAS_NIVEL, MESES, PASSO_REGUA } from '../../data/linha-do-tempo';
 import { projetosDoNivel } from '../../lib/conteudo';
 import { url } from '../../lib/url';
@@ -23,7 +24,7 @@ const col = (inicio: number, fim: number) => `grid-column: ${inicio + 2} / ${fim
         <div class="kicker">01 — Linha do tempo</div>
         <h2>Meses, com 10 a 15 horas por semana.</h2>
       </div>
-      <p>Os níveis se sobrepõem e a carreira corre por baixo deles. Prazos indicativos: seu ritmo muda o desenho, não a ordem.</p>
+      <p>Os níveis se sobrepõem e a carreira corre por baixo deles. Esta é a referência para quem começa do zero. <a class="tl-calc" href={url('/calculadora/')}>Seu ponto de partida é outro? Calcule sua trilha <ArrowRight aria-hidden="true" /></a></p>
     </div>
     <div class="tl-caixa" tabindex="0" role="region" aria-label="Linha do tempo em meses (role para ver tudo)">
       <div class="tl">
@@ -58,6 +59,9 @@ const col = (inicio: number, fim: number) => `grid-column: ${inicio + 2} / ${fim
   .sec-cab { display: flex; justify-content: space-between; align-items: end; gap: 32px; flex-wrap: wrap; margin-bottom: 44px; }
   .sec-cab h2 { font-size: clamp(30px, 4vw, 44px); font-weight: 600; letter-spacing: -.04em; line-height: 1.05; margin: 0; max-width: 700px; text-wrap: balance; }
   .sec-cab > p { font-size: 15px; line-height: 1.6; color: var(--text-2); max-width: 380px; margin: 0; }
+  .tl-calc { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; color: var(--accent); font-weight: 500; text-decoration: none; }
+  .tl-calc:hover { text-decoration: underline; }
+  .tl-calc svg { width: 14px; height: 14px; }
   .tl-caixa { border: 1px solid var(--line); border-radius: 20px; background: var(--surface); padding: 28px 28px 24px; overflow-x: auto; }
   .tl { min-width: 860px; }
   .tl-reg, .tl-linha { display: grid; grid-template-columns: 120px repeat(24, minmax(0, 1fr)); align-items: center; }

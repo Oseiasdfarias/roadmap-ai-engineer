@@ -24,6 +24,7 @@ const id = idProgresso(entry);
   <details>
     <summary>
       <span class="tt">{entry.data.titulo}</span>
+      {entry.collection === 'topicos' && <span class="etq" data-etiqueta-topico={entry.id} hidden></span>}
       <ChevronDown class="more" aria-hidden="true" />
     </summary>
     <div class="bd">
@@ -44,6 +45,8 @@ const id = idProgresso(entry);
   .chk.feito::before { background: var(--accent); border-color: var(--accent); }
   .chk.feito :global(svg) { opacity: 1; }
   .row.feito .tt { color: var(--muted); }
+  .etq { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-2); border: 1px solid var(--line-strong); border-radius: 999px; padding: 2px 9px; flex: none; }
+  .etq[hidden] { display: none; }
   details { min-width: 0; }
   summary { display: flex; align-items: center; gap: 10px; padding: 14px 0; cursor: pointer; list-style: none; border-radius: 6px; }
   summary::-webkit-details-marker { display: none; }

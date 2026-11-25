@@ -48,6 +48,7 @@ const iniciais = AUTOR.nome.split(/\s+/).map((p) => p[0]).slice(0, 2).join('').t
         <h2>Estudo</h2>
         <ul>
           <li><a href={url('/#tempo')}>Linha do tempo</a></li>
+          <li><a href={url('/calculadora/')}>Calculadora de trilha</a></li>
           {niveis.map((n) => <li><a href={url(`/nivel/${n.data.id}/`)}>Nível {n.data.id} · {cap(n.data.curto)}</a></li>)}
         </ul>
       </nav>

@@ -68,6 +68,9 @@ const sumarioItens = [
             </button>
           </div>
         )}
+        {tipo === 'topico' && (
+          <p class="etq-perfil" data-etiqueta-perfil data-etiqueta-topico={entry.id} hidden><span data-etiqueta-texto></span> <a href={url('/calculadora/')}>Ajustar o perfil</a></p>
+        )}
         {d.rascunho && (
           <p class="aviso" role="note"><Hammer aria-hidden="true" /> <span><b>Resumo completo em construção.</b> Enquanto isso, as referências abaixo cobrem o assunto.</span></p>
         )}
