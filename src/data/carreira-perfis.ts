@@ -38,3 +38,39 @@ export const CARREIRA: Record<Situacao, { titulo: string; curto: string; fase: n
     dicas: ['base-larga-foco-em-um', 'github-como-vitrine', 'contar-a-historia', 'onde-buscar-vagas'],
   },
 };
+
+/** Versão em inglês dos quadros de carreira (mesmas dicas e fases). */
+export const CARREIRA_EN: typeof CARREIRA = {
+  estudante: {
+    titulo: 'Internship early, then junior',
+    curto: 'Internship, then junior',
+    fase: null,
+    texto:
+      'Junior AI Engineer openings are rare. The most common path goes through an internship in software or data, early in your degree. Use the internship to gain team experience and take on AI tasks, and keep growing your portfolio in parallel.',
+    dicas: CARREIRA.estudante.dicas,
+  },
+  dev: {
+    titulo: 'Move within your team or apply directly',
+    curto: 'Internal move or direct application',
+    fase: 4,
+    texto:
+      'You already have the hardest part to prove: you ship software to production. The shortest path is usually bringing AI into your current team, taking on LLM tasks, and telling that story in your résumé. In parallel, apply for backend-with-AI or mid-level AI Engineer roles, without going through an internship.',
+    dicas: CARREIRA.dev.dicas,
+  },
+  dados: {
+    titulo: 'Repositioning from your current role',
+    curto: 'Repositioning towards AI',
+    fase: 4,
+    texto:
+      'You already know models, metrics and data. What is usually missing for AI Engineer is software engineering: APIs, tests, deployment and operations. Prioritize levels 3 and 4, show a complete system in production and propose LLM projects where you work.',
+    dicas: CARREIRA.dados.dicas,
+  },
+  fora: {
+    titulo: 'First job in tech',
+    curto: 'First job in tech',
+    fase: null,
+    texto:
+      'Follow the full path, starting from the base. If you are not enrolled in a degree, internships may be out of reach: look for trainee programs, entry-level developer roles and courses with job placement support. Your original field works in your favor when you build AI projects for it.',
+    dicas: CARREIRA.fora.dicas,
+  },
+};

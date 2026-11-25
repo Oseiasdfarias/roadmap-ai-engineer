@@ -73,6 +73,23 @@ O arquivo fica em `.github/workflows/`. As versões das actions (`@v4`, `@v5`) m
 
 **Build e deploy.** Um segundo workflow, disparado ao fundir na `main`, constrói a imagem Docker, a publica num registro de imagens e atualiza o serviço na nuvem. As credenciais da nuvem também ficam em segredos, com permissão mínima (veja seguranca-e-custo-na-nuvem).
 
+```mermaid
+flowchart TB
+  accTitle: Pipeline de CI/CD
+  accDescr: No pull request rodam testes, evals principais e revisão. Ao fundir na main, a imagem é construída, publicada no registro e implantada. Se a verificação de saúde falha, volta à versão anterior.
+  subgraph PRW["Pull request"]
+    direction LR
+    A([Push]) --> T[Testes] --> E[Evals principais] --> R[Revisão]
+  end
+  subgraph MAIN["Merge na main"]
+    direction LR
+    B[Build da imagem] --> REG[(Registro de imagens)]:::dado --> DEP[Deploy]
+  end
+  PRW --> MAIN --> S{Saúde ok?}
+  S -- sim --> OK([No ar]):::destaque
+  S -- não --> RB([Volta à versão anterior]):::risco
+```
+
 **Ambientes.** O GitHub permite ambientes (staging e production), cada um com seus segredos e, se quiser, uma aprovação manual antes do deploy em produção (revisores obrigatórios dependem da visibilidade do repositório e do plano). Uma sequência comum: pull request roda testes e evals; fusão na `main` faz deploy no staging; aprovação leva à produção.
 
 ## Na prática

@@ -66,6 +66,24 @@ def test_json_invalido():
 
 Rode `pytest`. O segundo teste verifica o caminho de erro, que é o que mais quebra.
 
+```mermaid
+flowchart TB
+  accTitle: Testes e evals como portão do pull request
+  accDescr: No pull request rodam testes rápidos e sem custo, com o LLM trocado por um dublê, e depois evals com o modelo real. Só com tudo aprovado o merge é liberado.
+  PR([Pull request]) --> UT
+  subgraph UT["Testes · rápidos e sem custo"]
+    direction LR
+    U[Unidade] ~~~ I[Integração] ~~~ D[LLM trocado por dublê]
+  end
+  subgraph EV["Evals · modelo real, com custo"]
+    direction LR
+    C[Casos do golden set] --> V[Verificações] --> N[Nota mínima]
+  end
+  UT --> EV --> G{Passou?}
+  G -- sim --> M([Merge liberado]):::destaque
+  G -- não --> B([Bloqueado]):::risco
+```
+
 **Evals com Promptfoo.** Você descreve casos e verificações num arquivo YAML e o Promptfoo chama o modelo real:
 
 ```yaml

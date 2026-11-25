@@ -50,6 +50,19 @@ A ordem prática de decisão:
 2. **RAG:** se faltam informações que o modelo não tem (documentos internos, dados recentes), busque-as e entregue no prompt.
 3. **Fine-tuning:** só se o prompt e o RAG, bem feitos e medidos, ainda não bastam, em geral por um destes motivos: manter um tom ou formato muito específico, ensinar uma tarefa estreita e repetitiva para um modelo menor e mais barato, ou reduzir o tamanho do prompt em volume muito alto.
 
+```mermaid
+flowchart TB
+  accTitle: Prompt, RAG ou fine-tuning
+  accDescr: Primeiro tente resolver com instruções e exemplos. Se faltam informações, use RAG. Fine-tuning só quando o problema é formato ou comportamento em volume, sempre com evals.
+  P([Problema de qualidade]) --> A{Instruções resolvem?}
+  A -- sim --> PR([Prompt]):::destaque
+  A -- não --> B{Falta informação?}
+  B -- sim --> RAG([RAG]):::destaque
+  B -- não --> C{Formato ou estilo?}
+  C -- sim --> FT([Fine-tuning com evals]):::modelo
+  C -- não --> R([Revise a tarefa e os evals])
+```
+
 Analogia: o prompt é dar ao funcionário um roteiro; o RAG é dar acesso à biblioteca da empresa; o fine-tuning é um treinamento que muda hábitos dele.
 
 **LoRA em uma frase:** em vez de reescrever todos os pesos do modelo, treina-se um pequeno conjunto de pesos extras que se soma aos originais, o que reduz muito o custo e a memória exigidos. É a técnica por trás da maioria dos ajustes feitos por equipes pequenas, com bibliotecas como a PEFT.

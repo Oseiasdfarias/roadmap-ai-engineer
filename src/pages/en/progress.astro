@@ -1,0 +1,7 @@
+---
+// Versão em inglês: a mesma página, que detecta o idioma pela URL.
+import PaginaPt from '../progresso.astro';
+// A página em português não declara props; o componente é usado sem nenhuma.
+const Pagina = PaginaPt as unknown as (props: Record<string, never>) => unknown;
+---
+<Pagina />

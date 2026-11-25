@@ -1,17 +1,21 @@
 ---
-import { getEntry } from 'astro:content';
 import { ArrowRight, ArrowUpRight, Check } from '@lucide/astro';
-import { dicasDaFase, idProgresso, rotaDe, topicosDoNivel } from '../../lib/conteudo';
-import { url } from '../../lib/url';
+import { colecaoDe, dicasDaFase, entradaDe, idProgresso, rotaDe, topicosDoNivel } from '../../lib/conteudo';
+import { link, idiomaDaUrl, tr } from '../../i18n/idioma';
 
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const MAX_POR_GRUPO = 5;
+const lang = idiomaDaUrl(Astro.url.pathname);
+const T2 = tr(lang, {
+  pt: { nivel: 'Nível', aqui: 'você está aqui', topicos: 'tópicos', marcar: 'Marcar como estudado', estudado: '(estudado)', aoMesmo: 'Ao mesmo tempo, na carreira', fase: 'Fase', abrir: (n: number) => `Abrir o nível ${n} completo`, ja: 'já domina', kicker: '02 — Níveis' },
+  en: { nivel: 'Level', aqui: 'you are here', topicos: 'topics', marcar: 'Mark as studied', estudado: '(studied)', aoMesmo: 'Meanwhile, in your career', fase: 'Phase', abrir: (n: number) => `Open the full level ${n}`, ja: 'already mastered', kicker: '02 — Levels' },
+});
 const niveis = await Promise.all(
-  [1, 2, 3, 4].map(async (n) => {
-    const meta = (await getEntry('niveis', String(n)))!.data;
-    const fase = (await getEntry('fases', String(meta.fase)))!.data;
-    const grupos = await topicosDoNivel(n);
-    const dicas = await dicasDaFase(meta.fase);
+  (await colecaoDe('niveis', lang)).map((x) => x.data.id).sort((a, b) => a - b).map(async (n) => {
+    const meta = (await entradaDe('niveis', String(n), lang))!.data;
+    const fase = (await entradaDe('fases', String(meta.fase), lang))!.data;
+    const grupos = await topicosDoNivel(n, lang);
+    const dicas = await dicasDaFase(meta.fase, lang);
     const ids = grupos.flatMap((g) => g.itens.map(idProgresso));
     return { meta, fase, grupos, dicas, ids };
   }),
@@ -19,14 +23,14 @@ const niveis = await Promise.all(
 import PerfilCarreira from '../PerfilCarreira.astro';
 ---
 <section id="niveis" class="niveis rv">
-  <div class="kicker">02 — Níveis</div>
+  <div class="kicker">{T2.kicker}</div>
 
   {niveis.map((n, i) => (
     <article class="nv-grande" data-nivel-painel={n.meta.id} data-nivel-ids={n.ids.join(',')} hidden={i !== 0}>
       <div class="nv-corpo">
         <div class="nv-meta">
-          <span class="etq">Nível {n.meta.id} · você está aqui</span>
-          <span class="dur"><span data-perfil-duracao={n.meta.id}>{n.meta.duracao}</span> · <span data-painel-ntopicos>{n.ids.length} tópicos</span></span>
+          <span class="etq">{T2.nivel} {n.meta.id} · {T2.aqui}</span>
+          <span class="dur"><span data-perfil-duracao={n.meta.id}>{n.meta.duracao}</span> · <span data-painel-ntopicos>{n.ids.length} {T2.topicos}</span></span>
           <span class="cont" data-progresso-conta={n.ids.join(',')}><span data-progresso-texto>0 / {n.ids.length}</span></span>
         </div>
         <h2>{cap(n.meta.nome)}</h2>
@@ -41,26 +45,26 @@ import PerfilCarreira from '../PerfilCarreira.astro';
                   const id = idProgresso(t);
                   return (
                     <li data-painel-topico={t.id} hidden={j >= MAX_POR_GRUPO}>
-                      <button type="button" class="chk" data-alternar={id} data-progresso-id={id} aria-pressed="false" aria-label={`Marcar como estudado: ${t.data.titulo}`}>
+                      <button type="button" class="chk" data-alternar={id} data-progresso-id={id} aria-pressed="false" aria-label={`${T2.marcar}: ${t.data.titulo}`}>
                         <Check aria-hidden="true" stroke-width={3.6} />
                       </button>
                       <button type="button" class="tp-nome" data-painel={id} data-progresso-id={id} aria-haspopup="dialog">
                         {t.data.titulo}
-                        <span class="sr-only estado-feito"> (estudado)</span>
+                        <span class="sr-only estado-feito"> {T2.estudado}</span>
                       </button>
                     </li>
                   );
                 })}
-                <li class="mais" data-painel-mais hidden={g.itens.length <= MAX_POR_GRUPO}><a href={url(`/nivel/${n.meta.id}/`)}>+ <span data-painel-mais-n>{g.itens.length - MAX_POR_GRUPO}</span> tópicos</a></li>
+                <li class="mais" data-painel-mais hidden={g.itens.length <= MAX_POR_GRUPO}><a href={link(lang, `/nivel/${n.meta.id}/`)}>+ <span data-painel-mais-n>{g.itens.length - MAX_POR_GRUPO}</span> {T2.topicos}</a></li>
               </ul>
             </div>
           ))}
         </div>
       </div>
-      <aside class="nv-lado" aria-label="Ao mesmo tempo, na carreira">
-        <div class="rot">Ao mesmo tempo, na carreira</div>
+      <aside class="nv-lado" aria-label={T2.aoMesmo}>
+        <div class="rot">{T2.aoMesmo}</div>
         <div data-perfil-generico>
-          <div class="fase-t">Fase {n.fase.id} · {cap(n.fase.nome)}</div>
+          <div class="fase-t">{T2.fase} {n.fase.id} · {cap(n.fase.nome)}</div>
           <p>{n.fase.objetivo}</p>
           <ul class="dicas">
             {n.dicas.map((d) => (
@@ -69,7 +73,7 @@ import PerfilCarreira from '../PerfilCarreira.astro';
           </ul>
         </div>
         <PerfilCarreira />
-        <a class="abrir" href={url(`/nivel/${n.meta.id}/`)}>Abrir o nível {n.meta.id} completo</a>
+        <a class="abrir" href={link(lang, `/nivel/${n.meta.id}/`)}>{T2.abrir(n.meta.id)}</a>
       </aside>
     </article>
   ))}
@@ -77,11 +81,11 @@ import PerfilCarreira from '../PerfilCarreira.astro';
   <div class="nv-cards">
     {niveis.map((n, i) => (
       <article class="nv-card" data-nivel-card={n.meta.id} hidden={i === 0}>
-        <a class="nv-card-link" href={url(`/nivel/${n.meta.id}/`)}>
-          <div class="topo"><span class="k">Nível {n.meta.id} <span class="nv-ja" data-perfil-ja={n.meta.id} hidden>· já domina</span></span><span class="c" data-progresso-conta={n.ids.join(',')}><span data-progresso-texto>0 / {n.ids.length}</span></span></div>
+        <a class="nv-card-link" href={link(lang, `/nivel/${n.meta.id}/`)}>
+          <div class="topo"><span class="k">{T2.nivel} {n.meta.id} <span class="nv-ja" data-perfil-ja={n.meta.id} hidden>· {T2.ja}</span></span><span class="c" data-progresso-conta={n.ids.join(',')}><span data-progresso-texto>0 / {n.ids.length}</span></span></div>
           <h3>{cap(n.meta.nome)}</h3>
           <p>{n.meta.objetivo}</p>
-          <div class="pe"><span><span data-perfil-duracao={n.meta.id}>{n.meta.duracao}</span> · <span data-perfil-fase-rot>Fase {n.fase.id} · {cap(n.fase.nome)}</span></span><ArrowRight aria-hidden="true" /></div>
+          <div class="pe"><span><span data-perfil-duracao={n.meta.id}>{n.meta.duracao}</span> · <span data-perfil-fase-rot>{T2.fase} {n.fase.id} · {cap(n.fase.nome)}</span></span><ArrowRight aria-hidden="true" /></div>
         </a>
       </article>
     ))}

@@ -21,11 +21,11 @@ const niveis = listar('niveis').sort();
 const fases = listar('fases').sort();
 
 describe('inventário', () => {
-  it('tem 38 tópicos, 17 dicas, 5 projetos, 4 níveis e 5 fases', () => {
-    expect(topicos).toHaveLength(38);
+  it('tem 53 tópicos, 17 dicas, 6 projetos, 5 níveis e 5 fases', () => {
+    expect(topicos).toHaveLength(53);
     expect(dicas).toHaveLength(17);
-    expect(projetos).toHaveLength(5);
-    expect(niveis).toEqual(['1', '2', '3', '4']);
+    expect(projetos).toHaveLength(6);
+    expect(niveis).toEqual(['1', '2', '3', '4', '5']);
     expect(fases).toEqual(['1', '2', '3', '4', '5']);
   });
 });

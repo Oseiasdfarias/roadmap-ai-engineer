@@ -46,6 +46,19 @@ O ponto central do projeto é comparar modelos por custo e qualidade.
 
 O fluxo tem quatro etapas em sequência. (1) Extração dos dados estruturados do relato. (2) Classificação do tipo de falha. (3) Consulta à busca do P2 para sugerir o procedimento, com citação. (4) Colocação da ordem na fila certa, com base na criticidade. As etapas 1 e 2 usam um modelo pequeno e barato, e só a sugestão de procedimento (etapa 3) usa um modelo maior. A saída de cada etapa é validada com Pydantic; se for inválida, o sistema tenta de novo e, depois, marca a ordem para revisão humana.
 
+```mermaid
+flowchart TB
+  accTitle: Arquitetura do P4: Triagem de Ordens de Manutenção
+  accDescr: O relato passa por quatro etapas com saída validada: extração e classificação com modelo pequeno, procedimento via P2 com o modelo maior (destacado) e fila por criticidade. Saída inválida após nova tentativa vai para revisão humana.
+  R([Relato do operador]) --> ETAPAS
+  subgraph ETAPAS["Quatro etapas · saída validada com Pydantic"]
+    direction LR
+    S1[Extração] --> S2[Classificação] --> S3{{Procedimento via P2}}:::modelo --> S4[Fila por criticidade]
+  end
+  ETAPAS -- inválida após nova tentativa --> HU([Revisão humana]):::humano
+  ETAPAS --> FI([Ordem na fila certa]):::destaque
+```
+
 Veja os tópicos Saída estruturada, Workflow ou agente, Custo e latência e Evals.
 
 Escolha a classificação de criticidade com cuidado: uma ordem crítica mal classificada como baixa é um erro mais grave do que o contrário. Por isso, meça os tipos de erro separadamente, e não só o acerto geral. Defina também o que acontece quando o relato não traz equipamento identificável.

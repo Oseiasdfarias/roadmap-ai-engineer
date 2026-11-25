@@ -1,7 +1,9 @@
 ---
 import { Sun, Moon } from '@lucide/astro';
+import { idiomaDaUrl } from '../i18n/idioma';
+const rotulo = idiomaDaUrl(Astro.url.pathname) === 'en' ? 'Toggle theme' : 'Alternar tema';
 ---
-<button type="button" class="btn icon-btn" data-alternar-tema aria-label="Alternar tema">
+<button type="button" class="btn icon-btn" data-alternar-tema aria-label={rotulo}>
   <Sun class="sun" aria-hidden="true" />
   <Moon class="moon" aria-hidden="true" />
 </button>

@@ -45,6 +45,19 @@ Buscar por palavras exatas falha quando o usuário escreve "o aparelho não liga
 
 Um **modelo de embedding** (diferente do LLM de chat) recebe um texto e devolve um vetor de tamanho fixo. Para comparar dois textos, mede-se a **similaridade de cosseno**: um número entre -1 e 1 que diz o quanto os vetores apontam na mesma direção. Perto de 1, sentidos parecidos. Você não precisa calcular à mão: a biblioteca faz.
 
+```mermaid
+flowchart TB
+  accTitle: Embeddings e similaridade
+  accDescr: Textos passam pelo modelo de embedding e viram vetores de tamanho fixo. A similaridade de cosseno é alta entre frases de mesmo sentido e baixa entre assuntos diferentes.
+  subgraph ENT["Textos"]
+    direction LR
+    A["O aparelho não liga"] ~~~ B["Falha de partida do equipamento"] ~~~ C["Receita de bolo de cenoura"]:::externo
+  end
+  ENT --> M{{Modelo de embedding}}:::modelo --> V[(Vetores de tamanho fixo)]:::dado --> S[Similaridade de cosseno]
+  S -- alta --> P([A e B: mesmo sentido]):::destaque
+  S -- baixa --> Q([A e C: assuntos diferentes])
+```
+
 ```python
 from sentence_transformers import SentenceTransformer, util
 

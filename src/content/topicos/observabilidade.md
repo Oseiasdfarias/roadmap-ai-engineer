@@ -59,6 +59,23 @@ O que registrar em cada span: entrada e saída, modelo e versão do prompt, toke
 
 **Do erro ao golden set.** O fluxo de trabalho: filtrar traces ruins (nota baixa do usuário, erro, custo alto), abrir o rastro, achar a etapa que falhou, transformar o caso em teste e rodar os evals (veja testes-e-evals-no-projeto).
 
+```mermaid
+flowchart TB
+  accTitle: Observabilidade e o caminho até o golden set
+  accDescr: O app envia spans para o Langfuse, que alimenta painel e alertas. Traces ruins são filtrados, abertos e viram casos novos no golden set, que os evals do CI usam.
+  APP{{App com LLM}}:::modelo -- spans --> TR[(Traces no Langfuse)]:::dado
+  subgraph MON["Acompanhamento"]
+    direction LR
+    PA["Painel: custo, latência, notas"] ~~~ AL[Alertas]
+  end
+  TR --> MON
+  subgraph CIC["Do erro ao golden set"]
+    direction LR
+    F[Filtra traces ruins] --> AB[Abre o rastro] --> ET[Acha a etapa que falhou] --> GS([Caso novo para os evals do CI]):::destaque
+  end
+  MON --> CIC
+```
+
 **Privacidade.** Os traces guardam as perguntas dos usuários, que podem conter dados pessoais. Mascare o que for sensível, defina por quanto tempo guarda e quem acessa (veja lgpd-e-dados-pessoais).
 
 ## Na prática

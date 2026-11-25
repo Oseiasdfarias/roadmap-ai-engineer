@@ -48,6 +48,26 @@ Muita tarefa de IA é lenta: indexar centenas de páginas (extrair texto, gerar 
 2. **Processar.** O worker lê a mensagem, executa e registra o resultado.
 3. **Consultar.** O cliente pergunta o status por uma rota de consulta, ou recebe um aviso ao final.
 
+```mermaid
+sequenceDiagram
+  accTitle: Tarefa assíncrona com fila
+  accDescr: A API grava o trabalho como pendente, publica a mensagem e responde na hora. O worker processa quando a mensagem chega, marca como concluído, e o cliente consulta o status.
+  participant C as Cliente
+  participant A as API
+  participant Q as Fila
+  participant W as Worker
+  participant B as Banco
+  C->>A: pedido
+  A->>B: grava pendente
+  A->>Q: id do trabalho
+  A-->>C: pendente + id
+  Q->>W: entrega
+  Note over Q,W: pelo menos uma vez
+  W->>B: processa e conclui
+  C->>A: consulta status
+  A-->>C: concluído
+```
+
 Há opções por tamanho: as tarefas em segundo plano do FastAPI (`BackgroundTasks`) são simples, mas morrem junto do processo e não se repetem sozinhas, então servem para coisas leves. Para trabalho que não pode se perder, use uma fila de verdade: o Amazon SQS (gerenciado pela AWS) ou outras, como Redis com uma biblioteca de tarefas. O formato muda conforme a ferramenta; siga a documentação.
 
 **Entrega repetida.** Filas costumam garantir "pelo menos uma vez": a mesma mensagem pode chegar duas vezes, ou o worker pode cair no meio e a tarefa ser repetida. Por isso a tarefa precisa ser idempotente, ou seja, repetir tem o mesmo efeito que executar uma vez. Uma forma é registrar o identificador do trabalho no banco, na mesma transação:

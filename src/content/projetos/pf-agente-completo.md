@@ -60,6 +60,22 @@ Se preferir outro domínio, tudo bem, desde que use todas as camadas. Use apenas
 
 Um serviço FastAPI recebe a mensagem e roda o loop do agente: o modelo decide qual ferramenta chamar, o sistema executa, devolve o resultado e repete até concluir. As ferramentas vêm dos servidores MCP do P3; ações que mudam o mundo passam por aprovação humana. Antes e depois do modelo agem os guardrails e o mascaramento de dados pessoais. Um limite de requisições por usuário e um fallback de modelo protegem contra picos e falhas do provedor. Cada passo é rastreado no Langfuse, que você pode usar no Langfuse Cloud (mais simples, os rastros saem da sua conta; use só dados sintéticos) ou hospedar você mesmo (mais controle, mais infraestrutura e custo); no P1 ele rodava local em Docker, e aqui você decide e documenta a troca. O PostgreSQL guarda ordens e histórico e roda no RDS (banco gerenciado da AWS).
 
+```mermaid
+flowchart TB
+  accTitle: Arquitetura do PF: Agente Completo
+  accDescr: O pedido passa pelo limite por usuário e pelos guardrails de entrada. O loop do agente chama ferramentas MCP do P3, pede aprovação humana para ações que mudam o mundo e usa um modelo reserva se o provedor falhar. A saída passa por guardrails, e tudo é rastreado.
+  U([Usuário]) --> RL[Limite por usuário] --> GI[Guardrails e máscara de dados] --> LOOP
+  subgraph LOOP["Loop do agente · FastAPI no ECS"]
+    direction LR
+    M{{Modelo decide}}:::modelo --> T[Ferramenta MCP do P3] --> R[Resultado volta]
+  end
+  LOOP -- ação que muda o mundo --> AH[Aprovação humana]:::humano
+  LOOP -. falha do provedor .-> FB{{Modelo reserva}}:::modelo
+  LOOP --> GO[Guardrails na saída] --> OUT([Resposta]):::destaque
+  LOOP -.-> DB[(Postgres no RDS)]:::dado
+  LOOP -.-> LF[(Langfuse)]:::dado
+```
+
 Os servidores MCP do P3 foram feitos para um cliente local. Para um agente que roda num contêiner usá-los, o servidor precisa expor um transporte HTTP e o agente precisa de um cliente MCP; veja o tópico MCP e a documentação de transportes do protocolo.
 
 O deploy usa contêiner Docker em ECS (Elastic Container Service, o serviço de contêineres da AWS) com Fargate (você não gerencia servidores), a imagem guardada no ECR (registro de imagens da AWS) e um ALB (Application Load Balancer) na frente. Esses itens têm custo fixo mesmo sem uso, e o AWS Budgets, criado antes dos demais recursos, por padrão só avisa e não bloqueia gasto (o Budget Actions pode aplicar restrições, mas exige configuração). Por isso, defina também um limite de gasto no provedor do modelo. O endpoint público exige autenticação (por exemplo, uma chave ou login de teste) e tem limite de uso, porque sem isso qualquer pessoa pode gastar o seu orçamento de modelo. O CI/CD, no GitHub Actions, roda testes e evals a cada mudança e publica a imagem.

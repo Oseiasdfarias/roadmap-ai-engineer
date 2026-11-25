@@ -75,6 +75,21 @@ Este é o projeto principal do Nível 3 e cresce em camadas. Cada camada pratica
 
 O cliente fala com uma API em FastAPI. Antes de qualquer chamada ao modelo, uma camada de privacidade troca CPF, telefone, placa e nome por tokens, como `<CPF_1>` (pseudonimização reversível). O mapa token-valor fica só no servidor: o modelo vê apenas os tokens, e uma ferramenta que precisa do dado real, como agendar revisão, recebe o token e o resolve no servidor, sem passar o valor pelo LLM nem pelo log. Em seguida, o assistente decide se responde com o manual (RAG, ou geração aumentada por recuperação: buscar trechos nos documentos e entregá-los ao LLM, aqui em PostgreSQL com pgvector) ou se chama uma ferramenta (consultar preço, agendar revisão). A saída é validada com Pydantic e passa por guardrails antes de chegar ao cliente. Cada conversa é rastreada no Langfuse.
 
+```mermaid
+flowchart TB
+  accTitle: Arquitetura do P1: Assistente da Montadora
+  accDescr: A API recebe o cliente e troca dados pessoais por tokens antes do modelo. O assistente responde com o manual via RAG ou chama ferramentas, que resolvem os tokens no servidor. A saída passa por validação e guardrails, e tudo é rastreado.
+  CL([Cliente]) --> API[API FastAPI] --> PRIV["Privacidade · CPF, placa e nome viram tokens"]
+  PRIV --> AS{{Assistente decide}}:::modelo
+  AS -- pergunta sobre o carro --> RAG[(Manual em pgvector)]:::dado
+  AS -- ação --> TL["Ferramentas · preço, agendar revisão"]
+  TL -. resolve o token no servidor .-> PRIV
+  RAG --> VAL[Validação Pydantic e guardrails]
+  TL --> VAL
+  VAL --> RESP([Resposta ao cliente]):::destaque
+  AS -.-> LF[(Langfuse)]:::dado
+```
+
 Use apenas dados sintéticos: um manual do proprietário escrito por você (ou gerado e revisado por você), um catálogo inventado e clientes fictícios. Manuais reais de montadoras têm direitos autorais, então não os publique no repositório; se quiser testar com um, confira a licença como no P2. Nunca use dados reais de uma empresa ou de pessoas.
 
 ## Versões em camadas

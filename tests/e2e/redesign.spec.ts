@@ -9,19 +9,27 @@ const CANAIS: Record<string, string> = {
 };
 
 test.describe('nova página inicial', () => {
-  test('mostra as seções 01 a 04 na ordem', async ({ page }) => {
+  test('mostra as seções 01 a 05 na ordem', async ({ page }) => {
     await page.goto('./');
     const kickers = await page.locator('main section:not(#escolha):not(#mapa-resumo) .kicker').allTextContents();
-    expect(kickers).toEqual(['01 — Linha do tempo', '02 — Níveis', '03 — Portfólio', '04 — Carreira']);
+    expect(kickers).toEqual(['01 — Linha do tempo', '02 — Níveis', '03 — Portfólio', '04 — Carreira', '05 — Quem fez']);
     const ids = await page.locator('main > section[id]').evaluateAll((els) => els.map((e) => e.id));
-    expect(ids).toEqual(['escolha', 'mapa-resumo', 'tempo', 'niveis', 'portfolio', 'carreira']);
+    expect(ids).toEqual(['escolha', 'mapa-resumo', 'tempo', 'niveis', 'portfolio', 'carreira', 'autor']);
   });
 
-  test('a linha do tempo tem quatro barras de nível com os links certos', async ({ page }) => {
+  test('o destaque do autor mostra a foto e os cinco canais', async ({ page }) => {
+    await page.goto('./');
+    const sec = page.locator('#autor');
+    await expect(sec.getByRole('heading', { level: 2 })).toHaveText('Oséias Farias');
+    await expect(sec.locator('img')).toHaveAttribute('alt', 'Foto de Oséias Farias');
+    for (const href of Object.values(CANAIS)) await expect(sec.locator(`a[href="${href}"]`)).toHaveCount(1);
+  });
+
+  test('a linha do tempo tem cinco barras de nível com os links certos', async ({ page }) => {
     await page.goto('./');
     const barras = page.locator('#tempo a.tl-barra');
-    await expect(barras).toHaveCount(4);
-    for (let n = 1; n <= 4; n++) {
+    await expect(barras).toHaveCount(5);
+    for (let n = 1; n <= 5; n++) {
       await expect(barras.nth(n - 1)).toHaveAttribute('href', `/roadmap-ai-engineer/nivel/${n}/`);
     }
     await expect(page.locator('#tempo a.tl-fase[data-fase]')).toHaveCount(3);
@@ -43,10 +51,10 @@ test.describe('nova página inicial', () => {
     const html = page.locator('html');
     await expect(html).toHaveAttribute('data-theme', 'dark');
     const fundo = () => page.evaluate(() => getComputedStyle(document.body).backgroundColor);
-    expect(await fundo()).toBe('rgb(11, 13, 16)');
+    expect(await fundo()).toBe('rgb(14, 14, 16)');
     await page.getByRole('button', { name: 'Alternar tema' }).click();
     await expect(html).toHaveAttribute('data-theme', 'light');
-    expect(await fundo()).toBe('rgb(247, 248, 250)');
+    expect(await fundo()).toBe('rgb(255, 255, 255)');
     await page.reload();
     await expect(html).toHaveAttribute('data-theme', 'light');
     await page.getByRole('button', { name: 'Alternar tema' }).click();
@@ -58,12 +66,12 @@ test.describe('nova página inicial', () => {
   test('marcar um tópico no painel do nível atualiza o contador do cabeçalho', async ({ page }) => {
     await page.goto('./');
     const contador = page.locator('[data-progresso-global] [data-progresso-texto]');
-    await expect(contador).toHaveText('0 / 55');
+    await expect(contador).toHaveText('0 / 70');
     await page.getByRole('button', { name: 'Marcar como estudado: Python: fundamentos' }).click();
-    await expect(contador).toHaveText('1 / 55');
+    await expect(contador).toHaveText('1 / 70');
     await expect(page.locator('[data-nivel-painel="1"] [data-progresso-texto]').first()).toHaveText(/^1 \/ 13$/);
     await page.reload();
-    await expect(contador).toHaveText('1 / 55');
+    await expect(contador).toHaveText('1 / 70');
   });
 
   test('o painel grande passa para o primeiro nível incompleto', async ({ page }) => {
@@ -79,9 +87,9 @@ test.describe('nova página inicial', () => {
 
   test('navegação do cabeçalho: âncoras na home e links absolutos fora dela', async ({ page }) => {
     await page.goto('./');
-    await expect(page.getByRole('navigation', { name: 'Principal' }).getByRole('link', { name: 'Níveis' })).toHaveAttribute('href', '#niveis');
+    await expect(page.getByRole('navigation', { name: 'Seções' }).getByRole('link', { name: 'Níveis' })).toHaveAttribute('href', '#niveis');
     await page.goto('sobre/');
-    await expect(page.getByRole('navigation', { name: 'Principal' }).getByRole('link', { name: 'Níveis' })).toHaveAttribute('href', '/roadmap-ai-engineer/#niveis');
+    await expect(page.getByRole('navigation', { name: 'Seções' }).getByRole('link', { name: 'Níveis' })).toHaveAttribute('href', '/roadmap-ai-engineer/#niveis');
   });
 
   test('sem rolagem horizontal da página em 390 px', async ({ page }) => {
@@ -91,11 +99,11 @@ test.describe('nova página inicial', () => {
     expect(sobra).toBeLessThanOrEqual(0);
   });
 
-  test('o cabeçalho fica em uma linha em 960 px', async ({ page }) => {
+  test('o cabeçalho fica em uma faixa baixa em 960 px', async ({ page }) => {
     await page.setViewportSize({ width: 960, height: 800 });
     await page.goto('./');
     const alt = await page.locator('header.bar').evaluate((e) => e.getBoundingClientRect().height);
-    expect(alt).toBeLessThanOrEqual(84);
+    expect(alt).toBeLessThanOrEqual(64);
     const a = await page.locator('.nav a').first().evaluate((e) => e.getBoundingClientRect().height);
     expect(a).toBeLessThan(44);
   });

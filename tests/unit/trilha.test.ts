@@ -61,7 +61,7 @@ describe('classificar', () => {
   it('sem blocos, tudo estudar', () => {
     const m = classificar(TOPICOS, []);
     expect(Object.values(m).every((v) => v === 'estudar')).toBe(true);
-    expect(Object.keys(m)).toHaveLength(38);
+    expect(Object.keys(m)).toHaveLength(53);
   });
   it('mapeia pular e revisar', () => {
     expect(classificar(TOPICOS, ['python-basico'])['python-fundamentos']).toBe('pular');
@@ -90,12 +90,12 @@ describe('classificar', () => {
 
 describe('estimar', () => {
   const soma = (e: ReturnType<typeof estimar>) => e.reduce((s, n) => s + n.meses, 0);
-  it('calibração: 12,5 h e nada marcado dá 18,5 meses', () => {
-    expect(soma(estimar(TOPICOS, NIVEIS, classificar(TOPICOS, []), 12.5))).toBeCloseTo(18.5, 1);
+  it('calibração: 12,5 h e nada marcado dá 23,5 meses', () => {
+    expect(soma(estimar(TOPICOS, NIVEIS, classificar(TOPICOS, []), 12.5))).toBeCloseTo(23.5, 1);
   });
   it('horas em dobro, meses pela metade', () => {
     const m = classificar(TOPICOS, []);
-    expect(soma(estimar(TOPICOS, NIVEIS, m, 25))).toBeCloseTo(18.5 / 2, 1);
+    expect(soma(estimar(TOPICOS, NIVEIS, m, 25))).toBeCloseTo(23.5 / 2, 1);
   });
   it('tudo marcado com 40 h: nenhum nível abaixo de 0,5 mês', () => {
     const m = classificar(TOPICOS, BLOCOS.map((b) => b.id));
@@ -191,6 +191,6 @@ describe('nível de partida', () => {
     expect(e[2].meses).toBeCloseTo(7.5);
     const p = posicoes(e);
     expect(p[2]).toEqual({ nivel: 3, inicio: 0, fim: 7.5 });
-    expect(total(e).min).toBe(Math.floor((7.5 + 3.5) * 0.85));
+    expect(total(e).min).toBe(Math.floor((7.5 + 3.5 + 5) * 0.85));
   });
 });

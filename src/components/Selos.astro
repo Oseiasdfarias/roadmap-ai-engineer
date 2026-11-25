@@ -1,5 +1,6 @@
 ---
 import { Clock } from '@lucide/astro';
+import { idiomaDaUrl } from '../i18n/idioma';
 
 interface Props {
   tempo?: string;
@@ -8,7 +9,7 @@ interface Props {
 const { tempo, ferramentas = [] } = Astro.props;
 ---
 {(tempo || ferramentas.length > 0) && (
-  <ul class="selos" aria-label="Tempo e ferramentas">
+  <ul class="selos" aria-label={idiomaDaUrl(Astro.url.pathname) === 'en' ? 'Time and tools' : 'Tempo e ferramentas'}>
     {tempo && <li class="selo"><Clock aria-hidden="true" /> {tempo}</li>}
     {ferramentas.map((f) => <li class="selo">{f}</li>)}
   </ul>

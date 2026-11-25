@@ -7,10 +7,12 @@ import Tempo from '../components/inicio/Tempo.astro';
 import Niveis from '../components/inicio/Niveis.astro';
 import Portfolio from '../components/inicio/Portfolio.astro';
 import Carreira from '../components/inicio/Carreira.astro';
+import Autor from '../components/inicio/Autor.astro';
 import Painel from '../components/Painel.astro';
 import { SITE } from '../config';
+import { idiomaDaUrl } from '../i18n/idioma';
 ---
-<Base titulo={SITE.titulo} descricao={SITE.descricao} rotaOg="index">
+<Base titulo={SITE.titulo} descricao={idiomaDaUrl(Astro.url.pathname) === 'en' ? 'A roadmap to become an AI Engineer: study and career side by side, in five levels.' : SITE.descricao} rotaOg="index">
   <Hero />
   <Escolha />
   <MapaResumo />
@@ -18,6 +20,7 @@ import { SITE } from '../config';
   <Niveis />
   <Portfolio />
   <Carreira />
+  <Autor />
   <Painel />
 </Base>
 <script>

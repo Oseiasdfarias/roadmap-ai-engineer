@@ -1,0 +1,112 @@
+/* Fluxogramas (Mermaid renderizado no build). O SVG traz cores próprias num <style> com #id;
+   aqui tudo é repintado com os tokens do site, por isso o !important.
+   Classes de nó (use com :::classe no Mermaid): destaque, modelo, dado, externo, humano, risco.
+   Guia completo: docs/fluxogramas.md */
+
+.fluxo { margin: 32px 0; border: 1px solid var(--line); border-radius: var(--raio); background: var(--surface-2); overflow: hidden; }
+.fluxo-tela {
+  padding: 28px 20px; overflow-x: auto;
+}
+.fluxo-tela > svg { display: block; margin: 0 auto; height: auto; font-family: var(--font-texto) !important; }
+.fluxo figcaption {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 12px 18px; border-top: 1px solid var(--line); background: var(--surface);
+  font-size: 13px; line-height: 1.5; color: var(--text-2);
+}
+/* tela cheia (src/scripts/fluxo.ts) */
+.fluxo-legenda { flex: 1 1 auto; min-width: 0; }
+.fluxo-cheia {
+  margin-left: auto; display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 12px;
+  border: 1px solid var(--line-strong); border-radius: 999px; background: var(--surface); color: var(--text-2);
+  font: 500 12px var(--font-texto); cursor: pointer; transition: border-color .15s, color .15s;
+}
+.fluxo-cheia:hover { color: var(--text); border-color: var(--accent); }
+.fluxo-ico { width: 14px; height: 14px; flex: none; }
+.fluxo-cheia .fechar { display: none; }
+.fluxo:fullscreen .fluxo-cheia .abrir, .fluxo.fluxo-aberta .fluxo-cheia .abrir { display: none; }
+.fluxo:fullscreen .fluxo-cheia .fechar, .fluxo.fluxo-aberta .fluxo-cheia .fechar { display: block; }
+.fluxo:fullscreen, .fluxo.fluxo-aberta {
+  margin: 0; border: 0; border-radius: 0; width: 100%; height: 100%;
+  display: flex; flex-direction: column; background: var(--surface-2);
+}
+.fluxo.fluxo-aberta { position: fixed; inset: 0; z-index: 50; height: 100dvh; }
+.fluxo:fullscreen .fluxo-tela, .fluxo.fluxo-aberta .fluxo-tela {
+  flex: 1 1 auto; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 32px; overflow: auto;
+}
+.fluxo:fullscreen .fluxo-tela > svg, .fluxo.fluxo-aberta .fluxo-tela > svg { width: 100%; height: 100%; max-width: none !important; min-width: 0; }
+.fluxo:fullscreen figcaption, .fluxo.fluxo-aberta figcaption { flex: none; padding: 12px 24px; }
+html.fluxo-travado { overflow: hidden; }
+@media (max-width: 640px) {
+  .fluxo-cheia-rot { display: none; }
+  .fluxo-cheia { width: 32px; padding: 0; justify-content: center; }
+  /* celular em pé: o diagrama mantém tamanho legível e rola */
+  .fluxo.fluxo-aberta .fluxo-tela { padding: 16px; align-items: stretch; justify-content: flex-start; }
+  .fluxo.fluxo-aberta .fluxo-tela > svg { width: auto; height: auto; min-width: 640px; margin: auto; }
+}
+
+.fluxo-tipo { font: 500 11px var(--font-mono); color: var(--muted); border: 1px solid var(--line-strong); border-radius: 999px; padding: 1px 8px; }
+@media (max-width: 640px) {
+  .fluxo-tela { padding: 20px 12px; }
+  .fluxo-tela > svg { min-width: 520px; }
+}
+
+/* texto */
+.fluxo svg text, .fluxo svg .nodeLabel, .fluxo svg .label text, .fluxo svg tspan { fill: var(--text) !important; font-family: var(--font-texto) !important; }
+.fluxo svg .node text { font-weight: 400 !important; }
+/* rótulos em HTML (foreignObject) */
+.fluxo svg foreignObject div, .fluxo svg foreignObject span, .fluxo svg foreignObject p { color: var(--text) !important; font-family: var(--font-texto) !important; }
+.fluxo svg .node .nodeLabel, .fluxo svg .node .nodeLabel p { font-weight: 400 !important; }
+.fluxo svg .node.destaque foreignObject div, .fluxo svg .node.destaque foreignObject span, .fluxo svg .node.destaque foreignObject p { color: var(--accent-ink) !important; font-weight: 400 !important; }
+.fluxo svg .node.externo foreignObject span, .fluxo svg .node.externo foreignObject p { color: var(--text-2) !important; }
+.fluxo svg .edgeLabel foreignObject span, .fluxo svg .edgeLabel foreignObject p, .fluxo svg .edgeLabel foreignObject div { color: var(--text-2) !important; font-size: 12px !important; font-weight: 400 !important; background: var(--surface-2) !important; }
+.fluxo svg .cluster-label foreignObject span, .fluxo svg .cluster-label foreignObject p, .fluxo svg .cluster-label foreignObject div { color: var(--muted) !important; font-size: 11px !important; font-weight: 600 !important; letter-spacing: .06em; text-transform: uppercase; }
+
+/* nós */
+.fluxo svg .node rect, .fluxo svg .node polygon, .fluxo svg .node circle, .fluxo svg .node ellipse, .fluxo svg .node path {
+  fill: var(--surface) !important; stroke: var(--line-strong) !important; stroke-width: 1px !important;
+}
+.fluxo svg .node rect { rx: 10px; ry: 10px; }
+.fluxo svg .node.destaque rect, .fluxo svg .node.destaque polygon, .fluxo svg .node.destaque path, .fluxo svg .node.destaque circle {
+  fill: var(--accent) !important; stroke: var(--accent) !important;
+}
+.fluxo svg .node.destaque text, .fluxo svg .node.destaque tspan { fill: var(--accent-ink) !important; font-weight: 600 !important; }
+.fluxo svg .node.modelo rect, .fluxo svg .node.modelo polygon, .fluxo svg .node.modelo path {
+  fill: var(--accent-soft) !important; stroke: var(--accent) !important; stroke-width: 1.5px !important;
+}
+.fluxo svg .node.dado rect, .fluxo svg .node.dado path, .fluxo svg .node.dado polygon { fill: var(--surface-2) !important; stroke: var(--text-2) !important; }
+.fluxo svg .node.externo rect, .fluxo svg .node.externo polygon, .fluxo svg .node.externo path { stroke-dasharray: 5 4; stroke: var(--muted) !important; }
+.fluxo svg .node.externo text, .fluxo svg .node.externo tspan { fill: var(--text-2) !important; }
+.fluxo svg .node.humano rect, .fluxo svg .node.humano polygon, .fluxo svg .node.humano path {
+  fill: color-mix(in srgb, var(--ok) 10%, var(--surface)) !important; stroke: var(--ok) !important; stroke-width: 1.5px !important;
+}
+.fluxo svg .node.risco rect, .fluxo svg .node.risco polygon, .fluxo svg .node.risco path {
+  fill: color-mix(in srgb, var(--risco) 9%, var(--surface)) !important; stroke: var(--risco) !important; stroke-width: 1.5px !important; stroke-dasharray: 5 3;
+}
+
+/* grupos (subgraph) */
+.fluxo svg .cluster rect { fill: var(--bg) !important; stroke: var(--line-strong) !important; stroke-width: 1px !important; rx: 14px; ry: 14px; }
+.fluxo svg .cluster-label text, .fluxo svg .cluster-label tspan {
+  fill: var(--muted) !important; font-size: 11px !important; font-weight: 600 !important; letter-spacing: .06em; text-transform: uppercase;
+}
+
+/* arestas */
+.fluxo svg .flowchart-link { stroke: var(--muted) !important; stroke-width: 1.5px !important; }
+.fluxo svg .flowchart-link.edge-thickness-thick { stroke: var(--accent) !important; stroke-width: 2.25px !important; }
+.fluxo svg .flowchart-link.edge-pattern-dotted { stroke-dasharray: 4 4 !important; }
+.fluxo svg marker path, .fluxo svg .marker, .fluxo svg .arrowMarkerPath { fill: var(--muted) !important; stroke: var(--muted) !important; }
+.fluxo svg .edgeLabel rect, .fluxo svg .edgeLabel .background, .fluxo svg .labelBkg { fill: var(--surface-2) !important; background: var(--surface-2) !important; opacity: 1 !important; }
+.fluxo svg .edgeLabel text, .fluxo svg .edgeLabel tspan { fill: var(--text-2) !important; font-size: 12px !important; font-weight: 400 !important; }
+
+/* diagramas de sequência */
+.fluxo svg .actor { fill: var(--surface) !important; stroke: var(--line-strong) !important; }
+.fluxo svg text.actor, .fluxo svg text.actor tspan { fill: var(--text) !important; font-weight: 600 !important; }
+.fluxo svg .actor-line { stroke: var(--line-strong) !important; }
+.fluxo svg .messageLine0, .fluxo svg .messageLine1 { stroke: var(--muted) !important; stroke-width: 1.5px !important; }
+.fluxo svg .messageText { fill: var(--text-2) !important; font-size: 13px !important; }
+.fluxo svg .note { fill: var(--accent-soft) !important; stroke: var(--line-strong) !important; }
+.fluxo svg .noteText, .fluxo svg .noteText tspan { fill: var(--text) !important; }
+.fluxo svg .activation0, .fluxo svg .activation1, .fluxo svg .activation2 { fill: var(--surface-2) !important; stroke: var(--line-strong) !important; }
+.fluxo svg .loopLine { stroke: var(--line-strong) !important; }
+.fluxo svg .labelBox { fill: var(--surface-2) !important; stroke: var(--line-strong) !important; }
+.fluxo svg .labelText, .fluxo svg .loopText, .fluxo svg .loopText tspan { fill: var(--text-2) !important; }
+.fluxo svg #arrowhead path, .fluxo svg #crosshead path { fill: var(--muted) !important; stroke: var(--muted) !important; }

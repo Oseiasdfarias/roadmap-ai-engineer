@@ -3,9 +3,9 @@ import { expect, test } from '@playwright/test';
 test('mapa mostra todos os tópicos e dicas, agrupados', async ({ page }) => {
   await page.goto('./progresso/');
   await expect(page.getByRole('heading', { level: 1, name: 'Seu progresso' })).toBeVisible();
-  await expect(page.locator('.mapa-q[data-tipo="topico"]')).toHaveCount(38);
+  await expect(page.locator('.mapa-q[data-tipo="topico"]')).toHaveCount(53);
   await expect(page.locator('.mapa-q[data-tipo="dica"]')).toHaveCount(17);
-  await expect(page.locator('[data-mapa-nivel]')).toHaveCount(4);
+  await expect(page.locator('[data-mapa-nivel]')).toHaveCount(5);
   await expect(page.locator('[data-mapa-nivel="1"] .mapa-grupo')).toHaveCount(2);
   await expect(page.locator('[data-mapa-proximo] a')).toHaveAttribute('href', '/roadmap-ai-engineer/topico/python-fundamentos/');
 });
@@ -39,7 +39,7 @@ test('home tem o resumo do mapa com botão em destaque para o mapa completo', as
   await page.addInitScript(() => localStorage.setItem('rm-progresso-v1', JSON.stringify({ 'topico:rag': true })));
   await page.goto('./');
   const sec = page.locator('#mapa-resumo');
-  await expect(sec.locator('.mapa-q[data-tipo="topico"]')).toHaveCount(38);
+  await expect(sec.locator('.mapa-q[data-tipo="topico"]')).toHaveCount(53);
   await expect(sec.locator('.mapa-q[data-tipo="dica"]')).toHaveCount(17);
   await expect(sec.locator('.mapa-q[data-progresso-id="topico:rag"]')).toHaveClass(/feito/);
   const cta = sec.getByRole('link', { name: 'Abrir o mapa completo' });

@@ -728,6 +728,19 @@ def il_nivel4() -> str:
     return svg(W, H, "".join(o))
 
 
+def il_nivel5() -> str:
+    # Fronteira: dois agentes coordenados em volta do modelo aberto por dentro.
+    W, H = 1000, 300
+    o = [chao(120, 880, CHAO)]
+    o.append(rede_neural(500, 150, 200))
+    o.append(robo(230, CHAO, 110))
+    o.append(robo(770, CHAO, 110))
+    o.append(seta([(300, 160), (350, 150), (390, 148)], EF, FINA, cabeca=8, tracejada=True))
+    o.append(seta([(700, 160), (650, 150), (610, 148)], EF, FINA, cabeca=8, tracejada=True))
+    o.append(balao(560, 40, 110, 50, linhas=2, acc=True))
+    return svg(W, H, "".join(o))
+
+
 def il_projetos() -> str:
     W, H = 1000, 300
     o = [chao(120, 880, CHAO)]
@@ -813,6 +826,14 @@ def icone_nuvem() -> str:
             + _ic([(100, 132), (100, 96)], EI, ACENTO) + _ic([(87, 109), (100, 96), (113, 109)], EI, ACENTO))
 
 
+def icone_camadas() -> str:
+    # Camadas empilhadas (o modelo por dentro), a de cima em destaque.
+    o = []
+    for i, y in enumerate([118, 84, 50]):
+        o.append(_ic_ret(40 + i * 6, y, 120 - i * 12, 34, 10, cor=ACENTO if i == 2 else TINTA))
+    return "".join(o)
+
+
 def _icone(fn) -> callable:
     return lambda: svg(200, 200, fn())
 
@@ -822,11 +843,12 @@ ICONES = {
     "icone-2": _icone(icone_rede),
     "icone-3": _icone(icone_robo),
     "icone-4": _icone(icone_nuvem),
+    "icone-5": _icone(icone_camadas),
 }
 
 ILUSTRACOES = {
     "capa": il_capa, "intro": il_intro, "nivel1": il_nivel1, "nivel2": il_nivel2,
-    "nivel3": il_nivel3, "nivel4": il_nivel4, "projetos": il_projetos, "carreira": il_carreira,
+    "nivel3": il_nivel3, "nivel4": il_nivel4, "nivel5": il_nivel5, "projetos": il_projetos, "carreira": il_carreira,
     "cursos": il_cursos, **ICONES,
 }
 

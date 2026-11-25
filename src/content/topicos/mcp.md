@@ -57,6 +57,32 @@ O servidor pode expor três tipos de capacidade:
 - **Recursos (resources):** dados que o aplicativo pode ler e oferecer como contexto, como um arquivo ou um registro.
 - **Prompts:** modelos de instrução reutilizáveis, que o usuário escolhe, por exemplo "diagnosticar falha".
 
+```mermaid
+flowchart LR
+  accTitle: Host, clientes e servidores MCP
+  accDescr: Dentro do host, o modelo usa clientes MCP. Cada cliente mantém conexão com um servidor, que expõe ferramentas, recursos e prompts.
+  subgraph HOST["Host · aplicativo do usuário"]
+    direction TB
+    M{{Modelo}}:::modelo
+    C1[Cliente MCP]
+    C2[Cliente MCP]
+    M <--> C1
+    M <--> C2
+  end
+  subgraph S1["Servidor de manuais"]
+    direction TB
+    T1["Tools · buscar_manual"]
+    R1["Resources · arquivos"]
+    P1["Prompts · modelos prontos"]
+  end
+  subgraph S2["Servidor de ordens"]
+    direction TB
+    T2["Tools · abrir_ordem"]
+  end
+  C1 <--> S1
+  C2 <--> S2
+```
+
 Na conexão, o cliente pergunta ao servidor o que ele oferece; por isso o servidor novo funciona sem mudar o cliente. Em termos de transporte (como as mensagens trafegam), o conceito é: no modo local (stdio), o cliente inicia o servidor como um processo na sua máquina; no modo remoto, o servidor roda na rede e responde por HTTP. Os detalhes mudam entre versões da especificação, então consulte-a.
 
 Um servidor mínimo com o SDK oficial em Python (`pip install mcp`). A API do SDK muda entre versões: este exemplo foi testado com a série 2.x; nas 1.x, a classe se chama `FastMCP` e vem de `mcp.server.fastmcp`. Confira o guia de início rápido da versão que instalar:

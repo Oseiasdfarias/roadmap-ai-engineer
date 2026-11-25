@@ -8,7 +8,7 @@ test.describe('página de nível', () => {
     await expect(page.getByRole('heading', { name: 'Fundamentos de LLM (sem matemática)' })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Como saber que terminou' })).toBeVisible();
     await expect(page.getByRole('link', { name: /Próximo.*Nível 2/ })).toBeVisible();
-    await expect(page.getByText('Anterior')).toHaveCount(0);
+    await expect(page.locator('a[rel="prev"]')).toHaveCount(0);
   });
 
   test('expandir mostra referências e o link do tópico', async ({ page }) => {

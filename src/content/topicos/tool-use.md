@@ -51,6 +51,25 @@ Esse loop é a base de todo agente. Sem ele, o modelo só gera texto; com ele, c
 3. Seu código valida os argumentos, executa a função e devolve o resultado numa mensagem de resultado de ferramenta.
 4. O modelo lê o resultado e responde, ou pede outra ferramenta. O ciclo se repete até haver uma resposta final.
 
+```mermaid
+sequenceDiagram
+  accTitle: Ciclo de tool use
+  accDescr: O app envia a pergunta e as ferramentas, o modelo pede uma ferramenta, o app valida e executa, devolve o resultado e o modelo responde.
+  participant U as Usuário
+  participant A as Seu código
+  participant M as LLM
+  participant F as Ferramenta
+  U->>A: preço da revisão do X200?
+  A->>M: pergunta + schemas
+  M-->>A: tool_use consultar_preco
+  Note over A: valida os argumentos
+  A->>F: consultar_preco(X200)
+  F-->>A: R$ 890,00
+  A->>M: tool_result
+  M-->>A: resposta em texto
+  A-->>U: custa R$ 890,00
+```
+
 ```python
 import anthropic
 cliente = anthropic.Anthropic()

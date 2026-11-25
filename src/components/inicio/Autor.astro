@@ -1,0 +1,79 @@
+---
+/* Destaque de quem escreveu o roadmap: foto, cargo e os canais, com mais peso que o rodapé. */
+import { Picture } from 'astro:assets';
+import { ArrowUpRight } from '@lucide/astro';
+import IconeCanal from '../IconeCanal.astro';
+import { AUTOR } from '../../config';
+import foto from '../../assets/autor/oseias.jpg';
+import { idiomaDaUrl, link, tr } from '../../i18n/idioma';
+const lang = idiomaDaUrl(Astro.url.pathname);
+const T = tr(lang, {
+  pt: {"k0": "05 — Quem fez", "k1": "Este roadmap foi escrito e é mantido por ", "k2": ". Nos canais abaixo saem conteúdos sobre IA,\n        código e carreira, e é por lá que dá para acompanhar as atualizações e falar com ele."},
+  en: {"k0": "05 — Who made it", "k1": "This roadmap is written and maintained by ", "k2": ". The channels below publish content on AI,\n        code and career, and they are the place to follow updates and get in touch with him."},
+});
+
+
+const [principal, ...outros] = AUTOR.canais;
+---
+<section id="autor" class="autor-sec rv">
+  <div class="autor-card">
+    <div class="autor-foto">
+      <Picture src={foto} alt={lang === 'en' ? `Photo of ${AUTOR.nome}` : `Foto de ${AUTOR.nome}`} widths={[280, 443]} sizes="(max-width: 760px) 100vw, 280px" formats={['avif', 'webp']} loading="lazy" />
+    </div>
+    <div class="autor-txt">
+      <div class="kicker">{T.k0}</div>
+      <h2>{AUTOR.nome}</h2>
+      <p class="autor-cargo">{AUTOR.cargo}</p>
+      <p class="autor-bio">
+        {T.k1}{AUTOR.nome.split(' ')[0]}{T.k2}
+      </p>
+      <div class="autor-acoes">
+        <a class="autor-pri" href={principal.url} target="_blank" rel="noopener">
+          <IconeCanal nome={principal.icone} />{lang === 'en' ? 'See the portfolio' : `Ver o ${principal.nome.toLowerCase()}`} <ArrowUpRight aria-hidden="true" />
+        </a>
+        <ul class="autor-canais">
+          {outros.map((c) => (
+            <li><a href={c.url} target="_blank" rel="noopener"><IconeCanal nome={c.icone} />{c.nome}</a></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .autor-sec { max-width: 1240px; margin: 0 auto; padding: 0 32px 112px; }
+  .autor-card {
+    display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 48px; align-items: center;
+    border: 1px solid var(--line); border-radius: 24px; background: var(--surface-2); padding: 24px 48px 24px 24px;
+  }
+  .autor-foto { border-radius: 16px; overflow: hidden; aspect-ratio: 443 / 457; background: var(--surface); border: 1px solid var(--line); }
+  .autor-foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .autor-txt { min-width: 0; }
+  .autor-txt h2 { font-size: clamp(28px, 3.4vw, 40px); font-weight: 700; letter-spacing: -.03em; line-height: 1.1; margin: 0; }
+  .autor-cargo { margin: 8px 0 0; font-size: 16px; font-weight: 500; color: var(--text-2); }
+  .autor-bio { margin: 20px 0 0; font-size: 16px; line-height: 1.7; color: var(--text-2); max-width: 58ch; }
+  .autor-acoes { margin-top: 28px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+  .autor-pri {
+    display: inline-flex; align-items: center; gap: 6px; height: var(--ctl-h-lg); padding: 0 16px; border-radius: var(--ctl-r);
+    background: var(--btn-bg); color: var(--btn-ink); text-decoration: none; font-size: 14px; font-weight: 500;
+  }
+  .autor-pri:hover { opacity: .88; }
+  .autor-pri svg { width: 16px; height: 16px; }
+  .autor-canais { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .autor-canais a {
+    display: inline-flex; align-items: center; gap: 6px; height: var(--ctl-h-lg); padding: 0 12px; border-radius: var(--ctl-r);
+    border: 1px solid var(--line); background: var(--surface); color: var(--text); text-decoration: none; font-size: 13.5px; font-weight: 500;
+  }
+  .autor-canais a:hover { border-color: var(--accent); }
+  .autor-canais svg { width: 16px; height: 16px; color: var(--text-2); }
+  @media (max-width: 860px) {
+    .autor-card { grid-template-columns: 200px minmax(0, 1fr); gap: 28px; padding: 20px 28px 20px 20px; }
+  }
+  @media (max-width: 640px) {
+    .autor-sec { padding: 0 16px 80px; }
+    .autor-card { grid-template-columns: 1fr; padding: 16px 16px 24px; gap: 20px; }
+    .autor-foto { max-width: 320px; }
+    .autor-txt { padding: 0 4px; }
+  }
+</style>

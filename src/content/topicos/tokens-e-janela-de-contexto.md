@@ -45,6 +45,21 @@ Tudo em LLM é medido em tokens. O provedor cobra por token de entrada e de saí
 
 O texto passa por um **tokenizador**, que o quebra em pedaços de uma lista fixa, o vocabulário do modelo. Palavras comuns viram um token só; palavras raras ou longas viram vários.
 
+```mermaid
+flowchart TB
+  accTitle: Do texto à janela de contexto
+  accDescr: O tokenizador quebra o texto em tokens e ids numéricos. Na janela de contexto, instruções, histórico, pergunta e a resposta gerada dividem o mesmo limite de tokens.
+  subgraph TOK["Tokenização"]
+    direction LR
+    T(["Troque o filtro de óleo"]) --> K[Tokenizador] --> I[Ids numéricos do vocabulário]
+  end
+  subgraph JAN["Janela de contexto · um limite para tudo"]
+    direction LR
+    S[Instruções] ~~~ H[Histórico] ~~~ Q[Pergunta] ~~~ R([Resposta gerada]):::destaque
+  end
+  TOK --> JAN
+```
+
 Como tokenizadores foram desenhados com muito texto em inglês, o inglês costuma render mais caracteres por token. O português tem acentos, conjugações longas e palavras compostas, e tende a gastar mais tokens para dizer o mesmo. No exemplo abaixo, a frase em inglês dá 5 tokens e a equivalente em português dá 8 (resultado deste tokenizador; outros modelos dão números diferentes). O código e os números também gastam mais tokens do que parece.
 
 Você pode ver isso rodando um tokenizador. O exemplo usa a biblioteca `tiktoken` (`pip install tiktoken`), que baixa o vocabulário na primeira execução. Essa codificação é da OpenAI e serve aqui só para ilustrar a tokenização; o modelo que você usar tem a sua.

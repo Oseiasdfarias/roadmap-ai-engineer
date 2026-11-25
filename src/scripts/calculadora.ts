@@ -1,3 +1,4 @@
+import { faixaTexto, t as tr } from '../i18n/cliente';
 import { PRESETS, type Situacao } from '../data/blocos';
 import { marcarVarios } from '../lib/progresso';
 import {
@@ -15,7 +16,7 @@ import {
 } from '../lib/trilha';
 import type { DadosTrilha } from '../lib/dados-trilha';
 
-const ROTULO: Record<Marca, string> = { pular: 'Pular', revisar: 'Revisar', estudar: 'Estudar' };
+const ROTULO: Record<Marca, string> = tr({ pular: 'Pular', revisar: 'Revisar', estudar: 'Estudar' }, { pular: 'Skip', revisar: 'Review', estudar: 'Study' });
 
 function armazem(): Pick<Storage, 'getItem' | 'setItem'> {
   try {
@@ -27,8 +28,6 @@ function armazem(): Pick<Storage, 'getItem' | 'setItem'> {
   }
 }
 
-const meses = (n: number) => `${n} ${n === 1 ? 'mês' : 'meses'}`;
-const faixaTexto = (min: number, max: number) => (min === max ? meses(min) : `${min} a ${meses(max)}`);
 
 function iniciar(): void {
   const form = document.querySelector<HTMLFormElement>('[data-calc-form]');
@@ -83,7 +82,10 @@ function iniciar(): void {
     const conta = { pular: 0, revisar: 0, estudar: 0 };
     for (const m of Object.values(marcas)) conta[m]++;
     document.querySelector('[data-calc-resumo]')!.textContent =
-      `${conta.estudar} tópicos para estudar, ${conta.revisar} para revisar e ${conta.pular} para pular, com ${p.horas} horas por semana. Os projetos de cada nível continuam na conta.`;
+      tr(
+        `${conta.estudar} tópicos para estudar, ${conta.revisar} para revisar e ${conta.pular} para pular, com ${p.horas} horas por semana. Os projetos de cada nível continuam na conta.`,
+        `${conta.estudar} topics to study, ${conta.revisar} to review and ${conta.pular} to skip, at ${p.horas} hours per week. Each level's projects still count.`,
+      );
 
     // Níveis em sequência, com sobreposição de até 1 mês, como na linha do tempo da home.
     const pos = posicoes(est);
@@ -96,7 +98,7 @@ function iniciar(): void {
         barra.style.left = `${(100 * x.inicio) / escala}%`;
         barra.style.width = `${Math.max(2, (100 * n.meses) / escala)}%`;
       }
-      const txt = n.meses === 0 ? 'já domina' : faixaTexto(n.min, n.max);
+      const txt = n.meses === 0 ? tr('já domina', 'already mastered') : faixaTexto(n.min, n.max);
       const m = document.querySelector(`[data-calc-meses="${n.nivel}"]`);
       if (m) m.textContent = txt;
       const m2 = document.querySelector(`[data-calc-meses-texto="${n.nivel}"]`);
@@ -114,7 +116,10 @@ function iniciar(): void {
       aviso.hidden = d.length === 0;
       if (d.length) {
         aviso.querySelector('span')!.textContent =
-          `É base de ${d.length === 1 ? dados.rotulos[d[0]] : `${d.length} tópicos que você vai estudar`}. Pule só se usa no dia a dia.`;
+          tr(
+            `É base de ${d.length === 1 ? dados.rotulos[d[0]] : `${d.length} tópicos que você vai estudar`}. Pule só se usa no dia a dia.`,
+            `It is the base for ${d.length === 1 ? dados.rotulos[d[0]] : `${d.length} topics you will study`}. Skip it only if you use it every day.`,
+          );
       }
     });
 
@@ -163,7 +168,7 @@ function iniciar(): void {
     aplicar(perfilDaURL(new URLSearchParams('')));
     desenhar(false);
     history.replaceState(null, '', location.pathname);
-    feedback.textContent = 'Perfil apagado. O site voltou ao roteiro padrão.';
+    feedback.textContent = tr('Perfil apagado. O site voltou ao roteiro padrão.', 'Profile cleared. The site is back to the default path.');
   });
   document.querySelector('[data-calc-marcar-concluidos]')?.addEventListener('click', () => {
     const ids = Object.entries(marcasAtuais)
@@ -172,15 +177,15 @@ function iniciar(): void {
     marcarVarios(st, ids);
     document.dispatchEvent(new CustomEvent('progresso:recarregar'));
     feedback.textContent = ids.length
-      ? `${ids.length} ${ids.length === 1 ? 'tópico marcado' : 'tópicos marcados'} como concluído${ids.length === 1 ? '' : 's'}.`
-      : 'Nenhum tópico para pular ainda.';
+      ? tr(`${ids.length} ${ids.length === 1 ? 'tópico marcado' : 'tópicos marcados'} como concluído${ids.length === 1 ? '' : 's'}.`, `${ids.length} ${ids.length === 1 ? 'topic' : 'topics'} marked as done.`)
+      : tr('Nenhum tópico para pular ainda.', 'No topics to skip yet.');
   });
   document.querySelector('[data-calc-link]')?.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(location.href);
-      feedback.textContent = 'Link copiado.';
+      feedback.textContent = tr('Link copiado.', 'Link copied.');
     } catch {
-      feedback.textContent = 'Não deu para copiar. Copie o endereço da barra do navegador.';
+      feedback.textContent = tr('Não deu para copiar. Copie o endereço da barra do navegador.', 'Could not copy. Copy the address from the browser bar.');
     }
   });
 }

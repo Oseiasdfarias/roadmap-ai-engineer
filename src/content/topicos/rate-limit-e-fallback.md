@@ -68,6 +68,21 @@ def responder(pergunta):
 
 `ErroTemporario`, `modelo_principal` e `modelo_reserva` são seus: agrupam os erros do SDK e as chamadas. O modelo de reserva pode ser menor e mais barato, de outro provedor ou até uma mensagem de "tente de novo em instantes". Teste o reserva com os mesmos evals: o prompt e o formato da saída podem se comportar de outro jeito. Compare também o custo, para o fallback não disparar a fatura.
 
+```mermaid
+flowchart TB
+  accTitle: Limite, novas tentativas e fallback
+  accDescr: O pedido passa pelo limite do usuário. Erros temporários do modelo principal geram novas tentativas com espera crescente. Esgotadas as tentativas, entra o modelo reserva.
+  REQ([Pedido]) --> LU{Limite ok?}
+  LU -- não --> N([Recusa com tempo de espera]):::risco
+  LU -- sim --> MP{{Modelo principal}}:::modelo
+  MP -- 429, 5xx ou timeout --> RT[Espera crescente com jitter]
+  RT -- nova tentativa --> MP
+  RT -- tentativas esgotadas --> MR{{Modelo reserva}}:::modelo
+  MP -- ok --> OK([Resposta]):::destaque
+  MR -- ok --> OK
+  MR -- falhou --> AV([Mensagem clara ao usuário])
+```
+
 ## Na prática
 
 No PF: Agente Completo, a API aplica limite por usuário, repete com backoff os erros temporários e troca para um modelo de reserva quando o principal falha, e tudo isso aparece nos traces (veja observabilidade). As chamadas longas, como uma indexação em lote, vão para filas (veja filas-e-tarefas-assincronas), que controlam o ritmo de envio ao provedor. Os números de custo vêm de custo-e-latencia.

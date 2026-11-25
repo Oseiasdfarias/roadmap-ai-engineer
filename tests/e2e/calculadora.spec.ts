@@ -90,7 +90,7 @@ test.describe('sem JavaScript', () => {
 test.describe('ligações', () => {
   test('cabeçalho e linha do tempo levam à calculadora', async ({ page }) => {
     await page.goto('./sobre/');
-    await page.getByRole('navigation', { name: 'Principal' }).getByRole('link', { name: 'Calculadora' }).click();
+    await page.getByRole('navigation', { name: 'Seções' }).getByRole('link', { name: 'Calculadora' }).click();
     await expect(page).toHaveURL(/\/roadmap-ai-engineer\/calculadora\//);
     await page.goto('./');
     await expect(page.locator('#tempo a[href="/roadmap-ai-engineer/calculadora/"]:visible')).toHaveCount(1);

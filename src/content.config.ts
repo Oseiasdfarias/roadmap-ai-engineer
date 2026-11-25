@@ -2,6 +2,9 @@ import { defineCollection, reference } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
+// O mesmo schema vale para o português (src/content/<colecao>) e o inglês (src/content/en/<colecao>).
+// Os campos de dados (tipo de referência, idioma, slugs) não se traduzem; só os textos.
+
 const referencia = z.object({
   titulo: z.string().min(1),
   url: z.string().regex(/^https:\/\/\S+$/, 'a URL precisa ser https'),
@@ -22,70 +25,88 @@ const base = {
   rascunho: z.boolean().default(false),
 };
 
-const topicos = defineCollection({
-  loader: glob({ pattern: '*.md', base: './src/content/topicos' }),
-  schema: z.object({
-    ...base,
-    nivel: z.number().int().min(1).max(4),
-    prerequisitos: z.array(reference('topicos')).optional(),
-    relacionados: z.array(reference('topicos')).optional(),
-  }),
-});
+type Refs = { topicos: () => ReturnType<typeof reference>; dicas: () => ReturnType<typeof reference>; projetos: () => ReturnType<typeof reference> };
 
-const dicas = defineCollection({
-  loader: glob({ pattern: '*.md', base: './src/content/dicas' }),
-  schema: z.object({
-    ...base,
-    fase: z.number().int().min(1).max(5),
-    prerequisitos: z.array(reference('dicas')).optional(),
-    relacionados: z.array(reference('dicas')).optional(),
-  }),
-});
+function criar(pasta: string, refs: Refs) {
+  const ref = (nome: keyof Refs) => refs[nome]();
 
-const projetos = defineCollection({
-  loader: glob({ pattern: '*.md', base: './src/content/projetos' }),
-  schema: z.object({
-    titulo: z.string().min(1),
-    codigo: z.string().regex(/^(P[1-4]|PF)$/),
-    nivel: z.number().int().min(1).max(4),
-    resumo: z.string().min(140).max(240),
-    camadas: z.array(z.object({ versao: z.string(), nome: z.string(), entrega: z.string() })).optional(),
-    stack: z.array(z.string()),
-    criterios: z.array(z.string()),
-    referencias: z.array(referencia).default([]),
-    revisado: z.coerce.date(),
-    rascunho: z.boolean().default(false),
-  }),
-});
+  const topicos = defineCollection({
+    loader: glob({ pattern: '*.md', base: `${pasta}/topicos` }),
+    schema: z.object({
+      ...base,
+      nivel: z.number().int().min(1).max(5),
+      prerequisitos: z.array(ref('topicos')).optional(),
+      relacionados: z.array(ref('topicos')).optional(),
+    }),
+  });
 
-const niveis = defineCollection({
-  loader: glob({ pattern: '*.md', base: './src/content/niveis' }),
-  schema: z.object({
-    id: z.number().int().min(1).max(4),
-    nome: z.string(),
-    curto: z.string(),
-    duracao: z.string(),
-    objetivo: z.string(),
-    resultado: z.string(),
-    prerequisitos: z.string(),
-    grupos: z.array(z.object({ titulo: z.string(), topicos: z.array(reference('topicos')) })),
-    projetos: z.array(reference('projetos')).default([]),
-    criterios: z.array(z.string()),
-    fase: z.number().int().min(1).max(5),
-  }),
-});
+  const dicas = defineCollection({
+    loader: glob({ pattern: '*.md', base: `${pasta}/dicas` }),
+    schema: z.object({
+      ...base,
+      fase: z.number().int().min(1).max(5),
+      prerequisitos: z.array(ref('dicas')).optional(),
+      relacionados: z.array(ref('dicas')).optional(),
+    }),
+  });
 
-const fases = defineCollection({
-  loader: glob({ pattern: '*.md', base: './src/content/fases' }),
-  schema: z.object({
-    id: z.number().int().min(1).max(5),
-    nome: z.string(),
-    quando: z.string(),
-    objetivo: z.string(),
-    dicas: z.array(reference('dicas')),
-    niveis: z.array(z.number().int().min(1).max(4)).default([]),
-    criterios: z.array(z.string()),
-  }),
-});
+  const projetos = defineCollection({
+    loader: glob({ pattern: '*.md', base: `${pasta}/projetos` }),
+    schema: z.object({
+      titulo: z.string().min(1),
+      codigo: z.string().regex(/^(P[1-5]|PF)$/),
+      nivel: z.number().int().min(1).max(5),
+      resumo: z.string().min(140).max(240),
+      camadas: z.array(z.object({ versao: z.string(), nome: z.string(), entrega: z.string() })).optional(),
+      stack: z.array(z.string()),
+      criterios: z.array(z.string()),
+      referencias: z.array(referencia).default([]),
+      revisado: z.coerce.date(),
+      rascunho: z.boolean().default(false),
+    }),
+  });
 
-export const collections = { topicos, dicas, projetos, niveis, fases };
+  const niveis = defineCollection({
+    loader: glob({ pattern: '*.md', base: `${pasta}/niveis` }),
+    schema: z.object({
+      id: z.number().int().min(1).max(5),
+      nome: z.string(),
+      curto: z.string(),
+      duracao: z.string(),
+      objetivo: z.string(),
+      resultado: z.string(),
+      prerequisitos: z.string(),
+      grupos: z.array(z.object({ titulo: z.string(), topicos: z.array(ref('topicos')) })),
+      projetos: z.array(ref('projetos')).default([]),
+      criterios: z.array(z.string()),
+      fase: z.number().int().min(1).max(5),
+    }),
+  });
+
+  const fases = defineCollection({
+    loader: glob({ pattern: '*.md', base: `${pasta}/fases` }),
+    schema: z.object({
+      id: z.number().int().min(1).max(5),
+      nome: z.string(),
+      quando: z.string(),
+      objetivo: z.string(),
+      dicas: z.array(ref('dicas')),
+      niveis: z.array(z.number().int().min(1).max(5)).default([]),
+      criterios: z.array(z.string()),
+    }),
+  });
+
+  return { topicos, dicas, projetos, niveis, fases };
+}
+
+const pt = criar('./src/content', { topicos: () => reference('topicos'), dicas: () => reference('dicas'), projetos: () => reference('projetos') });
+const en = criar('./src/content/en', { topicos: () => reference('topicosEn'), dicas: () => reference('dicasEn'), projetos: () => reference('projetosEn') });
+
+export const collections = {
+  ...pt,
+  topicosEn: en.topicos,
+  dicasEn: en.dicas,
+  projetosEn: en.projetos,
+  niveisEn: en.niveis,
+  fasesEn: en.fases,
+};

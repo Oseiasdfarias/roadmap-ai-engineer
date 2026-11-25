@@ -1,3 +1,4 @@
+import { t } from '../i18n/cliente';
 import { PRESETS, type Situacao } from '../data/blocos';
 import { CHAVE_PERFIL, lerPerfilSalvo, limitarHoras, perfilParaURL, type Perfil } from '../lib/trilha';
 
@@ -31,7 +32,7 @@ function iniciar(): void {
     if (!alterar) return;
     alterar.setAttribute('aria-expanded', String(aberto));
     const rot = alterar.querySelector('[data-rotulo]');
-    if (rot) rot.textContent = aberto ? 'Concluir' : 'Alterar';
+    if (rot) rot.textContent = aberto ? t('Concluir', 'Done') : t('Alterar', 'Change');
   }
 
   function salvar(): void {

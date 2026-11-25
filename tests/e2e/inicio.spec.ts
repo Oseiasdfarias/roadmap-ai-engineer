@@ -7,7 +7,7 @@ test.describe('página inicial', () => {
 
   test('mostra os seis períodos e o progresso zerado', async ({ page }) => {
     await expect(page.locator('[data-periodo]')).toHaveCount(6);
-    await expect(page.locator('[data-progresso-global] [data-progresso-texto]')).toHaveText('0 / 55');
+    await expect(page.locator('[data-progresso-global] [data-progresso-texto]')).toHaveText('0 / 70');
   });
 
   test('painel abre, marca, persiste e devolve o foco', async ({ page }) => {
@@ -23,11 +23,11 @@ test.describe('página inicial', () => {
     );
 
     await dialogo.getByRole('button', { name: 'Marcar como estudado' }).click();
-    await expect(page.locator('[data-progresso-global] [data-progresso-texto]')).toHaveText('1 / 55');
+    await expect(page.locator('[data-progresso-global] [data-progresso-texto]')).toHaveText('1 / 70');
     await expect(pilula).toHaveClass(/feito/);
 
     await page.reload();
-    await expect(page.locator('[data-progresso-global] [data-progresso-texto]')).toHaveText('1 / 55');
+    await expect(page.locator('[data-progresso-global] [data-progresso-texto]')).toHaveText('1 / 70');
     await expect(page.getByRole('button', { name: /^Python: fundamentos/ })).toHaveClass(/feito/);
 
     await page.getByRole('button', { name: /^Python: fundamentos/ }).click();
@@ -61,7 +61,7 @@ test.describe('página inicial', () => {
 
   test('portfólio: projetos levam às páginas dos projetos', async ({ page }) => {
     await expect(page.locator('#portfolio a[href="/roadmap-ai-engineer/projeto/p1-assistente-da-montadora/"]')).toHaveCount(1);
-    await expect(page.locator('#portfolio li')).toHaveCount(5);
+    await expect(page.locator('#portfolio li')).toHaveCount(6);
   });
 
   test('o nível e a fase têm links na linha do tempo', async ({ page }) => {

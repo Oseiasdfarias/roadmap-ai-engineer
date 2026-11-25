@@ -1,7 +1,7 @@
 export const SITE = {
   titulo: 'Roadmap AI Engineer',
   descricao:
-    'Um roadmap em português para virar AI Engineer: estudo e carreira, lado a lado, em quatro níveis.',
+    'Um roadmap em português para virar AI Engineer: estudo e carreira, lado a lado, em cinco níveis.',
   url: 'https://oseiasdfarias.github.io',
   base: '/roadmap-ai-engineer',
 };

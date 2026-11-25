@@ -1,5 +1,7 @@
 ---
 import { ArrowLeft, ArrowRight } from '@lucide/astro';
+import { idiomaDaUrl, tr } from '../i18n/idioma';
+const T = tr(idiomaDaUrl(Astro.url.pathname), { pt: { nav: 'Anterior e próximo', ant: 'Anterior', prox: 'Próximo' }, en: { nav: 'Previous and next', ant: 'Previous', prox: 'Next' } });
 
 interface Props {
   anterior?: { rotulo: string; href: string };
@@ -7,27 +9,27 @@ interface Props {
 }
 const { anterior, proximo } = Astro.props;
 ---
-<nav class="pn" aria-label="Anterior e próximo">
+<nav class="pn" aria-label={T.nav}>
   {anterior ? (
     <a href={anterior.href} rel="prev">
-      <small><ArrowLeft aria-hidden="true" /> Anterior</small>
+      <small><ArrowLeft aria-hidden="true" /> {T.ant}</small>
       <span class="r">{anterior.rotulo}</span>
     </a>
   ) : <span />}
   {proximo ? (
     <a href={proximo.href} rel="next" class="next">
-      <small>Próximo <ArrowRight aria-hidden="true" /></small>
+      <small>{T.prox} <ArrowRight aria-hidden="true" /></small>
       <span class="r">{proximo.rotulo}</span>
     </a>
   ) : <span />}
 </nav>
 
 <style>
-  .pn { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-top: 72px; }
-  a { display: flex; flex-direction: column; gap: 14px; border: 1px solid var(--line); border-radius: 20px; padding: 26px 28px; text-decoration: none; background: var(--surface); color: var(--text); min-width: 0; transition: border-color .2s, transform .2s; }
-  a:hover { border-color: var(--accent); transform: translateY(-2px); }
-  small { display: flex; align-items: center; gap: 8px; color: var(--accent); font-family: var(--font-mono); font-size: 12px; }
-  .r { font-size: 20px; font-weight: 600; letter-spacing: -.02em; line-height: 1.25; }
+  .pn { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 64px; max-width: 46rem; }
+  a { display: flex; flex-direction: column; gap: 14px; border: 1px solid var(--line); border-radius: 16px; padding: 18px 22px; text-decoration: none; background: var(--surface); color: var(--text); min-width: 0; transition: border-color .2s, transform .2s; }
+  a:hover { border-color: var(--accent); }
+  small { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; }
+  .r { font-size: 16px; font-weight: 600; letter-spacing: -.01em; line-height: 1.35; }
   .next { text-align: right; align-items: flex-end; }
   svg { width: 14px; height: 14px; }
   @media (max-width: 640px) {

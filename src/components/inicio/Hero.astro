@@ -1,83 +1,87 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
 import { Download, Flag, SlidersHorizontal } from '@lucide/astro';
 import { PERIODOS } from '../../data/periodos';
 import { PDF_URL } from '../../config';
-import { dicasDaFase, idProgresso, topicosDoNivel } from '../../lib/conteudo';
-import { url } from '../../lib/url';
+import { colecaoDe, dicasDaFase, entradaDe, idProgresso, topicosDoNivel } from '../../lib/conteudo';
+import { idiomaDaUrl, link, tr } from '../../i18n/idioma';
+const lang = idiomaDaUrl(Astro.url.pathname);
+const T = tr(lang, {
+  pt: {"k0": "Estudo e carreira, lado a lado", "k1": "Do primeiro script em Python ", "k2": "a um agente em produção.", "k3": "Rota do roadmap", "k4": "<span class=\"rot\">Agente em produção</span>", "k5": "Cada tópico tem um resumo completo e as fontes certas para estudar.", "k6": "Ajustar ao meu nível", "k7": "Começar pelo nível 1", "k8": "Baixar o PDF", "k9": "Períodos"},
+  en: {"k0": "Study and career, side by side", "k1": "From your first Python script ", "k2": "to an agent in production.", "k3": "Roadmap route", "k4": "<span class=\"rot\">Agent in production</span>", "k5": "Every topic has a full summary and the right sources to study.", "k6": "Adjust to my level", "k7": "Start with level 1", "k8": "Download the PDF (Portuguese)", "k9": "Periods"},
+});
+
 
 const estacoes = await Promise.all(
   PERIODOS.map(async (p, i) => {
     const ids = [
-      ...(p.nivel ? (await topicosDoNivel(p.nivel)).flatMap((g) => g.itens.map(idProgresso)) : []),
-      ...(p.fase ? (await dicasDaFase(p.fase)).map(idProgresso) : []),
+      ...(p.nivel ? (await topicosDoNivel(p.nivel, lang)).flatMap((g) => g.itens.map(idProgresso)) : []),
+      ...(p.fase ? (await dicasDaFase(p.fase, lang)).map(idProgresso) : []),
     ];
-    const href = p.nivel ? url(`/nivel/${p.nivel}/`) : url(`/fase/${p.fase ?? p.faseLink}/`);
+    const href = p.nivel ? link(lang, `/nivel/${p.nivel}/`) : link(lang, `/fase/${p.fase ?? p.faseLink}/`);
     return { p, n: String(i + 1).padStart(2, '0'), ids, href };
   }),
 );
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
-const [colNiveis, colFases, colProjetos] = await Promise.all([getCollection('niveis'), getCollection('fases'), getCollection('projetos')]);
-// Rota da abertura: Python -> os quatro níveis -> agente em produção.
+const [colNiveis, colFases, colProjetos] = await Promise.all([colecaoDe('niveis', lang), colecaoDe('fases', lang), colecaoDe('projetos', lang)]);
+// Rota da abertura: Python -> os níveis -> agente em produção.
 const rota = await Promise.all(
   colNiveis
     .sort((a, b) => a.data.id - b.data.id)
     .map(async (n) => ({
       id: n.data.id,
-      nome: cap((await getEntry('niveis', String(n.data.id)))!.data.curto),
-      ids: (await topicosDoNivel(n.data.id)).flatMap((g) => g.itens.map(idProgresso)),
+      nome: cap((await entradaDe('niveis', String(n.data.id), lang))!.data.curto),
+      ids: (await topicosDoNivel(n.data.id, lang)).flatMap((g) => g.itens.map(idProgresso)),
     })),
 );
 const numeros = [
-  { n: colNiveis.length, rotulo: 'níveis', href: '#niveis' },
-  { n: colFases.length, rotulo: 'fases de carreira', href: '#carreira' },
-  { n: colProjetos.length, rotulo: 'projetos', href: '#portfolio' },
+  { n: colNiveis.length, rotulo: lang === 'en' ? 'levels' : 'níveis', href: '#niveis' },
+  { n: colFases.length, rotulo: lang === 'en' ? 'career phases' : 'fases de carreira', href: '#carreira' },
+  { n: colProjetos.length, rotulo: lang === 'en' ? 'projects' : 'projetos', href: '#portfolio' },
 ];
 ---
 <section class="hero">
-  <div class="hero-grade" aria-hidden="true"></div>
   <div class="hero-in" data-hero-abertura>
     <div class="hero-marca" aria-hidden="true">RAI<span>.</span>E</div>
-    <div class="hero-pilula"><i></i>Estudo e carreira, lado a lado</div>
+    <div class="hero-pilula"><i></i>{T.k0}</div>
     <h1>Roadmap AI Engineer</h1>
-    <p class="hero-sub">Do primeiro script em Python <span>a um agente em produção.</span></p>
-    <nav class="rota" aria-label="Rota do roadmap">
+    <p class="hero-sub">{T.k1}<span>{T.k2}</span></p>
+    <nav class="rota" aria-label={T.k3}>
       <div class="rota-rolo">
-        <ol class="rota-lista" style="--rp: 0.2" data-rota>
+        <ol class="rota-lista" style={`--rp: ${1 / (rota.length + 1)}; --rpts: ${rota.length + 2}`} data-rota>
           <li class="rota-trilho" aria-hidden="true"><i></i></li>
           <li class="rota-no rota-ini"><span class="n" aria-hidden="true"></span><span class="pt" aria-hidden="true"></span><span class="rot">Python</span></li>
           {rota.map((r, i) => (
             <li class:list={['rota-no', 'nivel', { atual: i === 0 }]} data-rota-nivel={r.id} data-ids={r.ids.join(',')}>
-              <a href={url(`/nivel/${r.id}/`)}>
+              <a href={link(lang, `/nivel/${r.id}/`)}>
                 <span class="n" aria-hidden="true">{String(r.id).padStart(2, '0')}</span>
                 <span class="pt" aria-hidden="true"></span>
-                <span class="rot"><span class="sr-only">Nível {r.id}: </span>{r.nome}</span>
+                <span class="rot"><span class="sr-only">{lang === 'en' ? 'Level' : 'Nível'} {r.id}: </span>{r.nome}</span>
               </a>
             </li>
           ))}
-          <li class="rota-no rota-fim"><span class="n" aria-hidden="true"></span><span class="pt" aria-hidden="true"><Flag /></span><span class="rot">Agente em produção</span></li>
+          <li class="rota-no rota-fim"><span class="n" aria-hidden="true"></span><span class="pt" aria-hidden="true"><Flag /></span><Fragment set:html={T.k4} /></li>
         </ol>
       </div>
     </nav>
     <ul class="hero-numeros">
       {numeros.map((x) => <li><a href={x.href}><b>{x.n}</b> {x.rotulo}</a></li>)}
     </ul>
-    <p class="hero-nota">Cada tópico tem um resumo completo e as fontes certas para estudar.</p>
+    <p class="hero-nota">{T.k5}</p>
     <div class="hero-ctas">
-      <a class="bt-destaque" href="#escolha" data-cta-ajustar><SlidersHorizontal aria-hidden="true" />Ajustar ao meu nível</a>
-      <a class="bt-pri" data-perfil-cta href={url('/nivel/1/')}>Começar pelo nível 1</a>
-      {PDF_URL && <a class="bt-sec" href={PDF_URL}><Download aria-hidden="true" />Baixar o PDF</a>}
+      <a class="bt-destaque" href="#escolha" data-cta-ajustar><SlidersHorizontal aria-hidden="true" />{T.k6}</a>
+      <a class="bt-pri" data-perfil-cta href={link(lang, '/nivel/1/')}>{T.k7}</a>
+      {PDF_URL && <a class="bt-sec" href={PDF_URL}><Download aria-hidden="true" />{T.k8}</a>}
     </div>
   </div>
-  <nav class="periodos" aria-label="Períodos" data-periodos>
+  <nav class="periodos" aria-label={T.k9} data-periodos>
     <ol class="estacoes" style="--p: 0">
       <li class="trilho" aria-hidden="true"><i></i></li>
       {estacoes.map((e, i) => (
         <li data-periodo data-estacao={i} data-ids={e.ids.join(',')} class:list={['est', { atual: i === 0, proxima: i === 1 }]}>
           <a href={e.href}>
             <span class="num">{e.n}</span>
-            <span class="nome" data-periodo-nome={e.p.nivel ?? 0}>{e.p.nome}</span>
-            <span class="sub" data-periodo-sub={e.p.nivel ?? 0}>{e.p.sub}</span>
+            <span class="nome" data-periodo-nome={e.p.nivel ?? 0}>{lang === 'en' ? e.p.en.nome : e.p.nome}</span>
+            <span class="sub" data-periodo-sub={e.p.nivel ?? 0}>{lang === 'en' ? e.p.en.sub : e.p.sub}</span>
           </a>
         </li>
       ))}
@@ -86,14 +90,14 @@ const numeros = [
 </section>
 
 <style is:global>
-  .bt-pri, .bt-sec { text-decoration: none; border-radius: 10px; font-size: 15px; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 22px; transition: transform .2s, border-color .2s, opacity .2s; }
-  .bt-pri { background: var(--btn-bg); color: var(--btn-ink); font-weight: 600; }
-  .bt-sec { border: 1px solid var(--line-strong); background: var(--surface-2); color: var(--text); font-weight: 500; }
+  .bt-pri, .bt-sec { text-decoration: none; border-radius: var(--ctl-r); font-size: 14px; display: inline-flex; align-items: center; gap: 6px; height: var(--ctl-h-lg); padding: 0 16px; transition: transform .2s, border-color .2s, opacity .2s; }
+  .bt-pri { background: var(--btn-bg); color: var(--btn-ink); font-weight: 500; }
+  .bt-sec { border: 1px solid var(--line); background: var(--surface); color: var(--text); font-weight: 500; }
   .bt-sec svg { width: 15px; height: 15px; }
   .bt-sec:hover { border-color: var(--accent); }
-  .bt-destaque { text-decoration: none; border-radius: 10px; font-size: 15px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 22px; background: var(--accent); color: var(--accent-ink); box-shadow: 0 0 0 4px var(--accent-soft), 0 8px 24px -8px var(--accent); transition: transform .2s, box-shadow .2s; }
-  .bt-destaque:hover { transform: translateY(-2px); box-shadow: 0 0 0 6px var(--accent-soft), 0 12px 28px -8px var(--accent); }
-  .bt-destaque svg { width: 17px; height: 17px; }
+  .bt-destaque { text-decoration: none; border-radius: var(--ctl-r); font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; height: var(--ctl-h-lg); padding: 0 16px; background: var(--accent); color: var(--accent-ink); border: 1px solid var(--accent); transition: opacity .15s; }
+  .bt-destaque:hover { opacity: .88; }
+  .bt-destaque svg { width: 15px; height: 15px; }
   .hero { position: relative; overflow: hidden; }
   .hero-grade { position: absolute; inset: 0; background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px); background-size: 56px 56px; opacity: .7; -webkit-mask-image: linear-gradient(#000 55%, transparent); mask-image: linear-gradient(#000 55%, transparent); }
   /* A abertura ocupa a altura visível abaixo do cabeçalho; os tamanhos escalam com a altura (svh) para caber em telas baixas. */
@@ -114,8 +118,8 @@ const numeros = [
 
   /* rota: Python -> níveis -> agente */
   .rota { width: 100%; max-width: 860px; margin: clamp(16px, 3.6svh, 40px) auto 0; }
-  .rota-lista { list-style: none; margin: 0; padding: 0; position: relative; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
-  .rota-trilho { position: absolute; left: calc(100% / 12); right: calc(100% / 12); top: calc(var(--rn) + 7px); height: 2px; background: var(--line-strong); transform-origin: left; animation: rota-desenha .9s ease .15s both; }
+  .rota-lista { list-style: none; margin: 0; padding: 0; position: relative; display: grid; grid-template-columns: repeat(var(--rpts, 6), minmax(0, 1fr)); }
+  .rota-trilho { position: absolute; left: calc(100% / (2 * var(--rpts, 6))); right: calc(100% / (2 * var(--rpts, 6))); top: calc(var(--rn) + 7px); height: 2px; background: var(--line-strong); transform-origin: left; animation: rota-desenha .9s ease .15s both; }
   .rota-trilho i { display: block; height: 100%; width: calc(var(--rp) * 100%); background: var(--accent); transition: width .5s ease; }
   @keyframes rota-desenha { from { transform: scaleX(0); } to { transform: none; } }
   .rota-lista { --rn: 22px; }
@@ -135,7 +139,7 @@ const numeros = [
   .rota-no a:hover .rot { color: var(--accent); }
 
   .hero-numeros { list-style: none; margin: clamp(16px, 3.4svh, 36px) auto 0; padding: 0; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
-  .hero-numeros a { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; border: 1px solid var(--line-strong); border-radius: 8px; padding: 0 12px; font-size: 13px; color: var(--text-2); text-decoration: none; background: var(--surface); transition: border-color .2s; }
+  .hero-numeros a { display: inline-flex; align-items: center; gap: 8px; height: 30px; border: 1px solid var(--line); border-radius: 999px; padding: 0 12px; font-size: 13px; color: var(--text-2); text-decoration: none; background: var(--surface); transition: border-color .2s; }
   .hero-numeros a:hover { border-color: var(--accent); color: var(--text); }
   .hero-numeros b { font-family: var(--font-mono); font-weight: 500; font-size: 14px; color: var(--accent); }
   .hero-nota { font-size: clamp(14px, 2.1svh, 16px); line-height: 1.55; color: var(--text-2); max-width: 640px; margin: clamp(10px, 1.8svh, 16px) auto 0; }
@@ -157,11 +161,11 @@ const numeros = [
     .hero-sub { font-size: clamp(17px, 2.6svh, 22px); }
     .hero-pilula { font-size: 12px; padding: 5px 12px; }
     .rota-rolo { overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px; }
-    .rota-lista { min-width: 356px; }
+    .rota-lista { min-width: 400px; }
     .rota-no .rot { font-size: 11px; margin-top: 8px; letter-spacing: -.01em; }
-    .hero-numeros a { min-height: 32px; font-size: 12.5px; padding: 0 10px; }
+    .hero-numeros a { height: 28px; font-size: 12.5px; padding: 0 10px; }
     .hero-ctas { gap: 8px; }
-    .hero-ctas .bt-destaque, .hero-ctas .bt-pri, .hero-ctas .bt-sec { min-height: 44px; padding: 0 16px; font-size: 14px; }
+    .hero-ctas .bt-destaque, .hero-ctas .bt-pri, .hero-ctas .bt-sec { height: var(--ctl-h-lg); padding: 0 14px; font-size: 13.5px; }
     .periodos { padding: 0 16px 56px; }
     .estacoes { grid-template-columns: 1fr; gap: 18px; }
     .trilho { left: 19px; right: auto; top: 19px; bottom: 19px; width: 1px; height: auto; }

@@ -51,6 +51,22 @@ Pense em cinco decisões:
 4. **Resultados de ferramentas enxutos.** Devolva o campo que importa, não a tabela inteira. Resultados antigos e já usados podem ser removidos.
 5. **A ordem.** Instruções estáveis no início (isso também favorece o prompt caching, que reaproveita um começo de prompt igual), material longo depois e a pergunta no fim. Teste a ordem no seu caso; o efeito varia.
 
+```mermaid
+flowchart TB
+  accTitle: Montagem do contexto
+  accDescr: Memória, documentos, histórico e resultados de ferramentas ficam fora da janela. Só o selecionado, resumido e cortado entra, nesta ordem: instruções, resumo, trechos, mensagens recentes e a pergunta.
+  subgraph FONTES["Fora da janela"]
+    direction LR
+    MEM[(Memória)]:::dado ~~~ DOC[(Documentos)]:::dado ~~~ HIS[Histórico completo] ~~~ FER[Resultados de ferramentas]
+  end
+  subgraph JAN["Janela de contexto · nesta ordem"]
+    direction LR
+    I[Instruções estáveis] --> RS[Resumo] --> T[Trechos] --> RC[Recentes] --> P([Pergunta]):::destaque
+  end
+  FONTES -- seleção, resumo e corte --> JAN
+  JAN --> M{{LLM}}:::modelo
+```
+
 ```python
 def montar_contexto(sistema, resumo, recentes, trechos, pergunta):
     partes = [sistema]                       # estável: fica no início

@@ -1,0 +1,12 @@
+---
+// Versão em inglês: a mesma página, que detecta o idioma pela URL.
+import { getCollection } from 'astro:content';
+import PaginaPt from '../../fase/[id].astro';
+// A página em português não declara props; o componente é usado sem nenhuma.
+const Pagina = PaginaPt as unknown as (props: Record<string, never>) => unknown;
+
+export async function getStaticPaths() {
+  return (await getCollection('fasesEn')).map((f) => ({ params: { id: String(f.id) } }));
+}
+---
+<Pagina />

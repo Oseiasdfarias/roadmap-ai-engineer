@@ -1,6 +1,9 @@
 ---
 import { ArrowUpRight } from '@lucide/astro';
 import capas from '../data/capas.json';
+import { idiomaDaUrl } from '../i18n/idioma';
+
+const TIPOS_EN: Record<string, string> = { Vídeo: 'Video', Curso: 'Course', Docs: 'Docs', Artigo: 'Article', Repositório: 'Repository', Vagas: 'Jobs', Livro: 'Book' };
 
 interface Props {
   ref: { titulo: string; url: string; tipo: string };
@@ -12,6 +15,7 @@ const info = (capas as Record<string, { tipo: string; dominio: string; icone: st
 const dominio = info?.dominio ?? new URL(r.url).host.replace(/^www\./, '');
 const icone = info?.icone ?? `https://www.google.com/s2/favicons?sz=64&domain=${new URL(r.url).host}`;
 const img = capa ?? info?.img ?? null;
+const tipo = idiomaDaUrl(Astro.url.pathname) === 'en' ? (TIPOS_EN[r.tipo] ?? r.tipo) : r.tipo;
 ---
 <a class="ref" href={r.url} target="_blank" rel="noopener noreferrer">
   <span class="th" data-ico={icone}>
@@ -22,7 +26,7 @@ const img = capa ?? info?.img ?? null;
   <span class="corpo">
     <span class="ref-tit">{r.titulo}</span>
     <span class="mt">
-      <span class="tg">{r.tipo}</span>
+      <span class="tg">{tipo}</span>
       <span class="dom">{dominio}</span>
       <span class="ar"><ArrowUpRight size={15} aria-hidden="true" /></span>
     </span>
@@ -63,18 +67,18 @@ const img = capa ?? info?.img ?? null;
     gap: 14px;
     align-items: center;
     border: 1px solid var(--line);
-    border-radius: 12px;
+    border-radius: 16px;
     padding: 8px;
     text-decoration: none;
     color: var(--text);
     background: var(--surface);
     transition: border-color 0.15s, transform 0.15s;
   }
-  .ref:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .ref:hover { border-color: var(--accent); }
   .th {
     width: 128px;
     aspect-ratio: 16 / 9;
-    border-radius: 8px;
+    border-radius: 10px;
     overflow: hidden;
     background: var(--surface-2);
     display: grid;

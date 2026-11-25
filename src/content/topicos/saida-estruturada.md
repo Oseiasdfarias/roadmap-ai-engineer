@@ -75,6 +75,17 @@ for _ in range(3):
 
 A primeira resposta tem `"urgente"`, que não está entre os valores permitidos; o Pydantic recusa, o erro volta no prompt e a segunda tentativa passa. Limite o número de tentativas e decida o que fazer se todas falharem (registrar e encaminhar para uma pessoa).
 
+```mermaid
+flowchart TB
+  accTitle: Gerar, validar, tentar de novo
+  accDescr: O modelo gera JSON a partir do schema. Se a validação passa, sai um objeto tipado. Se falha, o erro volta no prompt para nova tentativa, até um limite, depois revisão humana.
+  S[Schema Pydantic] --> G{{LLM gera JSON}}:::modelo --> V{Valida?}
+  V -- sim --> OK([Objeto tipado]):::destaque
+  V -- não --> E[Erro volta no prompt]
+  E -- nova tentativa --> G
+  E -. limite de tentativas .-> H([Revisão humana]):::humano
+```
+
 Dica de modelagem: use `Literal` ou enumerações para campos de categoria, descreva cada campo com uma frase (o modelo lê as descrições do schema) e inclua uma opção como `"indefinido"` para casos em que ele não tem como saber.
 
 ## Na prática

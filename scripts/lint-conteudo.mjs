@@ -28,6 +28,26 @@ export const MODELOS = {
   },
 };
 
+/** Modelos da versão em inglês (src/content/en): mesmas seções, títulos em inglês.
+ *  A faixa de palavras é um pouco menor, porque o inglês costuma usar menos palavras que o português. */
+export const MODELOS_EN = {
+  topicos: {
+    secoes: ['What it is', 'Why it matters for an AI Engineer', 'How it works', 'In practice', 'Common mistakes', 'How to study', 'How to show it'],
+    opcionais: [],
+    palavras: [350, 800],
+  },
+  dicas: {
+    secoes: ['What it is', 'Why it matters', 'Step by step', 'Example', 'Common mistakes', 'Checklist'],
+    opcionais: [],
+    palavras: [300, 700],
+  },
+  projetos: {
+    secoes: ['The problem', 'Architecture', 'Layered versions', 'Suggested stack', 'Acceptance criteria', 'What to put in the README', 'How to present it in an interview'],
+    opcionais: ['Layered versions'],
+    palavras: [450, 900],
+  },
+};
+
 export const RESUMO = [140, 240];
 const COLECOES = ['topicos', 'dicas', 'projetos', 'niveis', 'fases'];
 
@@ -44,6 +64,8 @@ export function separarFrontmatter(texto) {
 }
 
 function contarPalavras(corpo) {
+  // Fluxogramas (```mermaid) não contam como texto corrido.
+  corpo = corpo.replace(/^```mermaid\n[\s\S]*?^```$/gm, '');
   return (corpo.match(/[\p{L}\p{N}][\p{L}\p{N}'_-]*/gu) ?? []).length;
 }
 
@@ -79,7 +101,7 @@ function listaDeSlugs(valor) {
  * Verifica o texto de um arquivo de conteúdo. Devolve a lista de erros (vazia se estiver ok).
  * opcoes: { tipo, slugs: Set<string>, rascunho: boolean }
  */
-export function verificarTexto(texto, { tipo, slugs = new Set(), rascunho = false } = {}) {
+export function verificarTexto(texto, { tipo, slugs = new Set(), rascunho = false, idioma = 'pt' } = {}) {
   const erros = [];
   if (temEmoji(texto)) erros.push('contém emoji (proibido em todo o conteúdo)');
 
@@ -92,7 +114,7 @@ export function verificarTexto(texto, { tipo, slugs = new Set(), rascunho = fals
   }
   if (!dados) return [...erros, 'frontmatter ausente'];
 
-  const modelo = MODELOS[tipo];
+  const modelo = (idioma === 'en' ? MODELOS_EN : MODELOS)[tipo];
   const ehRascunho = dados.rascunho === true;
   if (ehRascunho && !rascunho) erros.push('rascunho: true não é aceito no modo estrito');
 
@@ -149,7 +171,8 @@ export function verificarArquivo(caminho, { rascunho = false, slugs } = {}) {
   const tipo = tipoDoCaminho(abs);
   if (!tipo) return [`pasta fora das coleções (${COLECOES.join(', ')})`];
   const universo = slugs ?? coletarSlugs(dirname(dirname(abs)));
-  return verificarTexto(readFileSync(abs, 'utf8'), { tipo, slugs: universo, rascunho });
+  const idioma = abs.split(sep).join('/').includes('/content/en/') ? 'en' : 'pt';
+  return verificarTexto(readFileSync(abs, 'utf8'), { tipo, slugs: universo, rascunho, idioma });
 }
 
 function listarArquivos(dir, exts) {
@@ -181,6 +204,20 @@ export function verificarTudo({ rascunho = false, raiz = RAIZ_PROJETO } = {}) {
     for (const arq of listarArquivos(join(conteudo, c), ['.md'])) {
       const erros = verificarArquivo(arq, { rascunho, slugs });
       if (erros.length) resultado.push([arq, erros]);
+    }
+  }
+  // Versão em inglês: mesmas regras, e cada arquivo em português precisa ter o equivalente.
+  const conteudoEn = join(conteudo, 'en');
+  if (existsSync(conteudoEn)) {
+    const slugsEn = coletarSlugs(conteudoEn);
+    for (const c of COLECOES) {
+      for (const arq of listarArquivos(join(conteudoEn, c), ['.md'])) {
+        const erros = verificarArquivo(arq, { rascunho, slugs: slugsEn });
+        if (erros.length) resultado.push([arq, erros]);
+      }
+      for (const arq of listarArquivos(join(conteudo, c), ['.md'])) {
+        if (!existsSync(join(conteudoEn, c, basename(arq)))) resultado.push([arq, ['falta a versão em inglês em src/content/en']]);
+      }
     }
   }
   return [...resultado, ...verificarEmojiEmCodigo(raiz)];

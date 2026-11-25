@@ -1,21 +1,25 @@
 ---
-import { getEntry } from 'astro:content';
 import { ArrowRight } from '@lucide/astro';
 import { CARREIRA } from '../data/carreira-perfis';
 import type { Situacao } from '../data/blocos';
-import { url } from '../lib/url';
+import { entradaDe } from '../lib/conteudo';
+import { idiomaDaUrl, link } from '../i18n/idioma';
+import { CARREIRA_EN } from '../data/carreira-perfis';
+
+const lang = idiomaDaUrl(Astro.url.pathname);
+const PERFIS = lang === 'en' ? CARREIRA_EN : CARREIRA;
 
 /** Quadros de carreira por perfil (exceto estudante), escondidos até o script de perfil mostrar o da pessoa. */
 const situacoes: Situacao[] = ['dev', 'dados', 'fora'];
 const quadros = await Promise.all(
   situacoes.map(async (s) => ({
     s,
-    ...CARREIRA[s],
+    ...PERFIS[s],
     dicas: await Promise.all(
-      CARREIRA[s].dicas.map(async (slug) => {
-        const e = await getEntry('dicas', slug);
+      PERFIS[s].dicas.map(async (slug) => {
+        const e = await entradaDe('dicas', slug, lang);
         if (!e) throw new Error(`PerfilCarreira: dica inexistente "${slug}"`);
-        return { titulo: e.data.titulo, href: url(`/carreira/${slug}/`) };
+        return { titulo: e.data.titulo, href: link(lang, `/carreira/${slug}/`) };
       }),
     ),
   })),
@@ -23,7 +27,7 @@ const quadros = await Promise.all(
 ---
 {quadros.map((q) => (
   <div class="perfil-carreira" data-perfil-carreira={q.s} hidden>
-    <p class="perfil-carreira-aviso">Ajustado ao seu perfil · <a href={url('/calculadora/')}>alterar</a></p>
+    <p class="perfil-carreira-aviso">{lang === 'en' ? 'Adjusted to your profile' : 'Ajustado ao seu perfil'} · <a href={link(lang, '/calculadora/')}>{lang === 'en' ? 'change' : 'alterar'}</a></p>
     <p class="perfil-carreira-t">{q.titulo}</p>
     <p>{q.texto}</p>
     <ul>{q.dicas.map((d) => <li><a href={d.href}>{d.titulo} <ArrowRight aria-hidden="true" /></a></li>)}</ul>

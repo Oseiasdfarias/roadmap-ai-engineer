@@ -8,23 +8,33 @@ export type DadosOg = { rota: string; titulo: string; rotulo: string; numero?: s
 
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
-/** Uma entrada por página que tem prévia social. A rota é a mesma passada como `rotaOg` ao layout. */
+/** Uma entrada por página que tem prévia social, nos dois idiomas. A rota é a mesma passada como `rotaOg` ao layout (no inglês, com o prefixo en/). */
 export async function dadosOg(): Promise<DadosOg[]> {
+  return [...(await dadosOgIdioma('pt')), ...(await dadosOgIdioma('en'))];
+}
+
+async function dadosOgIdioma(lang: 'pt' | 'en'): Promise<DadosOg[]> {
+  const sufixo = lang === 'en' ? 'En' : '';
   const [niveis, fases, topicos, dicas, projetos] = await Promise.all([
-    getCollection('niveis'),
-    getCollection('fases'),
-    getCollection('topicos'),
-    getCollection('dicas'),
-    getCollection('projetos'),
+    getCollection(`niveis${sufixo}` as 'niveis'),
+    getCollection(`fases${sufixo}` as 'fases'),
+    getCollection(`topicos${sufixo}` as 'topicos'),
+    getCollection(`dicas${sufixo}` as 'dicas'),
+    getCollection(`projetos${sufixo}` as 'projetos'),
   ]);
+  const en = lang === 'en';
+  const pre = en ? 'en/' : '';
+  const T = en
+    ? { slogan: 'Study and career, side by side', sobreT: 'About the roadmap', sobreR: 'What it is, how to use it and who makes it', nivel: 'Level', de: 'of', carreira: 'Career', fase: 'Phase', topico: 'Topic', projeto: 'Project' }
+    : { slogan: 'Estudo e carreira, lado a lado', sobreT: 'Sobre o roadmap', sobreR: 'O que é, como usar e quem faz', nivel: 'Nível', de: 'de', carreira: 'Carreira', fase: 'Fase', topico: 'Tópico', projeto: 'Projeto' };
   return [
-    { rota: 'index', titulo: 'Roadmap AI Engineer', rotulo: 'Estudo e carreira, lado a lado' },
-    { rota: 'sobre', titulo: 'Sobre o roadmap', rotulo: 'O que é, como usar e quem faz' },
-    ...niveis.map((n) => ({ rota: `nivel/${n.id}`, titulo: cap(n.data.nome), rotulo: `Nível ${n.data.id} de 4`, numero: String(n.data.id) })),
-    ...fases.map((f) => ({ rota: `fase/${f.id}`, titulo: cap(f.data.nome), rotulo: `Carreira · Fase ${f.data.id}`, numero: String(f.data.id) })),
-    ...topicos.map((t) => ({ rota: `topico/${t.id}`, titulo: t.data.titulo, rotulo: `Tópico · Nível ${t.data.nivel}`, numero: String(t.data.nivel) })),
-    ...dicas.map((d) => ({ rota: `carreira/${d.id}`, titulo: d.data.titulo, rotulo: `Carreira · Fase ${d.data.fase}`, numero: String(d.data.fase) })),
-    ...projetos.map((p) => ({ rota: `projeto/${p.id}`, titulo: p.data.titulo, rotulo: `Projeto · Nível ${p.data.nivel}`, numero: String(p.data.nivel) })),
+    { rota: `${pre}index`, titulo: 'Roadmap AI Engineer', rotulo: T.slogan },
+    { rota: `${pre}sobre`, titulo: T.sobreT, rotulo: T.sobreR },
+    ...niveis.map((n) => ({ rota: `${pre}nivel/${n.id}`, titulo: cap(n.data.nome), rotulo: `${T.nivel} ${n.data.id} ${T.de} ${niveis.length}`, numero: String(n.data.id) })),
+    ...fases.map((f) => ({ rota: `${pre}fase/${f.id}`, titulo: cap(f.data.nome), rotulo: `${T.carreira} · ${T.fase} ${f.data.id}`, numero: String(f.data.id) })),
+    ...topicos.map((t) => ({ rota: `${pre}topico/${t.id}`, titulo: t.data.titulo, rotulo: `${T.topico} · ${T.nivel} ${t.data.nivel}`, numero: String(t.data.nivel) })),
+    ...dicas.map((d) => ({ rota: `${pre}carreira/${d.id}`, titulo: d.data.titulo, rotulo: `${T.carreira} · ${T.fase} ${d.data.fase}`, numero: String(d.data.fase) })),
+    ...projetos.map((p) => ({ rota: `${pre}projeto/${p.id}`, titulo: p.data.titulo, rotulo: `${T.projeto} · ${T.nivel} ${p.data.nivel}`, numero: String(p.data.nivel) })),
   ];
 }
 

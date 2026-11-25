@@ -1,3 +1,4 @@
+import { t } from '../i18n/cliente';
 type ResultadoPf = { url: string; meta: { title?: string }; excerpt: string };
 type Pagefind = {
   debouncedSearch: (q: string, opcoes?: object, ms?: number) => Promise<{ results: Array<{ data: () => Promise<ResultadoPf> }> } | null>;
@@ -21,7 +22,7 @@ export function ligarBusca(): void {
     try {
       pagefind = (await import(/* @vite-ignore */ caminho)) as Pagefind;
     } catch {
-      estado.textContent = 'A busca fica disponível no site publicado (rode npm run build).';
+      estado.textContent = t('A busca fica disponível no site publicado (rode npm run build).', 'Search is available on the published site (run npm run build).');
     }
     return pagefind;
   }
@@ -38,7 +39,7 @@ export function ligarBusca(): void {
     const termo = campo.value.trim();
     lista.replaceChildren();
     if (!termo) {
-      estado.textContent = 'Digite para buscar. Atalhos: / ou Ctrl+K.';
+      estado.textContent = t('Digite para buscar. Atalhos: / ou Ctrl+K.', 'Type to search. Shortcuts: / or Ctrl+K.');
       return;
     }
     const pf = await carregar();
@@ -46,7 +47,7 @@ export function ligarBusca(): void {
     const resposta = await pf.debouncedSearch(termo, {}, 150);
     if (resposta === null || campo.value.trim() !== termo) return; // chegou uma busca mais nova
     const dados = await Promise.all(resposta.results.slice(0, 8).map((r) => r.data()));
-    estado.textContent = dados.length ? `${resposta.results.length} resultado(s)` : 'Nenhum resultado para essa busca.';
+    estado.textContent = dados.length ? t(`${resposta.results.length} resultado(s)`, `${resposta.results.length} result(s)`) : t('Nenhum resultado para essa busca.', 'No results for this search.');
     for (const d of dados) {
       const li = document.createElement('li');
       const a = document.createElement('a');

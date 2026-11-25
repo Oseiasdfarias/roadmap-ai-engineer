@@ -1,12 +1,13 @@
 ---
-import '@fontsource/geist/400.css';
-import '@fontsource/geist/500.css';
-import '@fontsource/geist/600.css';
-import '@fontsource/geist/700.css';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/inter/700.css';
 import '@fontsource/geist-mono/400.css';
 import '@fontsource/geist-mono/500.css';
 import '../styles/tokens.css';
 import '../styles/base.css';
+import '../styles/fluxo.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Busca from '../components/Busca.astro';
@@ -14,6 +15,7 @@ import { SITE } from '../config';
 import { url } from '../lib/url';
 import { todosIdsProgresso } from '../lib/conteudo';
 import { dadosTrilha } from '../lib/dados-trilha';
+import { equivalentes, idiomaDaUrl } from '../i18n/idioma';
 
 interface Props {
   titulo: string;
@@ -25,16 +27,18 @@ interface Props {
 }
 const { titulo, descricao, rotaOg, semCabecalho = false, noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const lang = idiomaDaUrl(Astro.url.pathname);
+const alternativas = equivalentes(Astro.url.pathname);
 const idsProgresso = await todosIdsProgresso();
-const trilha = await dadosTrilha();
+const trilha = await dadosTrilha(lang);
 const trilhaBase = {
   topicos: trilha.topicos.map(({ id, nivel, tempo }) => ({ id, nivel, tempo, prerequisitos: [] })),
   niveis: trilha.niveis.map(({ nivel, duracao, curto, fase }) => ({ nivel, duracao, curto, fase })),
 };
-const imagemOg = rotaOg ? new URL(url('/og/' + rotaOg + '.png'), SITE.url).href : undefined;
+const imagemOg = rotaOg ? new URL(url('/og/' + (lang === 'en' ? 'en/' : '') + rotaOg + '.png'), SITE.url).href : undefined;
 ---
 <!doctype html>
-<html lang="pt-BR">
+<html lang={lang === 'en' ? 'en' : 'pt-BR'}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -42,9 +46,13 @@ const imagemOg = rotaOg ? new URL(url('/og/' + rotaOg + '.png'), SITE.url).href 
     <meta name="description" content={descricao} />
     {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="pt-BR" href={new URL(alternativas.pt, SITE.url).href} />
+    <link rel="alternate" hreflang="en" href={new URL(alternativas.en, SITE.url).href} />
+    <link rel="alternate" hreflang="x-default" href={new URL(alternativas.pt, SITE.url).href} />
     <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE.titulo} />
+    <meta property="og:locale" content={lang === 'en' ? 'en_US' : 'pt_BR'} />
     <meta property="og:title" content={titulo} />
     <meta property="og:description" content={descricao} />
     <meta property="og:url" content={canonical} />
@@ -61,7 +69,7 @@ const imagemOg = rotaOg ? new URL(url('/og/' + rotaOg + '.png'), SITE.url).href 
       })();
     </script>
   </head>
-  <body data-base-url={url('/')}>
+  <body data-base-url={url('/')} data-idioma={lang}>
     {!semCabecalho && <Header />}
     <main data-pagefind-body={noindex ? undefined : ''} data-pagefind-ignore={noindex ? '' : undefined}><slot /></main>
     <Footer />
@@ -72,6 +80,7 @@ const imagemOg = rotaOg ? new URL(url('/og/' + rotaOg + '.png'), SITE.url).href 
       import '../scripts/progresso';
       import '../scripts/cabecalho';
       import '../scripts/perfil-site';
+      import '../scripts/fluxo';
     </script>
   </body>
 </html>

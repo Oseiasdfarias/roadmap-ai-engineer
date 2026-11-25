@@ -4,55 +4,61 @@ import Base from '../layouts/Base.astro';
 import Migalha from '../components/Migalha.astro';
 import IconeCanal from '../components/IconeCanal.astro';
 import { AUTOR, ISSUES_URL, REPO_URL } from '../config';
-import { url } from '../lib/url';
 import '../styles/detalhe.css';
+import { idiomaDaUrl, link, tr } from '../i18n/idioma';
+const lang = idiomaDaUrl(Astro.url.pathname);
+const T = tr(lang, {
+  pt: {"k0": "Sobre | Roadmap AI Engineer", "k1": "O que é o Roadmap AI Engineer, como usar, quem o escreve, licenças e como contribuir.", "k2": "Sobre o projeto", "k3": "<h2>O que é</h2>", "k4": "O Roadmap AI Engineer é um caminho em português para quem quer trabalhar com sistemas de IA em produção. Ele vai do primeiro script em Python a um agente com avaliação, observabilidade e deploy, em cinco níveis, até a fronteira dos sistemas agênticos, e cada tópico traz explicação, prática e referências escolhidas a dedo.", "k5": "<h2>Por que estudo e carreira juntos</h2>", "k6": "Saber a técnica não basta para conseguir a vaga, e um perfil bem montado não sustenta quem não sabe construir. Por isso cada período do roadmap tem duas trilhas lado a lado: o que estudar e o que fazer pela carreira, como portfólio, LinkedIn, inglês e candidaturas com foco.", "k7": "<h2>Como usar este roadmap</h2>", "k8": "Comece pelo nível 1 e avance na ordem. Cada nível tem objetivo, tópicos, projeto e critérios para saber se está pronto.", "k9": "Os períodos são indicativos, para quem começa do zero e estuda de 10 a 15 horas por semana. Se você já programa, já trabalha na área ou tem outra rotina, a ", "k10": "calculadora de trilha", "k11": " ajusta o prazo, indica o que pular e mostra o caminho de carreira que faz sentido.", "k12": "Marque o que já estudou. O progresso fica salvo no seu navegador, sem conta e sem envio de dados; trocar de navegador ou limpar os dados do site zera a marcação.", "k13": "Use a busca (tecla <kbd>/</kbd> ou <kbd>Ctrl</kbd>+<kbd>K</kbd>) para achar um tema e abra o painel de um item no mapa para ver o resumo sem sair da página.", "k14": "<h2>Quem faz</h2>", "k15": " é engenheiro eletricista que migrou para software e IA. Hoje atua como ", "k16": ", com foco em agentes de LLM, MLOps e IA confiável. Constrói sistemas de IA que mantêm sistemas físicos funcionando, em produção.", "k17": "<h2>Licenças</h2>", "k18": "O código do site usa a licença MIT. O conteúdo (textos e ilustrações) usa a licença CC BY 4.0: você pode copiar e adaptar, desde que dê o crédito a ", "k19": ". Os textos completos estão no ", "k20": "repositório", "k21": "<h2>Como contribuir</h2>", "k22": "Nesta versão a contribuição acontece por issues. Achou um erro, um link quebrado ou uma referência melhor? Abra uma issue pelo botão abaixo; cada sugestão é lida e, se fizer sentido, entra no conteúdo.", "k23": "Sugerir correção <ArrowUpRight"},
+  en: {"k0": "About | Roadmap AI Engineer", "k1": "What the Roadmap AI Engineer is, how to use it, who writes it, licenses and how to contribute.", "k2": "About the project", "k3": "<h2>What it is</h2>", "k4": "The Roadmap AI Engineer is a path for people who want to work with AI systems in production. It goes from your first Python script to an agent with evaluation, observability and deployment, in five levels, up to the frontier of agentic systems, and every topic brings an explanation, practice and hand-picked references. It was written in Portuguese and is also available in English.", "k5": "<h2>Why study and career together</h2>", "k6": "Knowing the technique is not enough to land the job, and a polished profile does not hold up for someone who cannot build. That is why each period of the roadmap has two tracks side by side: what to study and what to do for your career, such as portfolio, LinkedIn, English and focused applications.", "k7": "<h2>How to use this roadmap</h2>", "k8": "Start with level 1 and move forward in order. Each level has a goal, topics, a project and criteria to know when you are ready.", "k9": "The periods are indicative, for people starting from scratch and studying 10 to 15 hours a week. If you already code, already work in the field or have another routine, the ", "k10": "path calculator", "k11": " adjusts the timeline, shows what to skip and the career path that makes sense.", "k12": "Mark what you have studied. Progress is saved in your browser, with no account and no data sent anywhere; switching browsers or clearing site data resets it.", "k13": "Use search (the <kbd>/</kbd> key or <kbd>Ctrl</kbd>+<kbd>K</kbd>) to find a subject, and open an item panel on the map to see its summary without leaving the page.", "k14": "<h2>Who makes it</h2>", "k15": " is an electrical engineer who moved into software and AI. Today he works as ", "k16": ", focused on LLM agents, MLOps and trustworthy AI. He builds AI systems that keep physical systems running, in production.", "k17": "<h2>Licenses</h2>", "k18": "The site code uses the MIT license. The content (texts and illustrations) uses the CC BY 4.0 license: you can copy and adapt it, as long as you credit ", "k19": ". The full texts are in the ", "k20": "repository", "k21": "<h2>How to contribute</h2>", "k22": "In this version, contributions happen through issues. Found an error, a broken link or a better reference? Open an issue with the button below; every suggestion is read and, if it makes sense, goes into the content.", "k23": "Suggest a fix <ArrowUpRight"},
+});
 
-const iniciais = AUTOR.nome.split(/\s+/).map((p) => p[0]).slice(0, 2).join('').toUpperCase();
+
+import { Image } from 'astro:assets';
+import fotoAutor from '../assets/autor/oseias-rosto.jpg';
 ---
-<Base titulo="Sobre | Roadmap AI Engineer" descricao="O que é o Roadmap AI Engineer, como usar, quem o escreve, licenças e como contribuir." rotaOg="sobre">
-  <div class="topo-grade" aria-hidden="true"></div>
+<Base titulo={T.k0} descricao={T.k1} rotaOg="sobre">
   <div class="detail sobre">
-    <Migalha itens={[{ rotulo: 'Mapa', href: url('/') }, { rotulo: 'Sobre' }]} />
+    <Migalha itens={[{ rotulo: lang === 'en' ? 'Map' : 'Mapa', href: link(lang, '/') }, { rotulo: lang === 'en' ? 'About' : 'Sobre' }]} />
     <header class="sobre-cab">
-      <div class="kicker">Sobre o projeto</div>
+      <div class="kicker">{T.k2}</div>
       <h1>Sobre o roadmap</h1>
     </header>
 
     <section class="sobre-sec">
-      <div class="sobre-tit"><span class="n" aria-hidden="true">01</span><h2>O que é</h2></div>
+      <div class="sobre-tit"><span class="n" aria-hidden="true">01</span><Fragment set:html={T.k3} /></div>
       <div class="tx">
-        <p>O Roadmap AI Engineer é um caminho em português para quem quer trabalhar com sistemas de IA em produção. Ele vai do primeiro script em Python a um agente com avaliação, observabilidade e deploy, em quatro níveis, e cada tópico traz explicação, prática e referências escolhidas a dedo.</p>
+        <p>{T.k4}</p>
       </div>
     </section>
 
     <section class="sobre-sec">
-      <div class="sobre-tit"><span class="n" aria-hidden="true">02</span><h2>Por que estudo e carreira juntos</h2></div>
+      <div class="sobre-tit"><span class="n" aria-hidden="true">02</span><Fragment set:html={T.k5} /></div>
       <div class="tx">
-        <p>Saber a técnica não basta para conseguir a vaga, e um perfil bem montado não sustenta quem não sabe construir. Por isso cada período do roadmap tem duas trilhas lado a lado: o que estudar e o que fazer pela carreira, como portfólio, LinkedIn, inglês e candidaturas com foco.</p>
+        <p>{T.k6}</p>
       </div>
     </section>
 
     <section class="sobre-sec">
-      <div class="sobre-tit"><span class="n" aria-hidden="true">03</span><h2>Como usar este roadmap</h2></div>
+      <div class="sobre-tit"><span class="n" aria-hidden="true">03</span><Fragment set:html={T.k7} /></div>
       <div class="tx">
         <ul class="uso">
-        <li><span>Comece pelo nível 1 e avance na ordem. Cada nível tem objetivo, tópicos, projeto e critérios para saber se está pronto.</span></li>
-        <li><span>Os períodos são indicativos, para quem começa do zero e estuda de 10 a 15 horas por semana. Se você já programa, já trabalha na área ou tem outra rotina, a <a href={url('/calculadora/')}>calculadora de trilha</a> ajusta o prazo, indica o que pular e mostra o caminho de carreira que faz sentido.</span></li>
-        <li><span>Marque o que já estudou. O progresso fica salvo no seu navegador, sem conta e sem envio de dados; trocar de navegador ou limpar os dados do site zera a marcação.</span></li>
-        <li><span>Use a busca (tecla <kbd>/</kbd> ou <kbd>Ctrl</kbd>+<kbd>K</kbd>) para achar um tema e abra o painel de um item no mapa para ver o resumo sem sair da página.</span></li>
+        <li><span>{T.k8}</span></li>
+        <li><span>{T.k9}<a href={link(lang, '/calculadora/')}>{T.k10}</a>{T.k11}</span></li>
+        <li><span>{T.k12}</span></li>
+        <li><span><Fragment set:html={T.k13} /></span></li>
       </ul>
       </div>
     </section>
 
     <section class="sobre-sec">
-      <div class="sobre-tit"><span class="n" aria-hidden="true">04</span><h2>Quem faz</h2></div>
+      <div class="sobre-tit"><span class="n" aria-hidden="true">04</span><Fragment set:html={T.k14} /></div>
       <div class="tx">
         <div class="autor-card">
           <div class="autor-topo">
-            <span class="ini" aria-hidden="true">{iniciais}</span>
+            <Image class="ini" src={fotoAutor} alt="" aria-hidden="true" width={96} height={96} />
             <span><strong>{AUTOR.nome}</strong><span class="cargo">{AUTOR.cargo}</span></span>
           </div>
-          <p><strong>{AUTOR.nome}</strong> é engenheiro eletricista que migrou para software e IA. Hoje atua como {AUTOR.cargo}, com foco em agentes de LLM, MLOps e IA confiável. Constrói sistemas de IA que mantêm sistemas físicos funcionando, em produção.</p>
+          <p><strong>{AUTOR.nome}</strong>{T.k15}{AUTOR.cargo}{T.k16}</p>
           <ul class="sobre-canais">
             {AUTOR.canais.map((c) => (
               <li><a href={c.url} target="_blank" rel="noopener"><IconeCanal nome={c.icone} /> {c.nome}</a></li>
@@ -63,18 +69,18 @@ const iniciais = AUTOR.nome.split(/\s+/).map((p) => p[0]).slice(0, 2).join('').t
     </section>
 
     <section class="sobre-sec">
-      <div class="sobre-tit"><span class="n" aria-hidden="true">05</span><h2>Licenças</h2></div>
+      <div class="sobre-tit"><span class="n" aria-hidden="true">05</span><Fragment set:html={T.k17} /></div>
       <div class="tx">
-        <p>O código do site usa a licença MIT. O conteúdo (textos e ilustrações) usa a licença CC BY 4.0: você pode copiar e adaptar, desde que dê o crédito a {AUTOR.nome}. Os textos completos estão no <a href={REPO_URL} target="_blank" rel="noopener">repositório</a>.</p>
+        <p>{T.k18}{AUTOR.nome}{T.k19}<a href={REPO_URL} target="_blank" rel="noopener">{T.k20}</a>.</p>
       </div>
     </section>
 
     <section class="sobre-sec">
-      <div class="sobre-tit"><span class="n" aria-hidden="true">06</span><h2>Como contribuir</h2></div>
+      <div class="sobre-tit"><span class="n" aria-hidden="true">06</span><Fragment set:html={T.k21} /></div>
       <div class="tx">
         <div class="contrib">
-          <p>Nesta versão a contribuição acontece por issues. Achou um erro, um link quebrado ou uma referência melhor? Abra uma issue pelo botão abaixo; cada sugestão é lida e, se fizer sentido, entra no conteúdo.</p>
-          <p class="contrib-bt"><a class="bt-pri" href={ISSUES_URL} target="_blank" rel="noopener">Sugerir correção <ArrowUpRight aria-hidden="true" /></a></p>
+          <p>{T.k22}</p>
+          <p class="contrib-bt"><a class="bt-pri" href={ISSUES_URL} target="_blank" rel="noopener"><Fragment set:html={T.k23} /> aria-hidden="true" /></a></p>
         </div>
       </div>
     </section>
@@ -102,14 +108,14 @@ const iniciais = AUTOR.nome.split(/\s+/).map((p) => p[0]).slice(0, 2).join('').t
   .uso li::before { content: counter(uso, decimal-leading-zero); content: counter(uso, decimal-leading-zero) / ""; font-family: var(--font-mono); font-size: 12px; color: var(--accent); padding-top: 4px; }
   .autor-card, .contrib { border: 1px solid var(--line); background: var(--surface); border-radius: 20px; padding: 28px; }
   .autor-topo { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
-  .autor-topo .ini { width: 48px; height: 48px; border-radius: 50%; background: var(--avatar-bg); color: var(--avatar-ink); display: grid; place-items: center; font-weight: 600; font-size: 16px; flex: none; }
+  .autor-topo .ini { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; flex: none; border: 1px solid var(--line); }
   .autor-topo strong { display: block; font-size: 16px; }
   .autor-topo .cargo { display: block; font-size: 13px; color: var(--muted); }
   .sobre .sobre-canais { list-style: none; padding: 0; margin: 20px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
-  .sobre .tx .sobre-canais a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; border: 1px solid var(--line-strong); border-radius: 10px; padding: 0 14px; text-decoration: none; color: var(--text); font-size: 14px; background: var(--surface-2); transition: border-color .15s; }
+  .sobre .tx .sobre-canais a { display: inline-flex; align-items: center; gap: 6px; height: var(--ctl-h); border: 1px solid var(--line); border-radius: 10px; padding: 0 14px; text-decoration: none; color: var(--text); font-size: 14px; background: var(--surface-2); transition: border-color .15s; }
   .sobre .tx .sobre-canais a:hover { border-color: var(--accent); }
   .sobre .sobre-canais svg { width: 16px; height: 16px; }
-  .sobre .bt-pri { text-decoration: none; border-radius: 10px; font-size: 15px; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 22px; background: var(--btn-bg); color: var(--btn-ink); font-weight: 600; }
+  .sobre .bt-pri { text-decoration: none; border-radius: var(--ctl-r); font-size: 14px; display: inline-flex; align-items: center; gap: 8px; height: var(--ctl-h-lg); padding: 0 22px; background: var(--btn-bg); color: var(--btn-ink); font-weight: 600; }
   .sobre .bt-pri:hover { opacity: .9; }
   .sobre .bt-pri svg { width: 16px; height: 16px; }
   .contrib-bt { margin-top: 22px !important; }

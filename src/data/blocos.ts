@@ -1,15 +1,32 @@
 /** Situações de partida e blocos de conhecimento da calculadora de trilha. */
 export type Situacao = 'estudante' | 'dev' | 'dados' | 'fora';
 
-export const SITUACOES: { id: Situacao; rotulo: string }[] = [
-  { id: 'estudante', rotulo: 'Estudante' },
-  { id: 'dev', rotulo: 'Dev de outra área' },
-  { id: 'dados', rotulo: 'Dados/ML' },
-  { id: 'fora', rotulo: 'Fora da TI' },
+export const SITUACOES: { id: Situacao; rotulo: string; rotuloEn: string }[] = [
+  { id: 'estudante', rotulo: 'Estudante', rotuloEn: 'Student' },
+  { id: 'dev', rotulo: 'Dev de outra área', rotuloEn: 'Developer in another area' },
+  { id: 'dados', rotulo: 'Dados/ML', rotuloEn: 'Data/ML' },
+  { id: 'fora', rotulo: 'Fora da TI', rotuloEn: 'Outside tech' },
 ];
 
 /** Um bloco marcado como dominado pula ou manda revisar os tópicos listados. */
-export type Bloco = { id: string; rotulo: string; pular: string[]; revisar: string[] };
+export type Bloco = { id: string; rotulo: string; rotuloEn?: string; pular: string[]; revisar: string[] };
+
+/** Rótulos dos blocos em inglês. */
+export const BLOCOS_EN: Record<string, string> = {
+  'python-basico': 'Basic Python',
+  'python-intermediario': 'Intermediate Python (OOP, types)',
+  terminal: 'Terminal and environments',
+  git: 'Git and GitHub',
+  sql: 'SQL',
+  'apis-web': 'Web APIs (FastAPI or similar)',
+  docker: 'Docker',
+  testes: 'Automated tests',
+  'ci-cd': 'CI/CD',
+  nuvem: 'Cloud (AWS or other)',
+  postgres: 'Postgres',
+  'apis-llm': 'I have used LLM APIs',
+  'dados-ml': 'Data and machine learning',
+};
 
 export const BLOCOS: Bloco[] = [
   { id: 'python-basico', rotulo: 'Python básico', pular: ['python-fundamentos'], revisar: [] },

@@ -1,12 +1,13 @@
 ---
 import { ChevronRight } from '@lucide/astro';
+import { idiomaDaUrl } from '../i18n/idioma';
 
 interface Props {
   itens: Array<{ rotulo: string; href?: string }>;
 }
 const { itens } = Astro.props;
 ---
-<nav class="crumb" aria-label="Você está em">
+<nav class="crumb" aria-label={idiomaDaUrl(Astro.url.pathname) === 'en' ? 'You are here' : 'Você está em'}>
   <ol>
     {itens.map((i, n) => (
       <li>

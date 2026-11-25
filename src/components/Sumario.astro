@@ -1,24 +1,52 @@
 ---
+import { AlignLeft } from '@lucide/astro';
+import { idiomaDaUrl } from '../i18n/idioma';
+const titulo = idiomaDaUrl(Astro.url.pathname) === 'en' ? 'On this page' : 'Nesta página';
+
 interface Props {
   itens: Array<{ slug: string; texto: string }>;
 }
 const { itens } = Astro.props;
 ---
 {itens.length > 1 && (
-  <nav class="sumario" aria-label="Nesta página">
-    <h2>Nesta página</h2>
+  <nav class="sumario" aria-label={titulo}>
+    <h2><AlignLeft aria-hidden="true" />{titulo}</h2>
     <ol>
-      {itens.map((i, n) => <li><a href={`#${i.slug}`}><span class="n" aria-hidden="true">{String(n + 1).padStart(2, '0')}</span>{i.texto}</a></li>)}
+      {itens.map((i) => <li><a href={`#${i.slug}`} data-sumario={i.slug}>{i.texto}</a></li>)}
     </ol>
   </nav>
 )}
 
+<script>
+  // Destaca no sumário a seção que está sendo lida.
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('.sumario a[data-sumario]')];
+  const alvos = links.map((a) => document.getElementById(a.dataset.sumario!)).filter((e): e is HTMLElement => e != null);
+  if (links.length > 0 && alvos.length > 0) {
+    const marcar = () => {
+      const limite = (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 64) + 24;
+      let atual = alvos[0];
+      for (const h of alvos) if (h.getBoundingClientRect().top <= limite) atual = h;
+      for (const a of links) {
+        if (a.dataset.sumario === atual.id) a.setAttribute('aria-current', 'location');
+        else a.removeAttribute('aria-current');
+      }
+    };
+    let pendente = false;
+    addEventListener('scroll', () => {
+      if (pendente) return;
+      pendente = true;
+      requestAnimationFrame(() => { pendente = false; marcar(); });
+    }, { passive: true });
+    marcar();
+  }
+</script>
+
 <style>
-  .sumario { position: sticky; top: 100px; font-size: 14px; max-height: calc(100vh - 120px); overflow-y: auto; }
-  h2 { font-family: var(--font-mono); font-size: 11px; font-weight: 400; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 14px; }
-  ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
-  a { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 6px; padding: 6px 0; color: var(--link); text-decoration: none; line-height: 1.4; border-radius: 4px; }
-  a:hover { color: var(--accent); }
-  .n { font-family: var(--font-mono); font-size: 11px; color: var(--muted); padding-top: 2px; }
-  a:hover .n { color: var(--accent); }
+  .sumario { position: sticky; top: calc(var(--header-h) + 32px); font-size: 14px; max-height: calc(100vh - var(--header-h) - 64px); overflow-y: auto; }
+  h2 { display: flex; align-items: center; gap: 8px; font-family: var(--font-texto); font-size: 14px; font-weight: 500; color: var(--text); margin: 0 0 12px; }
+  h2 :global(svg) { width: 15px; height: 15px; color: var(--muted); }
+  ol { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--line); }
+  a { display: block; margin-left: -1px; padding: 5px 0 5px 14px; border-left: 1px solid transparent; color: var(--muted); text-decoration: none; line-height: 1.45; }
+  a:hover { color: var(--text); }
+  a[aria-current] { color: var(--accent); font-weight: 500; border-left-color: var(--accent); }
 </style>

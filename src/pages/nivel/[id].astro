@@ -1,52 +1,63 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import { ArrowRight } from '@lucide/astro';
 import Base from '../../layouts/Base.astro';
 import Ilustracao from '../../components/Ilustracao.astro';
 import Migalha from '../../components/Migalha.astro';
+import Lateral from '../../components/Lateral.astro';
 import LinhaTopico from '../../components/LinhaTopico.astro';
 import AnteriorProximo from '../../components/AnteriorProximo.astro';
-import { dicasDaFase, idProgresso, projetosDoNivel, rotaDe, topicosDoNivel } from '../../lib/conteudo';
-import { url } from '../../lib/url';
+import { colecaoDe, dicasDaFase, entradaDe, idProgresso, projetosDoNivel, rotaDe, topicosDoNivel } from '../../lib/conteudo';
+import { idiomaDaUrl, link, tr } from '../../i18n/idioma';
 import '../../styles/detalhe.css';
+import '../../styles/prosa.css';
 
 export async function getStaticPaths() {
   return (await getCollection('niveis')).map((n) => ({ params: { id: String(n.id) } }));
 }
 
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
-const nivel = (await getEntry('niveis', Astro.params.id!))!;
+const lang = idiomaDaUrl(Astro.url.pathname);
+const T = tr(lang, {
+  pt: { nivel: 'Nível', mapa: 'Mapa', estudo: 'Estudo', de: 'de', topicos: 'tópicos', prog: 'Progresso do nível', visao: 'Visão do nível', k1: '01 — Tópicos', aoMesmo: 'Ao mesmo tempo, na carreira', fase: 'Fase', abrir: 'Abrir a fase', k2: '02 — Portfólio', projetos: 'Projetos práticos', crit: 'Critérios', terminou: 'Como saber que terminou', a: 'a' },
+  en: { nivel: 'Level', mapa: 'Map', estudo: 'Study', de: 'of', topicos: 'topics', prog: 'Level progress', visao: 'Level overview', k1: '01 — Topics', aoMesmo: 'Meanwhile, in your career', fase: 'Phase', abrir: 'Open phase', k2: '02 — Portfolio', projetos: 'Hands-on projects', crit: 'Criteria', terminou: 'How to know you are done', a: 'to' },
+});
+const nivel = (await entradaDe('niveis', Astro.params.id!, lang))!;
 const d = nivel.data;
 const [grupos, projetos, fase, prev, next] = await Promise.all([
-  topicosDoNivel(d.id),
-  projetosDoNivel(d.id),
-  getEntry('fases', String(d.fase)),
-  getEntry('niveis', String(d.id - 1)),
-  getEntry('niveis', String(d.id + 1)),
+  topicosDoNivel(d.id, lang),
+  projetosDoNivel(d.id, lang),
+  entradaDe('fases', String(d.fase), lang),
+  entradaDe('niveis', String(d.id - 1), lang),
+  entradaDe('niveis', String(d.id + 1), lang),
 ]);
-const dicas = await dicasDaFase(d.fase);
+const dicas = await dicasDaFase(d.fase, lang);
 const ids = grupos.flatMap((g) => g.itens).map(idProgresso);
-const rotulo = (n: NonNullable<typeof prev>) => `Nível ${n.data.id} · ${cap(n.data.curto)}`;
+const totalNiveis = (await colecaoDe('niveis', lang)).length;
+const { Content: Visao } = await render(nivel);
+const rotulo = (n: NonNullable<typeof prev>) => `${T.nivel} ${n.data.id} · ${cap(n.data.curto)}`;
 const semCodigo = (t: string) => t.replace(/^[A-Z0-9]+:\s*/, '');
 const rotuloProjeto = (p: (typeof projetos)[number]) => {
   const c = p.data.camadas ?? [];
-  return c.length > 1 ? `${p.data.codigo} · ${c[0].versao} a ${c[c.length - 1].versao}` : p.data.codigo;
+  return c.length > 1 ? `${p.data.codigo} · ${c[0].versao} ${T.a} ${c[c.length - 1].versao}` : p.data.codigo;
 };
 const secCrit = projetos.length > 0 ? '03' : '02';
 ---
-<Base titulo={`Nível ${d.id} · ${cap(d.nome)} | Roadmap AI Engineer`} descricao={d.objetivo} rotaOg={`nivel/${d.id}`}>
+<Base titulo={`${T.nivel} ${d.id} · ${cap(d.nome)} | Roadmap AI Engineer`} descricao={d.objetivo} rotaOg={`nivel/${d.id}`}>
+  <div class="docs">
+  <Lateral />
   <div class="detail">
-    <Migalha itens={[{ rotulo: 'Mapa', href: url('/') }, { rotulo: 'Estudo' }, { rotulo: `Nível ${d.id}` }]} />
+    <Migalha itens={[{ rotulo: T.mapa, href: link(lang, '/') }, { rotulo: T.estudo }, { rotulo: `${T.nivel} ${d.id}` }]} />
     <header class="pg-cab">
       <div class="pg-cab-txt">
         <div class="pg-meta">
-          <span class="etq">Nível {d.id} · <span data-perfil-duracao={d.id}>{d.duracao}</span></span>
-          <span class="dur">Nível {d.id} de 4 · {ids.length} tópicos</span>
+          <span class="etq">{T.nivel} {d.id} · <span data-perfil-duracao={d.id}>{d.duracao}</span></span>
+          <span class="dur">{T.nivel} {d.id} {T.de} {totalNiveis} · {ids.length} {T.topicos}</span>
         </div>
         <h1>{cap(d.nome)}</h1>
         <p class="obj">{d.objetivo}</p>
         <div class="lp" data-progresso-conta={ids.join(',')}>
-          <div class="track" role="progressbar" aria-label="Progresso do nível" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="track" role="progressbar" aria-label={T.prog} aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
             <span data-progresso-barra></span>
           </div>
           <small data-progresso-texto>0 / {ids.length}</small>
@@ -55,9 +66,13 @@ const secCrit = projetos.length > 0 ? '03' : '02';
       <div class="pg-lado"><Ilustracao nome={`nivel${d.id}`} /></div>
     </header>
 
+    <section class="pg-visao" aria-label={T.visao}>
+      <div class="prosa"><Visao /></div>
+    </section>
+
     <div class="pg-grade">
       <div class="cols">
-        <div class="kicker">01 — Tópicos</div>
+        <div class="kicker">{T.k1}</div>
         {grupos.map((g) => (
           <section class="grupo">
             <h2>{g.grupo}</h2>
@@ -68,18 +83,18 @@ const secCrit = projetos.length > 0 ? '03' : '02';
 
       {fase && (
         <aside class="cross" aria-labelledby="na-carreira">
-          <h2 id="na-carreira"><span class="rot">Ao mesmo tempo, na carreira</span><span class="fase-t">Fase {fase.data.id} · {cap(fase.data.nome)}</span></h2>
+          <h2 id="na-carreira"><span class="rot">{T.aoMesmo}</span><span class="fase-t">{T.fase} {fase.data.id} · {cap(fase.data.nome)}</span></h2>
           <p class="sub">{fase.data.objetivo}</p>
           <div class="linhas">{dicas.map((x) => <LinhaTopico entry={x} />)}</div>
-          <a class="abrir" href={url(`/fase/${fase.data.id}/`)}>Abrir a fase {fase.data.id} <ArrowRight aria-hidden="true" /></a>
+          <a class="abrir" href={link(lang, `/fase/${fase.data.id}/`)}>{T.abrir} {fase.data.id} <ArrowRight aria-hidden="true" /></a>
         </aside>
       )}
     </div>
 
     {projetos.length > 0 && (
       <section class="pg-sec">
-        <div class="kicker">02 — Portfólio</div>
-        <h2>Projetos práticos</h2>
+        <div class="kicker">{T.k2}</div>
+        <h2>{T.projetos}</h2>
         <div class="projs">
           {projetos.map((p) => (
             <a href={rotaDe(p)}><span class="k">{rotuloProjeto(p)}</span><span class="t">{semCodigo(p.data.titulo)}</span><span class="d">{p.data.resumo}</span></a>
@@ -89,14 +104,15 @@ const secCrit = projetos.length > 0 ? '03' : '02';
     )}
 
     <section class="pg-sec">
-      <div class="kicker">{secCrit} — Critérios</div>
-      <h2>Como saber que terminou</h2>
+      <div class="kicker">{secCrit} — {T.crit}</div>
+      <h2>{T.terminou}</h2>
       <ol class="crit-lista">{d.criterios.map((c, i) => <li><span class="n">{String(i + 1).padStart(2, '0')}</span><span>{c}</span></li>)}</ol>
     </section>
 
     <AnteriorProximo
-      anterior={prev && { rotulo: rotulo(prev), href: url(`/nivel/${prev.data.id}/`) }}
-      proximo={next && { rotulo: rotulo(next), href: url(`/nivel/${next.data.id}/`) }}
+      anterior={prev && { rotulo: rotulo(prev), href: link(lang, `/nivel/${prev.data.id}/`) }}
+      proximo={next && { rotulo: rotulo(next), href: link(lang, `/nivel/${next.data.id}/`) }}
     />
+  </div>
   </div>
 </Base>

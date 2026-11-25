@@ -1,42 +1,49 @@
 ---
-import { getCollection } from 'astro:content';
 import { ArrowUp, Download } from '@lucide/astro';
 import IconeCanal from './IconeCanal.astro';
 import { AUTOR, PDF_URL, REPO_URL, ISSUES_URL } from '../config';
-import { url } from '../lib/url';
+import { colecaoDe } from '../lib/conteudo';
+import { idiomaDaUrl, link, tr } from '../i18n/idioma';
+
+const lang = idiomaDaUrl(Astro.url.pathname);
+const T = tr(lang, {
+  pt: { ctaT: 'Comece hoje pelo nível 1.', ctaP: 'Sem cadastro: marque o que estudou e o progresso fica salvo no seu navegador.', abrir1: 'Abrir o nível 1', calc: 'Calcular minha trilha', pdf: 'Baixar o PDF', desc: 'Roadmap AI Engineer: um caminho de estudo e de carreira para quem quer trabalhar com sistemas de IA, em português e aberto.', estudo: 'Estudo', tempo: 'Linha do tempo', calcTrilha: 'Calculadora de trilha', mapa: 'Mapa do progresso', nivel: 'Nível', carreira: 'Carreira', portfolio: 'Portfólio', projeto: 'Projeto', sobre: 'Sobre o roadmap', codigo: 'Código no GitHub', sugerir: 'Sugerir correção', contribuir: 'Como contribuir', licenca: 'conteúdo CC BY 4.0 · código MIT', atual: 'Atualizado em novembro de 2026', topo: 'Voltar ao topo' },
+  en: { ctaT: 'Start today with level 1.', ctaP: 'No sign-up: mark what you have studied and your progress is saved in your browser.', abrir1: 'Open level 1', calc: 'Calculate my path', pdf: 'Download the PDF (Portuguese)', desc: 'Roadmap AI Engineer: an open study and career path for people who want to work with AI systems.', estudo: 'Study', tempo: 'Timeline', calcTrilha: 'Path calculator', mapa: 'Progress map', nivel: 'Level', carreira: 'Career', portfolio: 'Portfolio', projeto: 'Project', sobre: 'About the roadmap', codigo: 'Code on GitHub', sugerir: 'Suggest a fix', contribuir: 'How to contribute', licenca: 'content CC BY 4.0 · code MIT', atual: 'Updated in November 2026', topo: 'Back to top' },
+});
 
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const [niveis, fases, projetos] = await Promise.all([
-  getCollection('niveis'),
-  getCollection('fases'),
-  getCollection('projetos'),
+  colecaoDe('niveis', lang),
+  colecaoDe('fases', lang),
+  colecaoDe('projetos', lang),
 ]);
 niveis.sort((a, b) => a.data.id - b.data.id);
 fases.sort((a, b) => a.data.id - b.data.id);
-const ordemProjetos = ['P1', 'P2', 'P3', 'P4', 'PF'];
+const ordemProjetos = ['P1', 'P2', 'P3', 'P4', 'PF', 'P5'];
 projetos.sort((a, b) => ordemProjetos.indexOf(a.data.codigo) - ordemProjetos.indexOf(b.data.codigo));
-const iniciais = AUTOR.nome.split(/\s+/).map((p) => p[0]).slice(0, 2).join('').toUpperCase();
+import { Image } from 'astro:assets';
+import fotoAutor from '../assets/autor/oseias-rosto.jpg';
 ---
 <footer class="site">
   <div class="rodape-in">
     <div class="cta-faixa">
       <div>
-        <div class="cta-titulo" data-perfil-cta-titulo>Comece hoje pelo nível 1.</div>
-        <p data-perfil-cta-texto>Sem cadastro: marque o que estudou e o progresso fica salvo no seu navegador.</p>
+        <div class="cta-titulo" data-perfil-cta-titulo>{T.ctaT}</div>
+        <p data-perfil-cta-texto>{T.ctaP}</p>
       </div>
       <div class="cta-botoes">
-        <a class="bt-pri" data-perfil-cta="curto" href={url('/nivel/1/')}>Abrir o nível 1</a>
-        <a class="bt-sec" href={url('/calculadora/')}>Calcular minha trilha</a>
-        {PDF_URL && <a class="bt-sec" href={PDF_URL}><Download aria-hidden="true" />Baixar o PDF</a>}
+        <a class="bt-pri" data-perfil-cta="curto" href={link(lang, '/nivel/1/')}>{T.abrir1}</a>
+        <a class="bt-sec" href={link(lang, '/calculadora/')}>{T.calc}</a>
+        {PDF_URL && <a class="bt-sec" href={PDF_URL}><Download aria-hidden="true" />{T.pdf}</a>}
       </div>
     </div>
 
     <div class="colunas">
       <div class="marca-col">
         <div class="marca">RAI<span>.</span>E</div>
-        <p class="desc">Roadmap AI Engineer: um caminho de estudo e de carreira para quem quer trabalhar com sistemas de IA, em português e aberto.</p>
+        <p class="desc">{T.desc}</p>
         <div class="autor">
-          <span class="ini" aria-hidden="true">{iniciais}</span>
+          <Image class="ini" src={fotoAutor} alt="" aria-hidden="true" width={88} height={88} />
           <span><strong>{AUTOR.nome}</strong><span class="cargo">{AUTOR.cargo}</span></span>
         </div>
         <ul class="canais">
@@ -45,35 +52,35 @@ const iniciais = AUTOR.nome.split(/\s+/).map((p) => p[0]).slice(0, 2).join('').t
           ))}
         </ul>
       </div>
-      <nav aria-label="Estudo">
-        <h2>Estudo</h2>
+      <nav aria-label={T.estudo}>
+        <h2>{T.estudo}</h2>
         <ul>
-          <li><a href={url('/#tempo')}>Linha do tempo</a></li>
-          <li><a href={url('/calculadora/')}>Calculadora de trilha</a></li>
-          <li><a href={url('/progresso/')}>Mapa do progresso</a></li>
-          {niveis.map((n) => <li><a href={url(`/nivel/${n.data.id}/`)}>Nível {n.data.id} · {cap(n.data.curto)}</a></li>)}
+          <li><a href={link(lang, '/#tempo')}>{T.tempo}</a></li>
+          <li><a href={link(lang, '/calculadora/')}>{T.calcTrilha}</a></li>
+          <li><a href={link(lang, '/progresso/')}>{T.mapa}</a></li>
+          {niveis.map((n) => <li><a href={link(lang, `/nivel/${n.data.id}/`)}>{T.nivel} {n.data.id} · {cap(n.data.curto)}</a></li>)}
         </ul>
       </nav>
-      <nav aria-label="Carreira">
-        <h2>Carreira</h2>
+      <nav aria-label={T.carreira}>
+        <h2>{T.carreira}</h2>
         <ul>
-          {fases.map((f) => <li><a href={url(`/fase/${f.data.id}/`)}>{cap(f.data.nome)}</a></li>)}
+          {fases.map((f) => <li><a href={link(lang, `/fase/${f.data.id}/`)}>{cap(f.data.nome)}</a></li>)}
         </ul>
       </nav>
-      <nav aria-label="Portfólio">
-        <h2>Portfólio</h2>
+      <nav aria-label={T.portfolio}>
+        <h2>{T.portfolio}</h2>
         <ul>
-          {projetos.map((p) => <li><a href={url(`/projeto/${p.id}/`)}>{p.data.codigo} · {p.data.titulo.replace(/^[A-Z0-9]+:\s*/, '')}</a></li>)}
+          {projetos.map((p) => <li><a href={link(lang, `/projeto/${p.id}/`)}>{p.data.codigo} · {p.data.titulo.replace(/^[A-Z0-9]+:\s*/, '')}</a></li>)}
         </ul>
       </nav>
-      <nav aria-label="Projeto">
-        <h2>Projeto</h2>
+      <nav aria-label={T.projeto}>
+        <h2>{T.projeto}</h2>
         <ul>
-          <li><a href={url('/sobre/')}>Sobre o roadmap</a></li>
-          <li><a href={REPO_URL} target="_blank" rel="noopener">Código no GitHub</a></li>
-          <li><a href={ISSUES_URL} target="_blank" rel="noopener">Sugerir correção</a></li>
-          <li><a href={`${REPO_URL}/blob/HEAD/CONTRIBUTING.md`} target="_blank" rel="noopener">Como contribuir</a></li>
-          {PDF_URL && <li><a href={PDF_URL}>Baixar o PDF</a></li>}
+          <li><a href={link(lang, '/sobre/')}>{T.sobre}</a></li>
+          <li><a href={REPO_URL} target="_blank" rel="noopener">{T.codigo}</a></li>
+          <li><a href={ISSUES_URL} target="_blank" rel="noopener">{T.sugerir}</a></li>
+          <li><a href={`${REPO_URL}/blob/HEAD/CONTRIBUTING.md`} target="_blank" rel="noopener">{T.contribuir}</a></li>
+          {PDF_URL && <li><a href={PDF_URL}>{T.pdf}</a></li>}
         </ul>
       </nav>
     </div>
@@ -81,9 +88,9 @@ const iniciais = AUTOR.nome.split(/\s+/).map((p) => p[0]).slice(0, 2).join('').t
     <div class="gigante" aria-hidden="true">RAI.E</div>
 
     <div class="fim">
-      <span>© 2026 {AUTOR.nome} · conteúdo CC BY 4.0 · código MIT</span>
-      <span class="atual"><i></i>Atualizado em novembro de 2026</span>
-      <a class="topo" href="#">Voltar ao topo<ArrowUp aria-hidden="true" /></a>
+      <span>© 2026 {AUTOR.nome} · {T.licenca}</span>
+      <span class="atual"><i></i>{T.atual}</span>
+      <a class="topo" href="#">{T.topo}<ArrowUp aria-hidden="true" /></a>
     </div>
   </div>
 </footer>
@@ -97,21 +104,21 @@ const iniciais = AUTOR.nome.split(/\s+/).map((p) => p[0]).slice(0, 2).join('').t
   .cta-titulo { font-size: 26px; font-weight: 600; letter-spacing: -.03em; color: var(--text); }
   .cta-faixa p { font-size: 15px; line-height: 1.6; color: var(--text-2); margin: 8px 0 0; }
   .cta-botoes { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; }
-  footer.site .bt-pri { background: var(--btn-bg); color: var(--btn-ink); padding: 13px 20px; border-radius: 10px; font-size: 14px; font-weight: 600; min-height: 44px; display: inline-flex; align-items: center; }
+  footer.site .bt-pri { background: var(--btn-bg); color: var(--btn-ink); padding: 0 14px; border-radius: var(--ctl-r); font-size: 13.5px; font-weight: 500; height: var(--ctl-h); display: inline-flex; align-items: center; }
   footer.site .bt-pri:hover { color: var(--btn-ink); opacity: .9; }
-  footer.site .bt-sec { border: 1px solid var(--line-strong); color: var(--text); padding: 13px 20px; border-radius: 10px; font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; }
+  footer.site .bt-sec { border: 1px solid var(--line); color: var(--text); padding: 0 14px; border-radius: var(--ctl-r); font-size: 13.5px; height: var(--ctl-h); font-weight: 500; display: inline-flex; align-items: center; gap: 6px; }
   footer.site .bt-sec svg { width: 15px; height: 15px; }
   .colunas { display: grid; grid-template-columns: minmax(0, 1.6fr) repeat(4, minmax(0, 1fr)); gap: 40px; }
   .marca { font-weight: 700; font-size: 28px; letter-spacing: -.05em; color: var(--text); }
   .marca span { color: var(--accent); }
   .desc { font-size: 14px; line-height: 1.6; color: var(--muted); margin: 12px 0 24px; max-width: 320px; }
   .autor { display: flex; align-items: center; gap: 14px; border: 1px solid var(--line); border-radius: 14px; padding: 14px; max-width: 320px; }
-  .autor .ini { width: 44px; height: 44px; border-radius: 50%; background: var(--avatar-bg); color: var(--avatar-ink); display: grid; place-items: center; font-weight: 600; font-size: 15px; flex: none; }
+  .autor .ini { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex: none; border: 1px solid var(--line); }
   .autor strong { display: block; font-size: 14px; font-weight: 600; color: var(--text); }
   .autor .cargo { display: block; font-size: 12.5px; color: var(--muted); }
   footer.site ul { list-style: none; margin: 0; padding: 0; }
   .canais { display: flex; gap: 8px; margin-top: 16px !important; }
-  .canais a { width: 44px; height: 44px; border: 1px solid var(--line-strong); border-radius: 10px; display: grid; place-items: center; transition: border-color .15s, transform .15s; }
+  .canais a { width: var(--ctl-h); height: var(--ctl-h); border: 1px solid var(--line); border-radius: var(--ctl-r); display: grid; place-items: center; transition: border-color .15s, transform .15s; }
   .canais a:hover { border-color: var(--accent); }
   .canais svg { width: 17px; height: 17px; }
   footer.site h2 { font-family: var(--font-mono); font-size: 11px; font-weight: 400; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 16px; }

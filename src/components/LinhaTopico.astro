@@ -2,7 +2,9 @@
 import type { CollectionEntry } from 'astro:content';
 import { Check, ChevronDown, ArrowRight } from '@lucide/astro';
 import Refs from './Refs.astro';
-import { idProgresso, rotaDe } from '../lib/conteudo';
+import { baseDe, idProgresso, rotaDe } from '../lib/conteudo';
+import { idiomaDaUrl, tr } from '../i18n/idioma';
+const T = tr(idiomaDaUrl(Astro.url.pathname), { pt: { marcar: 'Marcar como estudado', ler: 'Ler o resumo completo' }, en: { marcar: 'Mark as studied', ler: 'Read the full summary' } });
 
 interface Props {
   entry: CollectionEntry<'topicos'> | CollectionEntry<'dicas'>;
@@ -17,20 +19,20 @@ const id = idProgresso(entry);
     data-alternar={id}
     data-progresso-id={id}
     aria-pressed="false"
-    aria-label={`Marcar como estudado: ${entry.data.titulo}`}
+    aria-label={`${T.marcar}: ${entry.data.titulo}`}
   >
     <Check aria-hidden="true" stroke-width={3.6} />
   </button>
   <details>
     <summary>
       <span class="tt">{entry.data.titulo}</span>
-      {entry.collection === 'topicos' && <span class="etq" data-etiqueta-topico={entry.id} hidden></span>}
+      {baseDe(entry) === 'topicos' && <span class="etq" data-etiqueta-topico={entry.id} hidden></span>}
       <ChevronDown class="more" aria-hidden="true" />
     </summary>
     <div class="bd">
       <p>{entry.data.resumo}</p>
       <Refs refs={entry.data.referencias} />
-      <a class="ler" href={rotaDe(entry)}>Ler o resumo completo <ArrowRight aria-hidden="true" /></a>
+      <a class="ler" href={rotaDe(entry)}>{T.ler} <ArrowRight aria-hidden="true" /></a>
     </div>
   </details>
 </div>

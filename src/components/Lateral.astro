@@ -1,0 +1,149 @@
+---
+/* Navegação lateral das páginas de conteúdo, no estilo de documentação:
+   níveis e fases em grupos recolhíveis, o grupo da página atual aberto e o item atual destacado. */
+import { ChevronRight, Map as IconeMapa, SlidersHorizontal, ChartNoAxesColumn, Info } from '@lucide/astro';
+import { colecaoDe, dicasDaFase, projetosDoNivel, rotaDe, topicosDoNivel } from '../lib/conteudo';
+import { idiomaDaUrl, link, tr } from '../i18n/idioma';
+
+const lang = idiomaDaUrl(Astro.url.pathname);
+const T = tr(lang, {
+  pt: { mapa: 'Mapa do roadmap', calc: 'Calculadora', prog: 'Meu progresso', sobre: 'Sobre', estudo: 'Estudo', carreira: 'Carreira', nivel: 'Nível', fase: 'Fase', visao: 'Visão geral', projetos: 'Projetos', navegar: 'Navegar pelo roadmap' },
+  en: { mapa: 'Roadmap map', calc: 'Calculator', prog: 'My progress', sobre: 'About', estudo: 'Study', carreira: 'Career', nivel: 'Level', fase: 'Phase', visao: 'Overview', projetos: 'Projects', navegar: 'Browse the roadmap' },
+});
+
+const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+const atual = Astro.url.pathname.replace(/\/?$/, '/');
+const ehAtual = (href: string) => href.replace(/\/?$/, '/') === atual;
+
+const niveis = (await colecaoDe('niveis', lang)).sort((a, b) => a.data.id - b.data.id);
+const fases = (await colecaoDe('fases', lang)).sort((a, b) => a.data.id - b.data.id);
+
+const secoesNivel = await Promise.all(
+  niveis.map(async (n) => {
+    const [grupos, projetos] = await Promise.all([topicosDoNivel(n.data.id, lang), projetosDoNivel(n.data.id, lang)]);
+    const visao = link(lang, `/nivel/${n.data.id}/`);
+    const grupoLinks = grupos.map((g) => ({ titulo: g.grupo, itens: g.itens.map((t) => ({ rotulo: t.data.titulo, href: rotaDe(t) })) }));
+    const projLinks = projetos.map((p) => ({ rotulo: p.data.titulo.replace(/^[A-Z0-9]+:\s*/, ''), href: rotaDe(p), k: p.data.codigo }));
+    const hrefs = [visao, ...grupoLinks.flatMap((g) => g.itens.map((i) => i.href)), ...projLinks.map((p) => p.href)];
+    return { id: n.data.id, rotulo: `${T.nivel} ${n.data.id} · ${cap(n.data.curto)}`, visao, grupos: grupoLinks, projetos: projLinks, aberto: hrefs.some(ehAtual) };
+  }),
+);
+const secoesFase = await Promise.all(
+  fases.map(async (f) => {
+    const dicas = await dicasDaFase(f.data.id, lang);
+    const visao = link(lang, `/fase/${f.data.id}/`);
+    const itens = dicas.map((d) => ({ rotulo: d.data.titulo, href: rotaDe(d) }));
+    return { id: f.data.id, rotulo: `${T.fase} ${f.data.id} · ${cap(f.data.nome)}`, visao, itens, aberto: [visao, ...itens.map((i) => i.href)].some(ehAtual) };
+  }),
+);
+const inicio = [
+  { rotulo: T.mapa, href: link(lang, '/'), Icone: IconeMapa },
+  { rotulo: T.calc, href: link(lang, '/calculadora/'), Icone: SlidersHorizontal },
+  { rotulo: T.prog, href: link(lang, '/progresso/'), Icone: ChartNoAxesColumn },
+  { rotulo: T.sobre, href: link(lang, '/sobre/'), Icone: Info },
+];
+const algumAberto = secoesNivel.some((s) => s.aberto) || secoesFase.some((s) => s.aberto);
+---
+<details class="lateral-movel" open={false}>
+  <summary><ChevronRight aria-hidden="true" /> {T.navegar}</summary>
+</details>
+<nav class="lateral" aria-label="Roadmap" data-pagefind-ignore>
+  <ul class="inicio">
+    {inicio.map(({ rotulo, href, Icone }) => (
+      <li><a href={href} aria-current={ehAtual(href) ? 'page' : undefined}><Icone aria-hidden="true" />{rotulo}</a></li>
+    ))}
+  </ul>
+
+  <p class="sec">{T.estudo}</p>
+  {secoesNivel.map((s) => (
+    <details class="grupo" open={s.aberto || (!algumAberto && s.id === 1)}>
+      <summary>{s.rotulo}<ChevronRight aria-hidden="true" /></summary>
+      <ul>
+        <li><a href={s.visao} aria-current={ehAtual(s.visao) ? 'page' : undefined}>{T.visao}</a></li>
+        {s.grupos.map((g) => (
+          <>
+            <li class="sub" aria-hidden="true">{g.titulo}</li>
+            {g.itens.map((i) => <li><a href={i.href} aria-current={ehAtual(i.href) ? 'page' : undefined}>{i.rotulo}</a></li>)}
+          </>
+        ))}
+        {s.projetos.length > 0 && <li class="sub" aria-hidden="true">{T.projetos}</li>}
+        {s.projetos.map((p) => (
+          <li><a href={p.href} aria-current={ehAtual(p.href) ? 'page' : undefined}><span class="cod">{p.k}</span>{p.rotulo}</a></li>
+        ))}
+      </ul>
+    </details>
+  ))}
+
+  <p class="sec">{T.carreira}</p>
+  {secoesFase.map((s) => (
+    <details class="grupo" open={s.aberto}>
+      <summary>{s.rotulo}<ChevronRight aria-hidden="true" /></summary>
+      <ul>
+        <li><a href={s.visao} aria-current={ehAtual(s.visao) ? 'page' : undefined}>{T.visao}</a></li>
+        {s.itens.map((i) => <li><a href={i.href} aria-current={ehAtual(i.href) ? 'page' : undefined}>{i.rotulo}</a></li>)}
+      </ul>
+    </details>
+  ))}
+</nav>
+
+<script>
+  // No celular a navegação fica recolhida atrás do botão "Navegar pelo roadmap".
+  for (const botao of document.querySelectorAll<HTMLDetailsElement>('.lateral-movel')) {
+    const nav = botao.nextElementSibling as HTMLElement | null;
+    if (!nav) continue;
+    botao.addEventListener('toggle', () => nav.classList.toggle('lateral-aberta', botao.open));
+  }
+  // Rola a navegação até o item atual, sem mexer na rolagem da página.
+  const ativo = document.querySelector<HTMLElement>('.lateral a[aria-current="page"]');
+  const caixa = ativo?.closest<HTMLElement>('.lateral');
+  if (ativo && caixa && caixa.scrollHeight > caixa.clientHeight) {
+    const fim = ativo.offsetTop - caixa.offsetTop + ativo.offsetHeight;
+    if (fim > caixa.clientHeight - 24) caixa.scrollTop = fim - caixa.clientHeight / 2;
+  }
+</script>
+
+<style>
+  .lateral {
+    position: sticky; top: calc(var(--header-h) + 0px); align-self: start;
+    max-height: calc(100vh - var(--header-h)); overflow-y: auto; overscroll-behavior: contain;
+    padding: 32px 20px 48px 0; font-size: 14px; scrollbar-width: thin;
+  }
+  ul { list-style: none; margin: 0; padding: 0; }
+  a {
+    display: flex; align-items: center; gap: 10px; padding: 6px 12px; border-radius: 10px;
+    color: var(--text-2); text-decoration: none; line-height: 1.4;
+  }
+  a:hover { color: var(--text); background: var(--surface-2); }
+  a[aria-current='page'] { color: var(--accent); background: var(--accent-soft); font-weight: 600; }
+  .inicio a { padding: 7px 12px; }
+  .inicio svg { width: 16px; height: 16px; flex: none; color: var(--muted); }
+  .inicio a[aria-current='page'] svg { color: var(--accent); }
+  .sec { margin: 28px 0 8px; padding: 0 12px; font-size: 12px; font-weight: 600; color: var(--text); }
+  .grupo summary {
+    list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    padding: 6px 12px; border-radius: 10px; color: var(--text-2); line-height: 1.4;
+  }
+  .grupo summary::-webkit-details-marker { display: none; }
+  .grupo summary:hover { color: var(--text); background: var(--surface-2); }
+  .grupo summary svg { width: 14px; height: 14px; flex: none; color: var(--muted); transition: transform .15s; }
+  .grupo[open] > summary { color: var(--text); font-weight: 500; }
+  .grupo[open] > summary svg { transform: rotate(90deg); }
+  .grupo ul { margin: 2px 0 8px 12px; padding-left: 8px; border-left: 1px solid var(--line); }
+  .grupo li a { border-radius: 8px; padding: 5px 10px; }
+  .sub { margin: 10px 0 2px; padding: 0 10px; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+  .cod { font: 500 11px var(--font-mono); color: var(--muted); border: 1px solid var(--line-strong); border-radius: 5px; padding: 0 4px; flex: none; }
+  .lateral-movel { display: none; }
+
+  @media (max-width: 1023px) {
+    .lateral-movel { display: block; margin: 16px 0 0; }
+    .lateral-movel summary {
+      list-style: none; cursor: pointer; display: flex; align-items: center; gap: 8px; min-height: var(--ctl-h-lg);
+      padding: 0 14px; border: 1px solid var(--line); border-radius: 12px; font-size: 14px; color: var(--text-2);
+    }
+    .lateral-movel summary::-webkit-details-marker { display: none; }
+    .lateral-movel summary svg { width: 15px; height: 15px; transition: transform .15s; }
+    .lateral-movel[open] summary svg { transform: rotate(90deg); }
+    .lateral { display: none; position: static; max-height: none; padding: 8px 0 8px; border-bottom: 1px solid var(--line); }
+    .lateral.lateral-aberta { display: block; }
+  }
+</style>

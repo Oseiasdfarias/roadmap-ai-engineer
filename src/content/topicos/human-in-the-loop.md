@@ -43,6 +43,19 @@ O modelo erra, e erra com confiança. Também pode ser enganado por um texto mal
 
 **Onde fica o ponto de aprovação.** Entre a decisão do modelo e a execução. O fluxo pausa, guarda o estado e retoma quando a resposta chega, o que pode levar horas. Frameworks como o LangGraph têm um mecanismo de pausa e retomada para isso; no código mais simples, o seu laço de ferramentas pergunta antes de executar:
 
+```mermaid
+flowchart TB
+  accTitle: Ponto de aprovação humana
+  accDescr: Leitura executa direto. Escrita ou ação irreversível pausa o fluxo, salva o estado e espera a aprovação. Recusa volta ao agente com o motivo. Tudo vai para a auditoria.
+  A{{Agente propõe ação}}:::modelo --> C{Tipo de ação}
+  C -- leitura --> X([Executa]):::destaque
+  C -- escrita ou irreversível --> P[Pausa e salva o estado] --> H{Aprovação humana}:::humano
+  H -- aprova --> X
+  H -- recusa --> R([Volta ao agente com o motivo])
+  X --> LOG[(Auditoria)]:::dado
+  H -.-> LOG
+```
+
 ```python
 from datetime import datetime, timezone
 

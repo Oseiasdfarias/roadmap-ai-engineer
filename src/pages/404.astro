@@ -1,18 +1,23 @@
 ---
 import Base from '../layouts/Base.astro';
-import { url } from '../lib/url';
+import { idiomaDaUrl, link, tr } from '../i18n/idioma';
+const lang = idiomaDaUrl(Astro.url.pathname);
+const T = tr(lang, {
+  pt: {"k0": "Página não encontrada | Roadmap AI Engineer", "k1": "Essa página não existe. Volte ao mapa do roadmap.", "k2": "Erro 404", "k3": "<h1>Página não encontrada</h1>", "k4": "O endereço não existe ou mudou de lugar.", "k5": "Voltar ao mapa", "k6": "Abrir o nível 1"},
+  en: {"k0": "Page not found | Roadmap AI Engineer", "k1": "This page does not exist. Go back to the roadmap map.", "k2": "Error 404", "k3": "<h1>Page not found</h1>", "k4": "The address does not exist or has moved.", "k5": "Back to the map", "k6": "Open level 1"},
+});
+
 ---
-<Base titulo="Página não encontrada | Roadmap AI Engineer" descricao="Essa página não existe. Volte ao mapa do roadmap." noindex>
+<Base titulo={T.k0} descricao={T.k1} noindex>
   <section class="nf">
-    <div class="nf-grade" aria-hidden="true"></div>
     <div class="nf-in">
       <div class="nf-num" aria-hidden="true">404</div>
-      <div class="kicker">Erro 404</div>
-      <h1>Página não encontrada</h1>
-      <p>O endereço não existe ou mudou de lugar.</p>
+      <div class="kicker">{T.k2}</div>
+      <Fragment set:html={T.k3} />
+      <p>{T.k4}</p>
       <div class="nf-bt">
-        <a class="nf-pri" href={url('/')}>Voltar ao mapa</a>
-        <a class="nf-sec" href={url('/nivel/1/')}>Abrir o nível 1</a>
+        <a class="nf-pri" href={link(lang, '/')}>{T.k5}</a>
+        <a class="nf-sec" href={link(lang, '/nivel/1/')}>{T.k6}</a>
       </div>
     </div>
   </section>
@@ -26,7 +31,7 @@ import { url } from '../lib/url';
   h1 { font-size: clamp(32px, 5vw, 52px); font-weight: 600; letter-spacing: -.04em; line-height: 1.05; margin: 0; }
   p { font-size: 17px; line-height: 1.6; color: var(--text-2); margin: 16px 0 0; }
   .nf-bt { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
-  .nf-pri, .nf-sec { text-decoration: none; border-radius: 10px; font-size: 15px; display: inline-flex; align-items: center; min-height: 48px; padding: 0 22px; }
+  .nf-pri, .nf-sec { text-decoration: none; border-radius: var(--ctl-r); font-size: 14px; display: inline-flex; align-items: center; height: var(--ctl-h-lg); padding: 0 22px; }
   .nf-pri { background: var(--btn-bg); color: var(--btn-ink); font-weight: 600; }
   .nf-sec { border: 1px solid var(--line-strong); background: var(--surface-2); color: var(--text); font-weight: 500; }
   .nf-pri:hover { opacity: .9; }

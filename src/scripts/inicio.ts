@@ -74,8 +74,9 @@ function atualizar(): void {
   });
   nos.forEach((no, i) => no.classList.toggle('atual', i === primeiroIncompleto));
   const rota = document.querySelector<HTMLElement>('[data-rota]');
-  // 6 pontos (Python, 4 níveis, agente): passo 1/5 entre eles.
-  if (rota) rota.style.setProperty('--rp', String((primeiroIncompleto < 0 ? 5 : primeiroIncompleto + 1) / 5));
+  // Pontos: Python, um por nível e o agente; o passo entre eles é 1/(níveis + 1).
+  const passos = nos.length + 1;
+  if (rota) rota.style.setProperty('--rp', String((primeiroIncompleto < 0 ? passos : primeiroIncompleto + 1) / passos));
   const trilha = document.querySelector<HTMLElement>('.estacoes');
   if (trilha && estacoes.length > 1) trilha.style.setProperty('--p', String(ultima / (estacoes.length - 1)));
 }

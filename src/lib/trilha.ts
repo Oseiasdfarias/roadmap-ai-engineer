@@ -3,7 +3,7 @@ import { BLOCOS, PRESETS, SITUACOES, type Bloco, type Situacao } from '../data/b
 export type Marca = 'pular' | 'revisar' | 'estudar';
 export type TopicoEntrada = { id: string; nivel: number; tempo: string; prerequisitos: string[] };
 export type NivelEntrada = { nivel: number; duracao: string };
-/** `nivel`: nível em que a pessoa está (1 a 4); os anteriores contam como dominados. */
+/** `nivel`: nível em que a pessoa está (1 a 5); os anteriores contam como dominados. */
 export type Perfil = { situacao: Situacao; horas: number; blocos: string[]; nivel: number };
 export type Estimativa = { nivel: number; meses: number; min: number; max: number };
 
@@ -20,11 +20,11 @@ function pontoMedio(texto: string): number {
   return nums.length === 1 ? nums[0] : (nums[0] + nums[1]) / 2;
 }
 
-/** "1 a 2 semanas" → 1,5; "3 a 5 dias" → 4/7. Só a primeira parte, antes de vírgula. */
+/** "1 a 2 semanas" → 1,5; "3 a 5 dias" (ou "3 to 5 days") → 4/7. Só a primeira parte, antes de vírgula. */
 export function parseSemanas(tempo: string): number {
   const parte = tempo.split(',')[0];
   const m = pontoMedio(parte);
-  return /dia/i.test(parte) ? m / 7 : m;
+  return /dia|day/i.test(parte) ? m / 7 : m;
 }
 
 /** "4 a 6 meses" → 5. */
@@ -114,7 +114,7 @@ export function perfilDaURL(q: URLSearchParams): Perfil {
   const blocos =
     b === null ? [...PRESETS[situacao]] : b.split(',').filter((id, i, arr) => validos.has(id) && arr.indexOf(id) === i);
   const n = Number(q.get('n'));
-  const nivel = Number.isInteger(n) && n >= 1 && n <= 4 ? n : 1;
+  const nivel = Number.isInteger(n) && n >= 1 && n <= 5 ? n : 1;
   return { situacao, horas, blocos, nivel };
 }
 

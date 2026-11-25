@@ -62,6 +62,26 @@ def tratar(relato):
 
 Os passos são conhecidos e cada um pode ser testado sozinho. Compare com o agente: você dá ferramentas e um objetivo, e o modelo escolhe o que chamar, em que ordem e quando parar. Isso ganha flexibilidade e perde previsibilidade.
 
+```mermaid
+flowchart TB
+  accTitle: Workflow ou agente
+  accDescr: No workflow, você define o caminho, como um roteamento por tipo de relato. No agente, o modelo escolhe a ação, chama a ferramenta, observa o resultado e repete até concluir.
+  subgraph WF["Workflow · você define o caminho"]
+    direction LR
+    R1([Relato]) --> CL{Classificar}
+    CL -- falha --> D[Diagnóstico]
+    CL -- peça --> PC[Pedido de peça]
+    CL -- outro --> H([Pessoa]):::humano
+  end
+  subgraph AG["Agente · o modelo decide o caminho"]
+    direction LR
+    O([Objetivo]) --> L{{Modelo escolhe a ação}}:::modelo --> T[Ferramenta] --> OB[Observa o resultado]
+    OB --> L
+    L --> F([Resposta final]):::destaque
+  end
+  WF ~~~ AG
+```
+
 **Quando o agente compensa:** quando o número e a ordem dos passos dependem do que aparece no caminho, como investigar uma falha que pede buscas diferentes a cada vez, e quando um erro tem custo aceitável ou passa por aprovação humana. Mesmo então, ponha limites: número máximo de voltas, orçamento de tokens e ferramentas só com o acesso necessário. O artigo de pesquisa multiagente da Anthropic relata que agentes gastam bem mais tokens que um chat e que sistemas com vários agentes gastam ainda mais, e por isso só valem em tarefas de alto valor e parte paralelizável.
 
 ## Na prática

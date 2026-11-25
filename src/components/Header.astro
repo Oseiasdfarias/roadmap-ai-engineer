@@ -1,39 +1,62 @@
 ---
 import { Search, FileDown, SlidersHorizontal } from '@lucide/astro';
 import ThemeToggle from './ThemeToggle.astro';
-import { PDF_URL } from '../config';
-import { url } from '../lib/url';
+import { PDF_URL, SITE } from '../config';
 import { todosIdsProgresso } from '../lib/conteudo';
+import { equivalentes, idiomaDaUrl, link, tr } from '../i18n/idioma';
+
 const total = (await todosIdsProgresso()).length;
-const naHome = Astro.url.pathname === url('/');
-const ancora = (id: string) => (naHome ? `#${id}` : url(`/#${id}`));
+const lang = idiomaDaUrl(Astro.url.pathname);
+const outro = lang === 'pt' ? 'en' : 'pt';
+const alternativa = equivalentes(Astro.url.pathname)[outro];
+const naHome = Astro.url.pathname === link(lang, '/');
+const ancora = (id: string) => (naHome ? `#${id}` : link(lang, `/#${id}`));
+const T = tr(lang, {
+  pt: { tempo: 'Linha do tempo', niveis: 'Níveis', portfolio: 'Portfólio', carreira: 'Carreira', calc: 'Calculadora', inicio: 'RAI.E, Roadmap AI Engineer, início', progresso: 'Ver o mapa do seu progresso', progressoRot: 'Progresso geral', buscar: 'Buscar', buscarPh: 'Buscar...', pdf: 'Baixar o PDF completo', idioma: 'Read in English', secoes: 'Seções' },
+  en: { tempo: 'Timeline', niveis: 'Levels', portfolio: 'Portfolio', carreira: 'Career', calc: 'Calculator', inicio: 'RAI.E, Roadmap AI Engineer, home', progresso: 'See your progress map', progressoRot: 'Overall progress', buscar: 'Search', buscarPh: 'Search...', pdf: 'Download the full PDF (in Portuguese)', idioma: 'Ler em português', secoes: 'Sections' },
+});
+
+// Aba ativa: a seção da página atual (rotas em português ou inglês).
+const rota = Astro.url.pathname.slice(SITE.base.length).replace(/^\/en/, '');
+const secao = /^\/(nivel|level|topico|topic)\//.test(rota)
+  ? 'niveis'
+  : /^\/(projeto|project)\//.test(rota)
+    ? 'portfolio'
+    : /^\/(fase|phase|carreira|career)\//.test(rota)
+      ? 'carreira'
+      : /^\/(calculadora|calculator)\//.test(rota)
+        ? 'calc'
+        : '';
 const itens = [
-  { rotulo: 'Linha do tempo', href: ancora('tempo') },
-  { rotulo: 'Níveis', href: ancora('niveis') },
-  { rotulo: 'Portfólio', href: ancora('portfolio') },
-  { rotulo: 'Carreira', href: ancora('carreira') },
+  { id: 'tempo', rotulo: T.tempo, href: ancora('tempo') },
+  { id: 'niveis', rotulo: T.niveis, href: ancora('niveis') },
+  { id: 'portfolio', rotulo: T.portfolio, href: ancora('portfolio') },
+  { id: 'carreira', rotulo: T.carreira, href: ancora('carreira') },
 ];
 ---
-<header class="bar"><div class="in">
-  <a class="brand" href={url('/')} aria-label="RAI.E, Roadmap AI Engineer, início">
-    <b>RAI<i>.</i>E</b>
-    <small>Roadmap AI Engineer</small>
-  </a>
-  <nav class="nav" aria-label="Principal">
-    {itens.map((i) => <a href={i.href}>{i.rotulo}</a>)}
-    <a class="nav-destaque" href={url('/calculadora/')}><SlidersHorizontal aria-hidden="true" />Calculadora</a>
-  </nav>
-  <a class="prog" href={url('/progresso/')} data-progresso-global title="Ver o mapa do seu progresso">
-    <div class="track" role="progressbar" aria-label="Progresso geral" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-progresso-trilha><div class="fill" data-progresso-barra></div></div>
-    <small data-progresso-texto>0 / {total}</small>
-  </a>
-  <div class="acoes">
-    <button type="button" class="btn busca-btn" data-abrir-busca aria-label="Buscar">
-      <Search aria-hidden="true" /><span class="rot">Buscar</span><kbd aria-hidden="true">/</kbd>
+<header class="bar">
+  <div class="in">
+    <a class="brand" href={link(lang, '/')} aria-label={T.inicio}>
+      <b>RAI<i>.</i>E</b>
+      <small>Roadmap AI Engineer</small>
+    </a>
+    <nav class="nav" aria-label={T.secoes}>
+      {itens.map((i) => <a href={i.href} aria-current={secao === i.id ? 'true' : undefined}>{i.rotulo}</a>)}
+      <a class="nav-destaque" href={link(lang, '/calculadora/')} aria-current={secao === 'calc' ? 'page' : undefined}><SlidersHorizontal aria-hidden="true" />{T.calc}</a>
+    </nav>
+    <button type="button" class="btn busca-btn" data-abrir-busca aria-label={T.buscar}>
+      <Search aria-hidden="true" /><span class="rot">{T.buscarPh}</span><kbd aria-hidden="true">/</kbd>
     </button>
-    {PDF_URL && (
-      <a class="btn" href={PDF_URL} title="Baixar o PDF completo"><FileDown aria-hidden="true" /> PDF</a>
-    )}
-    <ThemeToggle />
+    <div class="bar-acoes">
+      <a class="prog" href={link(lang, '/progresso/')} data-progresso-global title={T.progresso}>
+        <div class="track" role="progressbar" aria-label={T.progressoRot} aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-progresso-trilha><div class="fill" data-progresso-barra></div></div>
+        <small data-progresso-texto>0 / {total}</small>
+      </a>
+      {PDF_URL && (
+        <a class="lnk lnk-pdf" href={PDF_URL} title={T.pdf}><FileDown aria-hidden="true" />PDF</a>
+      )}
+      <a class="lnk idioma-btn" href={alternativa} hreflang={outro === 'en' ? 'en' : 'pt-BR'} lang={outro === 'en' ? 'en' : 'pt-BR'} title={T.idioma} aria-label={T.idioma} data-idioma-link>{outro.toUpperCase()}</a>
+      <ThemeToggle />
+    </div>
   </div>
-</div></header>
+</header>

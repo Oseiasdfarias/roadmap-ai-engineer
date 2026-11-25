@@ -1,3 +1,4 @@
+import { t } from '../i18n/cliente';
 import { alternar, contar, ler, type Estado } from '../lib/progresso';
 
 let estado: Estado = {};
@@ -25,7 +26,7 @@ function preencher(el: Element, feitos: number, total: number, pct: number, form
   if (barra) barra.style.width = `${pct}%`;
   const texto = el.querySelector('[data-progresso-texto]') ?? el;
   texto.textContent =
-    formato === 'global' ? `${feitos} / ${total}` : formato === 'de' ? `${feitos} de ${total}` : `${feitos} / ${total}`;
+    formato === 'global' ? `${feitos} / ${total}` : formato === 'de' ? `${feitos} ${t('de', 'of')} ${total}` : `${feitos} / ${total}`;
   el.querySelector('[role="progressbar"]')?.setAttribute('aria-valuenow', String(pct));
 }
 

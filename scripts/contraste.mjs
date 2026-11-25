@@ -5,10 +5,10 @@ const lum = (h) => {
 };
 const razao = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
 const T = {
-  escuro: { bg: '#0B0D10', surface: '#0F1216', checkOff: '#646E7E', surface2: '#12161B', alt: '#0D1014', footer: '#090B0E', text: '#E8EAED', text2: '#A3A9B2', muted: '#8E949D', accent: '#8AB4FF', accentInk: '#0B0D10', accentSoft: '#111A27', link: '#C9CDD3',
-    tl: [['#8AB4FF', '#0B0D10'], ['#5E86C9', '#0B0D10'], ['#2D4672', '#E8EAED'], ['#1E2D47', '#E8EAED']], inv: ['#E8EAED', '#0B0D10', '#3A414B', '#2D4672'], avatar: ['#1E2D47', '#A9C6FF'], careerInk: '#C9D8F2', stroke: '#262B33', contorno: '#5C6470', codigo: { bg: '#0F1216', comentario: '#8B949E', texto: '#E6EDF3', chave: '#FF7B72', str: '#A5D6FF', fn: '#D2A8FF', num: '#79C0FF', var: '#FFA657', tag: '#7EE787' } },
-  claro: { bg: '#F7F8FA', surface: '#FFFFFF', checkOff: '#7D8693', surface2: '#F1F3F7', alt: '#F1F3F7', footer: '#ECEFF4', text: '#0E1116', text2: '#4A5260', muted: '#5B6370', accent: '#2F5FB3', accentInk: '#FFFFFF', accentSoft: '#EAF1FC', link: '#2B323D',
-    tl: [['#2F5FB3', '#FFFFFF'], ['#6F95D6', '#0E1116'], ['#A9C0E8', '#0E1116'], ['#C9D8F2', '#0E1116']], inv: ['#0E1116', '#F7F8FA', '#C4CAD4', '#8AB4FF'], avatar: ['#DCE7FA', '#1F4A96'], careerInk: '#1F4A96', stroke: '#CBD2DC', contorno: '#7D8693', codigo: { bg: '#FFFFFF', comentario: '#6E7781', texto: '#1F2328', chave: '#CF222E', str: '#0A3069', fn: '#8250DF', num: '#0550AE', var: '#953800', tag: '#116329' } },
+  escuro: { bg: '#0E0E10', surface: '#131315', checkOff: '#6E6E73', surface2: '#18181B', alt: '#111113', footer: '#0B0B0D', text: '#EDEDED', text2: '#A3A3A3', muted: '#8F8F8F', accent: '#FAFAFA', accentInk: '#0E0E10', accentSoft: '#1C1C1F', link: '#D4D4D4',
+    tl: [['#FAFAFA', '#0E0E10'], ['#9E9E9E', '#0E0E10'], ['#3E3E42', '#EDEDED'], ['#252528', '#EDEDED'], ['#0E0E10', '#EDEDED']], inv: ['#FAFAFA', '#0E0E10', '#3E3E3E', '#505050'], avatar: ['#252528', '#DEDEDE'], careerInk: '#DEDEDE', stroke: '#2E2E32', contorno: '#6E6E73', codigo: { bg: '#131315', comentario: '#8B949E', texto: '#E6EDF3', chave: '#FF7B72', str: '#A5D6FF', fn: '#D2A8FF', num: '#79C0FF', var: '#FFA657', tag: '#7EE787' } },
+  claro: { bg: '#FFFFFF', surface: '#FFFFFF', checkOff: '#8A8A8A', surface2: '#FAFAFA', alt: '#FAFAFA', footer: '#FAFAFA', text: '#171717', text2: '#505050', muted: '#6B6B6B', accent: '#09090B', accentInk: '#FFFFFF', accentSoft: '#F3F3F3', link: '#3E3E3E',
+    tl: [['#09090B', '#FFFFFF'], ['#6B6B6B', '#FFFFFF'], ['#CECECE', '#09090B'], ['#EEEEEE', '#09090B'], ['#FFFFFF', '#09090B']], inv: ['#09090B', '#FAFAFA', '#C4C4C4', '#A3A3A3'], avatar: ['#EEEEEE', '#171717'], careerInk: '#252525', stroke: '#DEDEDE', contorno: '#8A8A8A', codigo: { bg: '#FFFFFF', comentario: '#6E7781', texto: '#1F2328', chave: '#CF222E', str: '#0A3069', fn: '#8250DF', num: '#0550AE', var: '#953800', tag: '#116329' } },
 };
 let falhas = 0;
 const linhas = [];

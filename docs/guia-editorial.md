@@ -20,7 +20,7 @@ Vale para todo o conteúdo do roadmap (tópicos, dicas, projetos, níveis e fase
 
 ## Consistência
 
-- Os projetos P1 a PF e os níveis são citados pelos nomes definidos no inventário (P1: Assistente da Montadora, P2: RAG de Manuais Técnicos, P3: Servidor MCP de Manuais, P4: Triagem de Ordens de Manutenção, PF: Agente Completo).
+- Os projetos P1 a PF e os níveis são citados pelos nomes definidos no inventário (P1: Assistente da Montadora, P2: RAG de Manuais Técnicos, P3: Servidor MCP de Manuais, P4: Triagem de Ordens de Manutenção, P5: Pesquisador Multiagente, PF: Agente Completo).
 - Nenhuma referência a pessoa específica além do autor.
 
 ## Modelos de texto
@@ -51,6 +51,10 @@ Referências e relacionados vêm do frontmatter; a página monta os cards.
 ### Projeto (500 a 900 palavras)
 
 `O problema`, `Arquitetura`, `Versões em camadas` (quando houver), `Stack sugerida`, `Critérios de aceite`, `O que colocar no README`, `Como apresentar na entrevista`.
+
+## Fluxogramas
+
+- Diagramas em Mermaid, seguindo o template e as regras de `docs/fluxogramas.md` (classes de nó, no máximo 5 nós por linha, `accTitle` e `accDescr` sempre).
 
 ## Frontmatter
 

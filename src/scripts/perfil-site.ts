@@ -1,5 +1,9 @@
 import { SITUACOES } from '../data/blocos';
-import { CARREIRA } from '../data/carreira-perfis';
+import { CARREIRA, CARREIRA_EN } from '../data/carreira-perfis';
+import { EN, faixaTexto, rota, t } from '../i18n/cliente';
+
+/** t() com nome alternativo, para funções em que `t` é o total estimado. */
+const tr = t;
 import {
   classificar,
   estimar,
@@ -23,19 +27,16 @@ import {
 type NivelBase = NivelEntrada & { curto: string; fase: number };
 type Dados = { topicos: TopicoEntrada[]; niveis: NivelBase[] };
 
-const CURTO: Record<Marca, string> = { pular: 'pular', revisar: 'revisar', estudar: '' };
-const LONGO: Record<Marca, string> = {
-  pular: 'Pelo seu perfil, você pode pular este tópico.',
-  revisar: 'Pelo seu perfil, basta uma revisão rápida.',
-  estudar: '',
-};
+const CURTO: Record<Marca, string> = t({ pular: 'pular', revisar: 'revisar', estudar: '' }, { pular: 'skip', revisar: 'review', estudar: '' });
+const LONGO: Record<Marca, string> = t(
+  { pular: 'Pelo seu perfil, você pode pular este tópico.', revisar: 'Pelo seu perfil, basta uma revisão rápida.', estudar: '' },
+  { pular: 'Based on your profile, you can skip this topic.', revisar: 'Based on your profile, a quick review is enough.', estudar: '' },
+);
 /** Fim do estudo e da carreira na linha do tempo de referência (meses). */
-const FIM_ESTUDO_REF = 21;
-const FIM_CARREIRA_REF = 24;
-const FASES_REF: Record<string, [number, number]> = { '1': [0, 4], '2': [4, 17], '3': [17, 24] };
+const FIM_ESTUDO_REF = 27;
+const FIM_CARREIRA_REF = 27;
+const FASES_REF: Record<string, [number, number]> = { '1': [0, 4], '2': [4, 17], '3': [17, 27] };
 
-const meses = (n: number) => `${n} ${n === 1 ? 'mês' : 'meses'}`;
-const faixaTexto = (min: number, max: number) => (min === max ? meses(min) : `${min} a ${meses(max)}`);
 const todos = <T extends HTMLElement = HTMLElement>(sel: string) => [...document.querySelectorAll<T>(sel)];
 
 /** Troca o texto guardando o original; `null` restaura. */
@@ -110,8 +111,8 @@ function duracoes(perfil: Perfil | null, est: Estimativa[]): void {
   for (const el of todos('[data-perfil-duracao]')) {
     const n = est.find((e) => String(e.nivel) === el.dataset.perfilDuracao);
     if (!perfil || !n) texto(el, null);
-    else texto(el, n.meses === 0 ? 'já domina' : faixaTexto(n.min, n.max));
-    atributo(el, 'title', perfil ? 'Ajustado ao seu perfil' : null);
+    else texto(el, n.meses === 0 ? t('já domina', 'already mastered') : faixaTexto(n.min, n.max));
+    atributo(el, 'title', perfil ? t('Ajustado ao seu perfil', 'Adjusted to your profile') : null);
   }
 }
 
@@ -184,7 +185,7 @@ function linhaDoTempo(perfil: Perfil | null, est: Estimativa[]): void {
   }
   genericos.forEach((g) => (g.hidden = true));
   const t = total(est);
-  if (titulo) texto(titulo, `Sua trilha: ${faixaTexto(t.min, t.max)}, com ${perfil.horas} horas por semana.`);
+  if (titulo) texto(titulo, tr(`Sua trilha: ${faixaTexto(t.min, t.max)}, com ${perfil.horas} horas por semana.`, `Your path: ${faixaTexto(t.min, t.max)}, at ${perfil.horas} hours per week.`));
 }
 
 function carreira(perfil: Perfil | null, dados: Dados | null): void {
@@ -207,7 +208,7 @@ function carreira(perfil: Perfil | null, dados: Dados | null): void {
   const semFases = perfil && CARREIRA[perfil.situacao].fase !== null;
   const inicioFase = semFases ? CARREIRA[perfil!.situacao].fase! : 1;
   const titulo = document.querySelector<HTMLElement>('[data-perfil-carr-titulo]');
-  if (titulo) texto(titulo, semFases ? 'Seu caminho até IA, a partir de onde você está.' : null);
+  if (titulo) texto(titulo, semFases ? t('Seu caminho até IA, a partir de onde você está.', 'Your path to AI, from where you are now.') : null);
   const nota = document.querySelector<HTMLElement>('[data-fases-nota]');
   const botao = document.querySelector<HTMLButtonElement>('[data-fases-todas]');
   const todasAbertas = botao?.getAttribute('aria-expanded') === 'true';
@@ -227,15 +228,15 @@ function home(perfil: Perfil | null, est: Estimativa[], dados: Dados | null): vo
   const curto = dados?.niveis.find((n) => n.nivel === nivel)?.curto ?? '';
   const base = document.querySelector<HTMLElement>('[data-base-url]')?.dataset.baseUrl ?? '/';
   for (const el of todos<HTMLAnchorElement>('[data-perfil-cta]')) {
-    atributo(el, 'href', perfil ? `${base}nivel/${nivel}/` : null);
-    texto(el, perfil ? (el.dataset.perfilCta === 'curto' ? `Abrir o nível ${nivel}` : `Continuar pelo nível ${nivel}`) : null);
+    atributo(el, 'href', perfil ? rota(`/nivel/${nivel}/`) : null);
+    texto(el, perfil ? (el.dataset.perfilCta === 'curto' ? t(`Abrir o nível ${nivel}`, `Open level ${nivel}`) : t(`Continuar pelo nível ${nivel}`, `Continue with level ${nivel}`)) : null);
   }
   const ctaTitulo = document.querySelector<HTMLElement>('[data-perfil-cta-titulo]');
-  if (ctaTitulo) texto(ctaTitulo, perfil ? `Continue pelo nível ${nivel}, ${curto.toLowerCase()}.` : null);
+  if (ctaTitulo) texto(ctaTitulo, perfil ? t(`Continue pelo nível ${nivel}, ${curto.toLowerCase()}.`, `Continue with level ${nivel}, ${curto.toLowerCase()}.`) : null);
   const ctaTexto = document.querySelector<HTMLElement>('[data-perfil-cta-texto]');
   if (ctaTexto) {
     const t = total(est);
-    texto(ctaTexto, perfil ? `Sua trilha leva de ${faixaTexto(t.min, t.max)} com ${perfil.horas} horas por semana. O progresso fica salvo no seu navegador.` : null);
+    texto(ctaTexto, perfil ? tr(`Sua trilha leva de ${faixaTexto(t.min, t.max)} com ${perfil.horas} horas por semana. O progresso fica salvo no seu navegador.`, `Your path takes ${faixaTexto(t.min, t.max)} at ${perfil.horas} hours per week. Progress is saved in your browser.`) : null);
   }
   // Estações da abertura: meses da pessoa no lugar dos anos.
   const pos = posicoes(est);
@@ -247,8 +248,8 @@ function home(perfil: Perfil | null, est: Estimativa[], dados: Dados | null): vo
     const nv = Number(el.dataset.periodoNome);
     const p = pos.find((x) => x.nivel === nv);
     const e = est.find((x) => x.nivel === nv);
-    if (nv && e && e.meses === 0) texto(el, 'Já domina');
-    else if (nv && p) texto(el, `Mês ${Math.floor(p.inicio)}`);
+    if (nv && e && e.meses === 0) texto(el, t('Já domina', 'Already mastered'));
+    else if (nv && p) texto(el, t(`Mês ${Math.floor(p.inicio)}`, `Month ${Math.floor(p.inicio)}`));
     else texto(el, null);
   }
   // Cards de nível anteriores ao de partida.
@@ -264,14 +265,14 @@ function home(perfil: Perfil | null, est: Estimativa[], dados: Dados | null): vo
       const el = resumo.querySelector(`[data-resumo="${k}"]`);
       if (el) el.textContent = v;
     };
-    set('situacao', SITUACOES.find((s) => s.id === perfil.situacao)?.rotulo ?? '');
-    set('nivel', `começa no nível ${nivel} · ${curto}`);
-    set('horas', `${perfil.horas} h por semana`);
+    set('situacao', (EN ? SITUACOES.find((s) => s.id === perfil.situacao)?.rotuloEn : SITUACOES.find((s) => s.id === perfil.situacao)?.rotulo) ?? '');
+    set('nivel', tr(`começa no nível ${nivel} · ${curto}`, `starts at level ${nivel} · ${curto}`));
+    set('horas', tr(`${perfil.horas} h por semana`, `${perfil.horas} h per week`));
     set('total', faixaTexto(t.min, t.max));
-    set('topicos', `${conta.estudar} tópicos para estudar, ${conta.revisar} para revisar e ${conta.pular} para pular`);
-    set('carreira', CARREIRA[perfil.situacao].titulo);
+    set('topicos', tr(`${conta.estudar} tópicos para estudar, ${conta.revisar} para revisar e ${conta.pular} para pular`, `${conta.estudar} topics to study, ${conta.revisar} to review and ${conta.pular} to skip`));
+    set('carreira', (EN ? CARREIRA_EN : CARREIRA)[perfil.situacao].titulo);
     const refinar = resumo.querySelector<HTMLAnchorElement>('[data-resumo-refinar]');
-    if (refinar) refinar.href = `${base}calculadora/?${perfilParaURL(perfil)}`;
+    if (refinar) refinar.href = `${rota('/calculadora/')}?${perfilParaURL(perfil)}`;
   }
 }
 
@@ -297,14 +298,14 @@ function painelNiveis(marcas: Record<string, Marca> | null): void {
       }
     }
     const nt = painel.querySelector<HTMLElement>('[data-painel-ntopicos]');
-    if (nt) texto(nt, marcas && ocultos ? `${total - ocultos} de ${total} tópicos para você` : null);
+    if (nt) texto(nt, marcas && ocultos ? t(`${total - ocultos} de ${total} tópicos para você`, `${total - ocultos} of ${total} topics for you`) : null);
     const aviso = painel.querySelector<HTMLElement>('[data-painel-ocultos]');
     if (aviso) {
       aviso.hidden = ocultos === 0;
       if (ocultos) {
         aviso.replaceChildren(
-          `${ocultos} ${ocultos === 1 ? 'tópico que você já domina está oculto' : 'tópicos que você já domina estão ocultos'}. `,
-          Object.assign(document.createElement('a'), { href: `${base}nivel/${painel.dataset.nivelPainel}/`, textContent: 'Ver o nível completo' }),
+          t(`${ocultos} ${ocultos === 1 ? 'tópico que você já domina está oculto' : 'tópicos que você já domina estão ocultos'}. `, `${ocultos} ${ocultos === 1 ? 'topic you already master is hidden' : 'topics you already master are hidden'}. `),
+          Object.assign(document.createElement('a'), { href: rota(`/nivel/${painel.dataset.nivelPainel}/`), textContent: t('Ver o nível completo', 'See the full level') }),
         );
       }
     }
@@ -341,6 +342,6 @@ document.querySelector<HTMLButtonElement>('[data-fases-todas]')?.addEventListene
   const b = e.currentTarget as HTMLButtonElement;
   const abrir = b.getAttribute('aria-expanded') !== 'true';
   b.setAttribute('aria-expanded', String(abrir));
-  b.textContent = abrir ? 'Mostrar só o meu caminho' : 'Mostrar todas as fases';
+  b.textContent = abrir ? t('Mostrar só o meu caminho', 'Show only my path') : t('Mostrar todas as fases', 'Show all phases');
   aplicar();
 });

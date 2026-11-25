@@ -62,6 +62,21 @@ Também reduz a alucinação (resposta inventada com aparência de verdade). Com
 2. **Recuperação**, a cada pergunta. O embedding da pergunta busca os chunks mais próximos.
 3. **Geração**. Você monta o prompt com chunks, pergunta e a instrução de citar a fonte ou dizer "não sei".
 
+```mermaid
+flowchart TB
+  accTitle: Fluxo do RAG
+  accDescr: A indexação transforma documentos em chunks com embeddings guardados no banco; a cada pergunta, a busca recupera os chunks mais próximos e o LLM responde citando a fonte.
+  subgraph IDX["Indexação · uma vez por documento"]
+    direction LR
+    D[Manuais em PDF]:::externo --> C[Chunking] --> E[Embeddings] --> DB[(pgvector)]:::dado
+  end
+  subgraph CON["Consulta · a cada pergunta"]
+    direction LR
+    P([Pergunta]) --> B[Busca top-k] --> M[Prompt + trechos] --> L{{LLM}}:::modelo --> R([Resposta citada]):::destaque
+  end
+  IDX -. chunks mais próximos .-> CON
+```
+
 ```python
 from sentence_transformers import SentenceTransformer
 

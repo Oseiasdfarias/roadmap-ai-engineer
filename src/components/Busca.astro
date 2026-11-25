@@ -1,15 +1,20 @@
 ---
 import { Search, X } from '@lucide/astro';
 import { url } from '../lib/url';
+import { idiomaDaUrl, tr } from '../i18n/idioma';
+const T = tr(idiomaDaUrl(Astro.url.pathname), {
+  pt: { buscar: 'Buscar', ph: 'Buscar tópicos, projetos e dicas', rot: 'Buscar no roadmap', fechar: 'Fechar a busca', estado: 'Digite para buscar. Atalhos: / ou Ctrl+K.' },
+  en: { buscar: 'Search', ph: 'Search topics, projects and tips', rot: 'Search the roadmap', fechar: 'Close search', estado: 'Type to search. Shortcuts: / or Ctrl+K.' },
+});
 ---
-<dialog id="busca" class="busca" aria-label="Buscar" data-pagefind-ignore data-pagefind-js={url('/pagefind/pagefind.js')}>
+<dialog id="busca" class="busca" aria-label={T.buscar} data-pagefind-ignore data-pagefind-js={url('/pagefind/pagefind.js')}>
   <div class="busca-caixa">
     <form class="busca-campo" role="search" onsubmit="return false">
       <Search aria-hidden="true" />
-      <input type="search" role="searchbox" name="q" placeholder="Buscar tópicos, projetos e dicas" aria-label="Buscar no roadmap" autocomplete="off" spellcheck="false" />
-      <button type="button" class="btn icon-btn" data-busca-fechar aria-label="Fechar a busca"><X aria-hidden="true" /></button>
+      <input type="search" role="searchbox" name="q" placeholder={T.ph} aria-label={T.rot} autocomplete="off" spellcheck="false" />
+      <button type="button" class="btn icon-btn" data-busca-fechar aria-label={T.fechar}><X aria-hidden="true" /></button>
     </form>
-    <div class="busca-estado" role="status" aria-live="polite" data-busca-estado>Digite para buscar. Atalhos: / ou Ctrl+K.</div>
+    <div class="busca-estado" role="status" aria-live="polite" data-busca-estado>{T.estado}</div>
     <ul class="busca-lista" data-busca-lista></ul>
   </div>
 </dialog>
@@ -24,7 +29,7 @@ import { url } from '../lib/url';
   .busca-caixa { display: flex; flex-direction: column; max-height: inherit; }
   .busca-campo { display: flex; align-items: center; gap: 12px; padding: 10px 10px 10px 20px; border-bottom: 1px solid var(--line); margin: 0; }
   .busca-campo > svg { width: 18px; height: 18px; color: var(--muted); flex: none; }
-  .busca-campo input { flex: 1; min-width: 0; min-height: 44px; border: 0; background: transparent; color: var(--text); font: inherit; font-size: 17px; outline: none; }
+  .busca-campo input { flex: 1; min-width: 0; min-height: 40px; border: 0; background: transparent; color: var(--text); font: inherit; font-size: 17px; outline: none; }
   .busca-campo input::placeholder { color: var(--muted); }
   .busca-campo input:focus-visible { outline: none; }
   .busca-campo:focus-within { box-shadow: inset 0 -2px 0 var(--accent); }

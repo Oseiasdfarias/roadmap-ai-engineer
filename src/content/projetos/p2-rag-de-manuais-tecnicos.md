@@ -46,6 +46,21 @@ Use manuais públicos de equipamentos industriais, como inversores de frequênci
 
 Há dois fluxos. Na indexação, o sistema lê cada PDF, divide o texto por seção (chunking, ou corte do texto em trechos), guarda os metadados (fabricante, modelo, seção, página) e gera os embeddings, vetores que representam o significado. Na consulta, aplica o filtro por equipamento, roda a busca híbrida (por significado e por palavra-chave), reordena os melhores resultados com um modelo de reranking e envia ao LLM só os trechos finais, com a instrução de citar manual e página. Se quiser que a citação venha estruturada, a API do Claude tem um recurso próprio de citações (veja a referência Citations). Se os trechos perderem contexto ao serem cortados, o artigo Contextual Retrieval, da Anthropic, descreve como acrescentar uma frase de contexto a cada trecho antes de indexar.
 
+```mermaid
+flowchart TB
+  accTitle: Arquitetura do P2: RAG de Manuais Técnicos
+  accDescr: Na indexação, PDFs viram chunks por seção com metadados e embeddings no pgvector. Na consulta, o filtro por equipamento, a busca híbrida e o reranking escolhem os trechos que o LLM cita com manual e página.
+  subgraph IDX["Indexação"]
+    direction LR
+    PDF[PDFs dos manuais]:::externo --> CH[Chunking por seção] --> MD[Metadados e embeddings] --> DB[(pgvector)]:::dado
+  end
+  subgraph CON["Consulta"]
+    direction LR
+    Q([Pergunta]) --> F[Filtro por equipamento] --> H[Busca híbrida] --> RR{{Reranking}}:::modelo --> L([LLM cita manual e página]):::destaque
+  end
+  IDX -. trechos indexados .-> CON
+```
+
 A busca por significado sozinha erra códigos de falha e nomes de peça, que não têm significado próprio. A busca por palavra-chave resolve esse caso. Veja os tópicos RAG, Busca híbrida e reranking e Embeddings.
 
 Um detalhe que decide a qualidade: guarde, junto de cada trecho, o texto da seção e o número da página. Sem isso a citação fica vaga e o técnico não consegue conferir no PDF. Tabelas e figuras costumam sair mal da extração de texto; teste pelo menos um manual com tabelas e anote o que perdeu.

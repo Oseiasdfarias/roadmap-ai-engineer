@@ -59,6 +59,18 @@ O pipeline típico tem três passos:
 2. **Fusão** dos dois rankings. Os scores têm escalas diferentes, então a fusão mais usada olha só a posição: o RRF (reciprocal rank fusion) soma `1 / (60 + posição)` de cada ranking. O 60 é a constante do artigo original.
 3. **Reranking** dos melhores candidatos com um cross-encoder: um modelo que lê pergunta e trecho juntos e dá uma nota. É mais preciso que a comparação de vetores, mas mais lento, então você o aplica só a algumas dezenas de candidatos e guarda os poucos melhores para o prompt.
 
+```mermaid
+flowchart TB
+  accTitle: Busca híbrida com reranking
+  accDescr: Filtros por metadados restringem a busca. BM25 e busca vetorial rodam em paralelo, a fusão RRF junta os rankings e o reranker escolhe o top-k que vai ao LLM.
+  Q([Pergunta]) --> F[Filtro por metadados]
+  F --> BM["BM25 · palavras"]
+  F --> VE["Vetorial · sentido"]
+  BM --> RRF[Fusão RRF]
+  VE --> RRF
+  RRF --> RR{{Reranker}}:::modelo --> TOP([Top-k final ao LLM]):::destaque
+```
+
 ```python
 def rrf(rankings, k=60):
     pontos = {}

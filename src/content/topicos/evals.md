@@ -53,6 +53,16 @@ Prompt, modelo, chunking e ferramentas mudam o tempo todo. Sem eval, cada mudan�
 
 **Análise de erros.** Antes de escolher métricas, leia as falhas e classifique-as (recuperou o trecho errado, ignorou a instrução, inventou a fonte). As categorias mais frequentes dizem onde melhorar e quais evals escrever.
 
+```mermaid
+flowchart TB
+  accTitle: Ciclo de avaliação
+  accDescr: O golden set roda no sistema, as métricas e o juiz geram um relatório por categoria. Se melhorou sem regredir, a mudança passa. Se não, a análise de erros leva a um ajuste. Falhas de produção viram casos novos.
+  G[(Golden set)]:::dado --> R[Roda o sistema] --> M[Métricas e juiz] --> REL[Relatório por categoria] --> D{Melhorou?}
+  D -- sim, sem regredir --> OK([Mudança aprovada]):::destaque
+  D -- não --> A[Análise de erros] --> AJ["Ajuste: prompt, busca ou modelo"] --> R
+  PROD[Falhas em produção]:::externo -. viram casos .-> G
+```
+
 **Métricas de recuperação.** Para RAG (busca de trechos para o prompt), meça a busca separada da geração. O recall@k é a fração de perguntas em que o trecho certo está entre os k primeiros. O MRR (mean reciprocal rank) é a média de `1 / posição` do trecho certo, o que premia colocá-lo no topo.
 
 ```python

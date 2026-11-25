@@ -1,22 +1,28 @@
 ---
-import { getCollection } from 'astro:content';
-import { rotaDe } from '../../lib/conteudo';
+import { colecaoDe, rotaDe } from '../../lib/conteudo';
+import { idiomaDaUrl, link, tr } from '../../i18n/idioma';
+const lang = idiomaDaUrl(Astro.url.pathname);
+const T = tr(lang, {
+  pt: {"k0": "03 — Portfólio", "k1": "<h2>Seis projetos que crescem em <span>camadas</span>.</h2>", "k2": "Cada versão vira uma tag no Git. Quem abrir o repositório enxerga a evolução, do chat simples ao agente na AWS."},
+  en: {"k0": "03 — Portfolio", "k1": "<h2>Six projects that grow in <span>layers</span>.</h2>", "k2": "Each version becomes a Git tag. Anyone who opens the repository sees the evolution, from a simple chat to an agent on AWS."},
+});
 
-const ordem = ['P1', 'P2', 'P3', 'P4', 'PF'];
-const projetos = (await getCollection('projetos')).sort((a, b) => ordem.indexOf(a.data.codigo) - ordem.indexOf(b.data.codigo));
+
+const ordem = ['P1', 'P2', 'P3', 'P4', 'PF', 'P5'];
+const projetos = (await colecaoDe('projetos', lang)).sort((a, b) => ordem.indexOf(a.data.codigo) - ordem.indexOf(b.data.codigo));
 const rotulo = (p: (typeof projetos)[number]) => {
   const c = p.data.camadas ?? [];
-  if (p.data.codigo === 'PF') return 'PF · projeto final';
-  return c.length > 1 ? `${p.data.codigo} · ${c[0].versao} a ${c[c.length - 1].versao}` : p.data.codigo;
+  if (p.data.codigo === 'PF') return lang === 'en' ? 'PF · final project' : 'PF · projeto final';
+  return c.length > 1 ? `${p.data.codigo} · ${c[0].versao} ${lang === 'en' ? 'to' : 'a'} ${c[c.length - 1].versao}` : p.data.codigo;
 };
 ---
 <section id="portfolio" class="portf rv">
   <div class="sec-cab">
     <div>
-      <div class="kicker">03 — Portfólio</div>
-      <h2>Cinco projetos que crescem em <span>camadas</span>.</h2>
+      <div class="kicker">{T.k0}</div>
+      <Fragment set:html={T.k1} />
     </div>
-    <p>Cada versão vira uma tag no Git. Quem abrir o repositório enxerga a evolução, do chat simples ao agente na AWS.</p>
+    <p>{T.k2}</p>
   </div>
   <ol class="pj-grade">
     {projetos.map((p) => (

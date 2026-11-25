@@ -1,28 +1,34 @@
 ---
-import { getCollection } from 'astro:content';
-import { url } from '../../lib/url';
+import { colecaoDe } from '../../lib/conteudo';
 import PerfilCarreira from '../PerfilCarreira.astro';
+import { idiomaDaUrl, link, tr } from '../../i18n/idioma';
+const lang = idiomaDaUrl(Astro.url.pathname);
+const T = tr(lang, {
+  pt: {"k0": "04 — Carreira", "k1": "O caminho até a vaga, fase por fase.", "k2": "Vaga júnior de AI Engineer é rara. O caminho mais comum passa por estágio e por desenvolvimento antes de IA.", "k3": "Já é dev ou trabalha com dados? ", "k4": "Veja o caminho para o seu perfil", "k5": "As fases para quem ainda está entrando na área ficam ocultas. Pelo seu perfil, o caminho parte da transição para IA. ", "k6": "Mostrar todas as fases", "k7": "você está aqui"},
+  en: {"k0": "04 — Career", "k1": "The path to the job, phase by phase.", "k2": "Junior AI Engineer openings are rare. The most common path goes through an internship and software development before AI.", "k3": "Already a developer or working with data? ", "k4": "See the path for your profile", "k5": "The phases for people still entering the field are hidden. Based on your profile, your path starts at the transition to AI. ", "k6": "Show all phases", "k7": "you are here"},
+});
+
 
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
-const fases = (await getCollection('fases')).sort((a, b) => a.data.id - b.data.id);
+const fases = (await colecaoDe('fases', lang)).sort((a, b) => a.data.id - b.data.id);
 ---
 <section id="carreira" class="carr rv">
   <div class="carr-grade">
     <div class="carr-intro">
-      <div class="kicker">04 — Carreira</div>
-      <h2 data-perfil-carr-titulo>O caminho até a vaga, fase por fase.</h2>
-      <p data-perfil-generico>Vaga júnior de AI Engineer é rara. O caminho mais comum passa por estágio e por desenvolvimento antes de IA.</p>
-      <p class="carr-perfil" data-perfil-generico>Já é dev ou trabalha com dados? <a href={url('/calculadora/')}>Veja o caminho para o seu perfil</a>.</p>
+      <div class="kicker">{T.k0}</div>
+      <h2 data-perfil-carr-titulo>{T.k1}</h2>
+      <p data-perfil-generico>{T.k2}</p>
+      <p class="carr-perfil" data-perfil-generico>{T.k3}<a href={link(lang, '/calculadora/')}>{T.k4}</a>.</p>
       <PerfilCarreira />
     </div>
     <div class="fases-col">
-    <p class="fases-nota" data-fases-nota hidden>As fases para quem ainda está entrando na área ficam ocultas. Pelo seu perfil, o caminho parte da transição para IA. <button type="button" class="fases-todas" data-fases-todas aria-expanded="false">Mostrar todas as fases</button></p>
+    <p class="fases-nota" data-fases-nota hidden>{T.k5}<button type="button" class="fases-todas" data-fases-todas aria-expanded="false">{T.k6}</button></p>
     <ol class="fases">
       {fases.map((f) => (
         <li data-fase-item={f.data.id}>
-          <a href={url(`/fase/${f.data.id}/`)}>
+          <a href={link(lang, `/fase/${f.data.id}/`)}>
             <span class="n">{String(f.data.id).padStart(2, '0')}</span>
-            <span class="tx"><span class="t">{cap(f.data.nome)} <span class="aqui-tag" data-perfil-aqui hidden>você está aqui</span></span><span class="d">{f.data.objetivo}</span></span>
+            <span class="tx"><span class="t">{cap(f.data.nome)} <span class="aqui-tag" data-perfil-aqui hidden>{T.k7}</span></span><span class="d">{f.data.objetivo}</span></span>
             <span class="q">{f.data.quando.toLowerCase()}</span>
           </a>
         </li>

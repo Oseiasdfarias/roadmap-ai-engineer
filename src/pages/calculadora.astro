@@ -1,24 +1,30 @@
 ---
-import { getEntry } from 'astro:content';
 import { BookOpen, Check, Link2, RotateCcw, SkipForward, TriangleAlert } from '@lucide/astro';
 import Base from '../layouts/Base.astro';
 import Migalha from '../components/Migalha.astro';
-import { BLOCOS, SITUACOES } from '../data/blocos';
-import { CARREIRA } from '../data/carreira-perfis';
+import { BLOCOS, BLOCOS_EN, SITUACOES } from '../data/blocos';
+import { CARREIRA, CARREIRA_EN } from '../data/carreira-perfis';
+import { entradaDe } from '../lib/conteudo';
 import { dadosTrilha } from '../lib/dados-trilha';
-import { url } from '../lib/url';
 import '../styles/detalhe.css';
+import { idiomaDaUrl, link, tr } from '../i18n/idioma';
+const lang = idiomaDaUrl(Astro.url.pathname);
+const T = tr(lang, {
+  pt: {"k0": "Calculadora de trilha | Roadmap AI Engineer", "k1": "Ajuste o roadmap ao seu ponto de partida: o que pular, o que revisar, quanto tempo leva e que caminho de carreira faz sentido.", "k2": "<div class=\"kicker\">Calculadora</div>", "k3": "Calcule a sua trilha", "k4": "Diga de onde você parte e quanto tempo tem por semana. A calculadora indica o que pular, o que revisar e quanto tempo o roteiro tende a levar. É uma estimativa: serve para planejar, não é prazo. O resto do site passa a seguir o seu perfil: prazos, linha do tempo e caminho de carreira.", "k5": "A calculadora precisa de JavaScript. Sem ele, use a ", "k6": "linha do tempo de referência", "k7": ", pensada para 10 a 15 horas por semana.", "k8": " Sua situação hoje", "k9": " Em que nível você está", "k10": "Os níveis anteriores contam como dominados e saem do prazo.", "k11": " Tempo de estudo", "k12": "<span>Horas por semana</span>", "k13": "De 3 a 40. A referência do roteiro é de 10 a 15.", "k14": " O que você já domina", "k15": "A situação já marca alguns blocos. Ajuste ao que você usa no dia a dia, não ao que viu uma vez.", "k16": "Resultado", "k17": "<div class=\"kicker\">Estimativa</div>", "k18": "18 a 24 meses", "k19": " Marcar o que já domino como concluído", "k20": " Copiar link", "k21": " Voltar ao roteiro padrão", "k22": "<div class=\"kicker\">Carreira</div>", "k23": "Tópicos por nível", "k24": "Estudar"},
+  en: {"k0": "Path calculator | Roadmap AI Engineer", "k1": "Adjust the roadmap to your starting point: what to skip, what to review, how long it takes and which career path makes sense.", "k2": "<div class=\"kicker\">Calculator</div>", "k3": "Calculate your path", "k4": "Tell us where you are starting from and how much time you have per week. The calculator shows what to skip, what to review and how long the path tends to take. It is an estimate: it helps you plan, it is not a deadline. The rest of the site then follows your profile: timelines, the timeline chart and the career path.", "k5": "The calculator needs JavaScript. Without it, use the ", "k6": "reference timeline", "k7": ", designed for 10 to 15 hours per week.", "k8": " Your situation today", "k9": " Which level you are at", "k10": "Earlier levels count as mastered and leave the estimate.", "k11": " Study time", "k12": "<span>Hours per week</span>", "k13": "From 3 to 40. The reference for the path is 10 to 15.", "k14": " What you already master", "k15": "Your situation already checks some blocks. Adjust it to what you use every day, not what you saw once.", "k16": "Result", "k17": "<div class=\"kicker\">Estimate</div>", "k18": "18 to 24 months", "k19": " Mark what I already master as done", "k20": " Copy link", "k21": " Back to the default path", "k22": "<div class=\"kicker\">Career</div>", "k23": "Topics by level", "k24": "Study"},
+});
 
-const dados = await dadosTrilha();
+
+const dados = await dadosTrilha(lang);
 // Valida no build que toda dica citada existe; guarda título e link.
 const carreira = await Promise.all(
   SITUACOES.map(async (s) => {
-    const c = CARREIRA[s.id];
+    const c = (lang === 'en' ? CARREIRA_EN : CARREIRA)[s.id];
     const dicas = await Promise.all(
       c.dicas.map(async (slug) => {
-        const e = await getEntry('dicas', slug);
+        const e = await entradaDe('dicas', slug, lang);
         if (!e) throw new Error(`carreira-perfis: dica inexistente "${slug}"`);
-        return { titulo: e.data.titulo, href: url(`/carreira/${slug}/`) };
+        return { titulo: e.data.titulo, href: link(lang, `/carreira/${slug}/`) };
       }),
     );
     return { id: s.id, ...c, dicas };
@@ -26,72 +32,71 @@ const carreira = await Promise.all(
 );
 const rotuloTopico = Object.fromEntries(dados.topicos.map((t) => [t.id, t.titulo]));
 ---
-<Base titulo="Calculadora de trilha | Roadmap AI Engineer" descricao="Ajuste o roadmap ao seu ponto de partida: o que pular, o que revisar, quanto tempo leva e que caminho de carreira faz sentido." rotaOg="sobre">
-  <div class="topo-grade" aria-hidden="true"></div>
+<Base titulo={T.k0} descricao={T.k1} rotaOg="sobre">
   <div class="detail calc">
-    <Migalha itens={[{ rotulo: 'Mapa', href: url('/') }, { rotulo: 'Calculadora' }]} />
+    <Migalha itens={[{ rotulo: 'Mapa', href: link(lang, '/') }, { rotulo: 'Calculadora' }]} />
     <header class="calc-cab">
-      <div class="kicker">Calculadora</div>
-      <h1>Calcule a sua trilha</h1>
-      <p>Diga de onde você parte e quanto tempo tem por semana. A calculadora indica o que pular, o que revisar e quanto tempo o roteiro tende a levar. É uma estimativa: serve para planejar, não é prazo. O resto do site passa a seguir o seu perfil: prazos, linha do tempo e caminho de carreira.</p>
+      <Fragment set:html={T.k2} />
+      <h1>{T.k3}</h1>
+      <p>{T.k4}</p>
     </header>
 
-    <p class="calc-nojs" data-calc-nojs>A calculadora precisa de JavaScript. Sem ele, use a <a href={url('/#tempo')}>linha do tempo de referência</a>, pensada para 10 a 15 horas por semana.</p>
+    <p class="calc-nojs" data-calc-nojs>{T.k5}<a href={link(lang, '/#tempo')}>{T.k6}</a>{T.k7}</p>
 
     <div class="calc-grade">
       <form class="calc-form" data-calc-form onsubmit="return false">
         <fieldset>
-          <legend><span class="n">01</span> Sua situação hoje</legend>
+          <legend><span class="n">01</span>{T.k8}</legend>
           <div class="calc-sit">
             {SITUACOES.map((s, i) => (
               <label class="calc-op">
                 <input type="radio" name="situacao" value={s.id} data-calc-situacao checked={i === 0} />
-                <span>{s.rotulo}</span>
+                <span>{lang === 'en' ? s.rotuloEn : s.rotulo}</span>
               </label>
             ))}
           </div>
         </fieldset>
 
         <fieldset>
-          <legend><span class="n">02</span> Em que nível você está</legend>
+          <legend><span class="n">02</span>{T.k9}</legend>
           <div class="calc-sit">
             {dados.niveis.map((n) => (
               <label class="calc-op">
                 <input type="radio" name="nivel" value={n.nivel} data-calc-nivel checked={n.nivel === 1} />
-                <span>Nível {n.nivel} · {n.curto.charAt(0).toUpperCase() + n.curto.slice(1)}</span>
+                <span>{lang === 'en' ? 'Level' : 'Nível'} {n.nivel} · {n.curto.charAt(0).toUpperCase() + n.curto.slice(1)}</span>
               </label>
             ))}
           </div>
-          <p class="calc-nota">Os níveis anteriores contam como dominados e saem do prazo.</p>
+          <p class="calc-nota">{T.k10}</p>
         </fieldset>
 
         <fieldset>
-          <legend><span class="n">03</span> Tempo de estudo</legend>
+          <legend><span class="n">03</span>{T.k11}</legend>
           <label class="calc-horas">
-            <span>Horas por semana</span>
+            <Fragment set:html={T.k12} />
             <input type="number" min="3" max="40" step="1" value="12" inputmode="numeric" data-calc-horas />
           </label>
-          <p class="calc-nota">De 3 a 40. A referência do roteiro é de 10 a 15.</p>
+          <p class="calc-nota">{T.k13}</p>
         </fieldset>
 
         <fieldset>
-          <legend><span class="n">04</span> O que você já domina</legend>
-          <p class="calc-nota">A situação já marca alguns blocos. Ajuste ao que você usa no dia a dia, não ao que viu uma vez.</p>
+          <legend><span class="n">04</span>{T.k14}</legend>
+          <p class="calc-nota">{T.k15}</p>
           <div class="calc-blocos">
             {BLOCOS.map((b) => (
               <label class="calc-op">
                 <input type="checkbox" value={b.id} data-calc-bloco={b.id} />
-                <span>{b.rotulo}</span>
+                <span>{lang === 'en' ? BLOCOS_EN[b.id] : b.rotulo}</span>
               </label>
             ))}
           </div>
         </fieldset>
       </form>
 
-      <section class="calc-res" data-calc-resultado aria-label="Resultado">
+      <section class="calc-res" data-calc-resultado aria-label={T.k16}>
         <div class="calc-total-caixa" aria-live="polite">
-          <div class="kicker">Estimativa</div>
-          <p class="calc-total" data-calc-total>18 a 24 meses</p>
+          <Fragment set:html={T.k17} />
+          <p class="calc-total" data-calc-total>{T.k18}</p>
           <p class="calc-nota" data-calc-resumo></p>
         </div>
 
@@ -106,15 +111,15 @@ const rotuloTopico = Object.fromEntries(dados.topicos.map((t) => [t.id, t.titulo
         </div>
 
         <div class="calc-acoes">
-          <button type="button" class="btn" data-calc-marcar-concluidos><Check aria-hidden="true" /> Marcar o que já domino como concluído</button>
-          <button type="button" class="btn" data-calc-link><Link2 aria-hidden="true" /> Copiar link</button>
-          <button type="button" class="btn" data-calc-padrao><RotateCcw aria-hidden="true" /> Voltar ao roteiro padrão</button>
+          <button type="button" class="btn" data-calc-marcar-concluidos><Check aria-hidden="true" />{T.k19}</button>
+          <button type="button" class="btn" data-calc-link><Link2 aria-hidden="true" />{T.k20}</button>
+          <button type="button" class="btn" data-calc-padrao><RotateCcw aria-hidden="true" />{T.k21}</button>
           <span class="calc-nota" data-calc-feedback role="status"></span>
         </div>
 
         {carreira.map((c) => (
           <div class="calc-carreira" data-calc-carreira={c.id} hidden={c.id !== 'estudante'}>
-            <div class="kicker">Carreira</div>
+            <Fragment set:html={T.k22} />
             <h3>{c.titulo}</h3>
             <p>{c.texto}</p>
             <ul>
@@ -125,10 +130,10 @@ const rotuloTopico = Object.fromEntries(dados.topicos.map((t) => [t.id, t.titulo
       </section>
     </div>
 
-    <section class="calc-niveis" aria-label="Tópicos por nível">
+    <section class="calc-niveis" aria-label={T.k23}>
       {dados.niveis.map((n) => (
         <div class="calc-nivel">
-          <h2><a href={n.href}>Nível {n.nivel} · {n.titulo}</a> <span class="calc-nivel-meses" data-calc-meses-texto={n.nivel}></span></h2>
+          <h2><a href={n.href}>{lang === 'en' ? 'Level' : 'Nível'} {n.nivel} · {n.titulo}</a> <span class="calc-nivel-meses" data-calc-meses-texto={n.nivel}></span></h2>
           <ul>
             {dados.topicos.filter((t) => t.nivel === n.nivel).map((t) => (
               <li data-calc-item={t.id} data-marca="estudar">
@@ -138,7 +143,7 @@ const rotuloTopico = Object.fromEntries(dados.topicos.map((t) => [t.id, t.titulo
                   <SkipForward class="i-pular" aria-hidden="true" />
                   <RotateCcw class="i-revisar" aria-hidden="true" />
                   <BookOpen class="i-estudar" aria-hidden="true" />
-                  <span data-calc-marca={t.id}>Estudar</span>
+                  <span data-calc-marca={t.id}>{T.k24}</span>
                 </span>
               </li>
             ))}
@@ -165,12 +170,12 @@ const rotuloTopico = Object.fromEntries(dados.topicos.map((t) => [t.id, t.titulo
   .calc-form legend { font-size: 15px; font-weight: 600; padding: 0 6px; margin-left: -6px; }
   .calc-form legend .n, .calc-res .n { font-family: var(--font-mono); font-size: 12px; color: var(--accent); margin-right: 6px; }
   .calc-sit, .calc-blocos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
-  .calc-op { display: flex; gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; font-size: 14px; cursor: pointer; min-height: 44px; }
+  .calc-op { display: flex; gap: 8px; align-items: center; border: 1px solid var(--line); border-radius: var(--ctl-r); padding: 6px 10px; font-size: 13px; cursor: pointer; min-height: var(--ctl-h); }
   .calc-op:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
   .calc-op:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
   .calc-op input { accent-color: var(--accent); margin: 0; }
   .calc-horas { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 12px; font-size: 14px; }
-  .calc-horas input { width: 96px; font: inherit; font-family: var(--font-mono); font-size: 16px; color: var(--text); background: var(--surface-2); border: 1px solid var(--line-strong); border-radius: 10px; padding: 9px 12px; }
+  .calc-horas input { width: 84px; height: var(--ctl-h); font: inherit; font-family: var(--font-mono); font-size: 14px; color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: var(--ctl-r); padding: 0 10px; }
   .calc-nota { font-size: 13px; line-height: 1.55; color: var(--text-2); margin: 10px 0 0; }
   .calc-res { position: sticky; top: calc(var(--header-h, 64px) + 16px); border: 1px solid var(--line); background: var(--surface); border-radius: 20px; padding: 26px; display: flex; flex-direction: column; gap: 22px; }
   .calc-total { font-size: clamp(32px, 4vw, 46px); font-weight: 600; letter-spacing: -.04em; margin: 0; line-height: 1; }
@@ -182,6 +187,7 @@ const rotuloTopico = Object.fromEntries(dados.topicos.map((t) => [t.id, t.titulo
   .calc-barra { position: absolute; top: 0; bottom: 0; border-radius: 8px; transition: left .3s, width .3s; }
   .calc-barra.n1 { background: var(--tl-1); } .calc-barra.n2 { background: var(--tl-2); } .calc-barra.n3 { background: var(--tl-3); }
   .calc-barra.n4 { background: var(--tl-4); border: 1px solid var(--tl-4-line); }
+  .calc-barra.n5 { background: var(--tl-5); border: 1px dashed var(--tl-5-line); }
   .calc-faixa-meses { font-family: var(--font-mono); font-size: 12px; color: var(--text-2); text-align: right; }
   .calc-acoes { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
   .calc-acoes .btn svg { width: 15px; height: 15px; }

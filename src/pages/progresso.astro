@@ -1,28 +1,34 @@
 ---
-import { getCollection } from 'astro:content';
 import { ArrowRight, ChevronDown, SlidersHorizontal } from '@lucide/astro';
 import Base from '../layouts/Base.astro';
 import Migalha from '../components/Migalha.astro';
 import LinhaTopico from '../components/LinhaTopico.astro';
-import { dicasDaFase, idProgresso, todosIdsProgresso, topicosDoNivel } from '../lib/conteudo';
-import { url } from '../lib/url';
+import { colecaoDe, dicasDaFase, idProgresso, todosIdsProgresso, topicosDoNivel } from '../lib/conteudo';
 import '../styles/detalhe.css';
 import '../styles/mapa.css';
+import { idiomaDaUrl, link, tr } from '../i18n/idioma';
+const lang = idiomaDaUrl(Astro.url.pathname);
+const T = tr(lang, {
+  pt: {"k0": "Seu progresso | Roadmap AI Engineer", "k1": "Mapa do que você já estudou no roadmap: todos os tópicos e dicas de carreira, por nível e subgrupo.", "k2": "<div class=\"kicker\">Progresso</div>", "k3": "<h1>Seu progresso</h1>", "k4": "Cada quadrado é um tópico. Clique para abrir, ou abra a lista do nível para marcar o que já estudou. Tudo fica salvo neste navegador.", "k5": "itens concluídos", "k6": " tópicos ·", "k7": " dicas de carreira", "k8": "Próximo: ", "k9": " Ajustado ao seu perfil · ", "k10": "alterar", "k11": " Concluído", "k12": " A estudar", "k13": " Revisar", "k14": " Pode pular", "k15": " (estudado)", "k16": "Ver e marcar os tópicos ", "k17": "Ver e marcar as dicas "},
+  en: {"k0": "Your progress | Roadmap AI Engineer", "k1": "Map of what you have already studied in the roadmap: every topic and career tip, by level and subgroup.", "k2": "<div class=\"kicker\">Progress</div>", "k3": "<h1>Your progress</h1>", "k4": "Each square is a topic. Click to open it, or open the level list to mark what you have studied. Everything is saved in this browser.", "k5": "items done", "k6": " topics ·", "k7": " career tips", "k8": "Next: ", "k9": " Adjusted to your profile · ", "k10": "change", "k11": " Done", "k12": " To study", "k13": " Review", "k14": " Can skip", "k15": " (studied)", "k16": "See and mark the topics ", "k17": "See and mark the tips "},
+});
+
+const en = Astro.url.pathname.includes('/en/');
 
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const niveis = await Promise.all(
-  (await getCollection('niveis'))
+  (await colecaoDe('niveis', lang))
     .sort((a, b) => a.data.id - b.data.id)
     .map(async (n) => {
-      const grupos = await topicosDoNivel(n.data.id);
+      const grupos = await topicosDoNivel(n.data.id, lang);
       return { d: n.data, grupos, ids: grupos.flatMap((g) => g.itens.map(idProgresso)) };
     }),
 );
 const fases = await Promise.all(
-  (await getCollection('fases'))
+  (await colecaoDe('fases', lang))
     .sort((a, b) => a.data.id - b.data.id)
     .map(async (f) => {
-      const dicas = await dicasDaFase(f.data.id);
+      const dicas = await dicasDaFase(f.data.id, lang);
       return { d: f.data, dicas, ids: dicas.map(idProgresso) };
     }),
 );
@@ -30,44 +36,43 @@ const todos = await todosIdsProgresso();
 const idsTopicos = niveis.flatMap((n) => n.ids);
 const idsDicas = fases.flatMap((f) => f.ids);
 ---
-<Base titulo="Seu progresso | Roadmap AI Engineer" descricao="Mapa do que você já estudou no roadmap: todos os tópicos e dicas de carreira, por nível e subgrupo." rotaOg="sobre">
-  <div class="topo-grade" aria-hidden="true"></div>
+<Base titulo={T.k0} descricao={T.k1} rotaOg="sobre">
   <div class="detail mapa">
-    <Migalha itens={[{ rotulo: 'Mapa', href: url('/') }, { rotulo: 'Progresso' }]} />
+    <Migalha itens={[{ rotulo: en ? 'Map' : 'Mapa', href: link(lang, '/') }, { rotulo: en ? 'Progress' : 'Progresso' }]} />
     <header class="mapa-cab">
       <div>
-        <div class="kicker">Progresso</div>
-        <h1>Seu progresso</h1>
-        <p>Cada quadrado é um tópico. Clique para abrir, ou abra a lista do nível para marcar o que já estudou. Tudo fica salvo neste navegador.</p>
+        <Fragment set:html={T.k2} />
+        <Fragment set:html={T.k3} />
+        <p>{T.k4}</p>
       </div>
       <div class="mapa-resumo">
-        <div class="mapa-num" data-progresso-conta={todos.join(',')} data-progresso-formato="de"><span data-progresso-texto>0 de {todos.length}</span></div>
-        <div class="mapa-num-rot">itens concluídos</div>
+        <div class="mapa-num" data-progresso-conta={todos.join(',')} data-progresso-formato="de"><span data-progresso-texto>0 {en ? 'of' : 'de'} {todos.length}</span></div>
+        <div class="mapa-num-rot">{T.k5}</div>
         <div class="mapa-sub">
-          <span data-progresso-conta={idsTopicos.join(',')} data-progresso-formato="de"><span data-progresso-texto>0 de {idsTopicos.length}</span></span> tópicos ·{' '}
-          <span data-progresso-conta={idsDicas.join(',')} data-progresso-formato="de"><span data-progresso-texto>0 de {idsDicas.length}</span></span> dicas de carreira
+          <span data-progresso-conta={idsTopicos.join(',')} data-progresso-formato="de"><span data-progresso-texto>0 {en ? 'of' : 'de'} {idsTopicos.length}</span></span>{T.k6}{' '}
+          <span data-progresso-conta={idsDicas.join(',')} data-progresso-formato="de"><span data-progresso-texto>0 {en ? 'of' : 'de'} {idsDicas.length}</span></span>{T.k7}
         </div>
-        <p class="mapa-proximo" data-mapa-proximo hidden>Próximo: <a href={url('/')}></a> <ArrowRight aria-hidden="true" /></p>
-        <p class="mapa-perfil" data-perfil-aviso hidden><SlidersHorizontal aria-hidden="true" /> Ajustado ao seu perfil · <a href={url('/calculadora/')}>alterar</a></p>
+        <p class="mapa-proximo" data-mapa-proximo hidden>{T.k8}<a href={link(lang, '/')}></a> <ArrowRight aria-hidden="true" /></p>
+        <p class="mapa-perfil" data-perfil-aviso hidden><SlidersHorizontal aria-hidden="true" />{T.k9}<a href={link(lang, '/calculadora/')}>{T.k10}</a></p>
       </div>
     </header>
 
     <ul class="mapa-legenda" aria-label="Legenda">
-      <li><span class="mapa-q demo feito" aria-hidden="true"></span> Concluído</li>
-      <li><span class="mapa-q demo" aria-hidden="true"></span> A estudar</li>
-      <li data-perfil-aviso hidden><span class="mapa-q demo" data-marca="revisar" aria-hidden="true"></span> Revisar</li>
-      <li data-perfil-aviso hidden><span class="mapa-q demo" data-marca="pular" aria-hidden="true"></span> Pode pular</li>
+      <li><span class="mapa-q demo feito" aria-hidden="true"></span>{T.k11}</li>
+      <li><span class="mapa-q demo" aria-hidden="true"></span>{T.k12}</li>
+      <li data-perfil-aviso hidden><span class="mapa-q demo" data-marca="revisar" aria-hidden="true"></span>{T.k13}</li>
+      <li data-perfil-aviso hidden><span class="mapa-q demo" data-marca="pular" aria-hidden="true"></span>{T.k14}</li>
     </ul>
 
     <section class="mapa-sec" aria-labelledby="mapa-estudo">
-      <h2 id="mapa-estudo" class="mapa-sec-t"><span class="n">01</span> Estudo</h2>
+      <h2 id="mapa-estudo" class="mapa-sec-t"><span class="n">01</span> {en ? 'Study' : 'Estudo'}</h2>
       <div class="mapa-niveis">
         {niveis.map((n) => (
           <article class="mapa-nivel" data-mapa-nivel={n.d.id}>
             <header class="mapa-nivel-cab">
-              <h3><a href={url(`/nivel/${n.d.id}/`)}><span class="k">Nível {n.d.id}</span> {cap(n.d.nome)}</a></h3>
+              <h3><a href={link(lang, `/nivel/${n.d.id}/`)}><span class="k">{en ? 'Level' : 'Nível'} {n.d.id}</span> {cap(n.d.nome)}</a></h3>
               <span class="mapa-conta" data-progresso-conta={n.ids.join(',')}>
-                <span class="track" role="progressbar" aria-label={`Progresso do nível ${n.d.id}`} aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span data-progresso-barra></span></span>
+                <span class="track" role="progressbar" aria-label={en ? `Level ${n.d.id} progress` : `Progresso do nível ${n.d.id}`} aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span data-progresso-barra></span></span>
                 <small data-progresso-texto>0 / {n.ids.length}</small>
               </span>
             </header>
@@ -77,8 +82,8 @@ const idsDicas = fases.flatMap((f) => f.ids);
                 <ul class="mapa-qs">
                   {g.itens.map((t) => (
                     <li>
-                      <a class="mapa-q" data-tipo="topico" href={url(`/topico/${t.id}/`)} data-progresso-id={idProgresso(t)} data-marca-topico={t.id} data-titulo={t.data.titulo} aria-label={t.data.titulo}>
-                        <span class="sr-only estado-feito"> (estudado)</span>
+                      <a class="mapa-q" data-tipo="topico" href={link(lang, `/topico/${t.id}/`)} data-progresso-id={idProgresso(t)} data-marca-topico={t.id} data-titulo={t.data.titulo} aria-label={t.data.titulo}>
+                        <span class="sr-only estado-feito">{T.k15}</span>
                       </a>
                     </li>
                   ))}
@@ -86,7 +91,7 @@ const idsDicas = fases.flatMap((f) => f.ids);
               </div>
             ))}
             <details class="mapa-lista">
-              <summary class="mapa-abrir">Ver e marcar os tópicos <ChevronDown aria-hidden="true" /></summary>
+              <summary class="mapa-abrir">{T.k16}<ChevronDown aria-hidden="true" /></summary>
               {n.grupos.map((g) => (
                 <section class="mapa-lista-g">
                   <h4>{g.grupo}</h4>
@@ -100,28 +105,28 @@ const idsDicas = fases.flatMap((f) => f.ids);
     </section>
 
     <section class="mapa-sec" aria-labelledby="mapa-carreira">
-      <h2 id="mapa-carreira" class="mapa-sec-t"><span class="n">02</span> Carreira</h2>
+      <h2 id="mapa-carreira" class="mapa-sec-t"><span class="n">02</span> {en ? 'Career' : 'Carreira'}</h2>
       <div class="mapa-niveis">
         {fases.map((f) => (
           <article class="mapa-nivel mapa-fase" data-mapa-fase={f.d.id}>
             <header class="mapa-nivel-cab">
-              <h3><a href={url(`/fase/${f.d.id}/`)}><span class="k">Fase {f.d.id}</span> {cap(f.d.nome)}</a></h3>
+              <h3><a href={link(lang, `/fase/${f.d.id}/`)}><span class="k">{en ? 'Phase' : 'Fase'} {f.d.id}</span> {cap(f.d.nome)}</a></h3>
               <span class="mapa-conta" data-progresso-conta={f.ids.join(',')}>
-                <span class="track" role="progressbar" aria-label={`Progresso da fase ${f.d.id}`} aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span data-progresso-barra></span></span>
+                <span class="track" role="progressbar" aria-label={en ? `Phase ${f.d.id} progress` : `Progresso da fase ${f.d.id}`} aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span data-progresso-barra></span></span>
                 <small data-progresso-texto>0 / {f.ids.length}</small>
               </span>
             </header>
             <ul class="mapa-qs">
               {f.dicas.map((x) => (
                 <li>
-                  <a class="mapa-q" data-tipo="dica" href={url(`/carreira/${x.id}/`)} data-progresso-id={idProgresso(x)} data-titulo={x.data.titulo} aria-label={x.data.titulo}>
-                    <span class="sr-only estado-feito"> (estudado)</span>
+                  <a class="mapa-q" data-tipo="dica" href={link(lang, `/carreira/${x.id}/`)} data-progresso-id={idProgresso(x)} data-titulo={x.data.titulo} aria-label={x.data.titulo}>
+                    <span class="sr-only estado-feito">{T.k15}</span>
                   </a>
                 </li>
               ))}
             </ul>
             <details class="mapa-lista">
-              <summary class="mapa-abrir">Ver e marcar as dicas <ChevronDown aria-hidden="true" /></summary>
+              <summary class="mapa-abrir">{T.k17}<ChevronDown aria-hidden="true" /></summary>
               <div class="linhas">{f.dicas.map((x) => <LinhaTopico entry={x} />)}</div>
             </details>
           </article>

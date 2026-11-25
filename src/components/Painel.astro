@@ -1,22 +1,24 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
 import { X, ArrowRight, Check } from '@lucide/astro';
 import Refs from './Refs.astro';
-import { idProgresso, rotaDe } from '../lib/conteudo';
+import { colecaoDe, entradaDe, idProgresso, rotaDe } from '../lib/conteudo';
+import { idiomaDaUrl, tr } from '../i18n/idioma';
 
-const [topicos, dicas] = await Promise.all([
-  getCollection('topicos'),
-  getCollection('dicas'),
-]);
+const lang = idiomaDaUrl(Astro.url.pathname);
+const T = tr(lang, {
+  pt: { nivel: 'Nível', fase: 'Fase', fechar: 'Fechar painel', onde: 'Onde estudar', marcar: 'Marcar como estudado', feito: 'Estudado', ler: 'Ler o resumo completo' },
+  en: { nivel: 'Level', fase: 'Phase', fechar: 'Close panel', onde: 'Where to study', marcar: 'Mark as studied', feito: 'Studied', ler: 'Read the full summary' },
+});
+const [topicos, dicas] = await Promise.all([colecaoDe('topicos', lang), colecaoDe('dicas', lang)]);
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 const itens = await Promise.all([
   ...topicos.map(async (t) => {
-    const nivel = await getEntry('niveis', String(t.data.nivel));
+    const nivel = await entradaDe('niveis', String(t.data.nivel), lang);
     return {
       chave: idProgresso(t),
       progresso: idProgresso(t),
-      rotulo: `Nível ${t.data.nivel} · ${cap(nivel?.data.curto ?? '')}`,
+      rotulo: `${T.nivel} ${t.data.nivel} · ${cap(nivel?.data.curto ?? '')}`,
       titulo: t.data.titulo,
       resumo: t.data.resumo,
       refs: t.data.referencias,
@@ -24,11 +26,11 @@ const itens = await Promise.all([
     };
   }),
   ...dicas.map(async (d) => {
-    const fase = await getEntry('fases', String(d.data.fase));
+    const fase = await entradaDe('fases', String(d.data.fase), lang);
     return {
       chave: idProgresso(d),
       progresso: idProgresso(d),
-      rotulo: `Fase ${d.data.fase} · ${cap(fase?.data.nome ?? '')}`,
+      rotulo: `${T.fase} ${d.data.fase} · ${cap(fase?.data.nome ?? '')}`,
       titulo: d.data.titulo,
       resumo: d.data.resumo,
       refs: d.data.referencias,
@@ -39,7 +41,7 @@ const itens = await Promise.all([
 ---
 <dialog class="painel" id="painel" aria-labelledby="painel-titulo">
   <div class="painel-in">
-    <button type="button" class="btn icon-btn x" data-painel-fechar aria-label="Fechar painel">
+    <button type="button" class="btn icon-btn x" data-painel-fechar aria-label={T.fechar}>
       <X aria-hidden="true" />
     </button>
     <div data-painel-corpo></div>
@@ -51,17 +53,17 @@ const itens = await Promise.all([
     <p class="k">{i.rotulo}</p>
     <h2 id="painel-titulo">{i.titulo}</h2>
     <p class="resumo">{i.resumo}</p>
-    {i.refs.length > 0 && <h3>Onde estudar</h3>}
+    {i.refs.length > 0 && <h3>{T.onde}</h3>}
     <Refs refs={i.refs} />
     <div class="acts">
       {i.progresso && (
         <button type="button" class="mark" data-alternar={i.progresso} data-progresso-id={i.progresso} aria-pressed="false">
           <span class="anel" aria-hidden="true"><Check stroke-width={3.6} /></span>
-          <span class="nao">Marcar como estudado</span>
-          <span class="sim">Estudado</span>
+          <span class="nao">{T.marcar}</span>
+          <span class="sim">{T.feito}</span>
         </button>
       )}
-      <a class="btn" href={i.rota}>Ler o resumo completo <ArrowRight aria-hidden="true" /></a>
+      <a class="btn" href={i.rota}>{T.ler} <ArrowRight aria-hidden="true" /></a>
     </div>
   </template>
 ))}
@@ -89,7 +91,7 @@ const itens = await Promise.all([
   .painel .resumo { color: var(--text-2); line-height: 1.65; font-size: 15.5px; margin: 0; }
   .painel h3 { font-family: var(--font-mono); font-size: 11px; font-weight: 400; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 30px 0 12px; }
   .painel .acts { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
-  .painel .mark { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 16px 0 14px; border-radius: 10px; border: 1px solid var(--line-strong); background: var(--surface-2); color: var(--text); font-size: 14px; font-weight: 500; cursor: pointer; }
+  .painel .mark { display: inline-flex; align-items: center; gap: 8px; height: var(--ctl-h); padding: 0 12px 0 10px; border-radius: var(--ctl-r); border: 1px solid var(--line-strong); background: var(--surface-2); color: var(--text); font-size: 14px; font-weight: 500; cursor: pointer; }
   .painel .mark:hover { border-color: var(--accent); }
   .painel .mark .anel { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--check-off); display: grid; place-items: center; flex: none; }
   .painel .mark .anel svg { width: 11px; height: 11px; color: var(--accent-ink); opacity: 0; }
@@ -99,5 +101,5 @@ const itens = await Promise.all([
   .painel .mark .sim { display: none; }
   .painel .mark.feito .sim { display: inline; }
   .painel .mark.feito .nao { display: none; }
-  .painel .acts .btn { min-height: 44px; padding: 0 16px; font-size: 14px; border-radius: 10px; }
+  .painel .acts .btn { height: var(--ctl-h); padding: 0 12px; font-size: 13px; }
 </style>

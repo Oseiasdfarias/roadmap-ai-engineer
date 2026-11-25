@@ -2,14 +2,14 @@
 import { getEntry, render, type CollectionEntry } from 'astro:content';
 import { ArrowUpRight, Check, Hammer } from '@lucide/astro';
 import Base from './Base.astro';
-import Ilustracao from '../components/Ilustracao.astro';
+import Lateral from '../components/Lateral.astro';
 import Migalha from '../components/Migalha.astro';
 import Refs from '../components/Refs.astro';
 import Selos from '../components/Selos.astro';
 import Sumario from '../components/Sumario.astro';
 import AnteriorProximo from '../components/AnteriorProximo.astro';
-import { idProgresso, rotaDe, vizinhos } from '../lib/conteudo';
-import { url } from '../lib/url';
+import { baseDe, entradaDe, idProgresso, rotaDe, vizinhos } from '../lib/conteudo';
+import { link, tr, type Idioma } from '../i18n/idioma';
 import '../styles/prosa.css';
 
 type Entrada = CollectionEntry<'topicos'> | CollectionEntry<'dicas'> | CollectionEntry<'projetos'>;
@@ -19,17 +19,22 @@ interface Props {
 }
 const { entry, tipo } = Astro.props;
 const d = entry.data;
+const lang: Idioma = entry.collection.endsWith('En') ? 'en' : 'pt';
+const T = tr(lang, {
+  pt: { fase: 'Fase', nivel: 'Nível', topico: 'Tópico', carreira: 'Carreira', projeto: 'Projeto', mapa: 'Mapa', marcar: 'Marcar como estudado', feito: 'Estudado', ajustar: 'Ajustar o perfil', rascunhoB: 'Resumo completo em construção.', rascunho: 'Enquanto isso, as referências abaixo cobrem o assunto.', camadas: 'Camadas do projeto', stack: 'Stack', criterios: 'Critérios do projeto', refs: 'Referências', rel: 'Relacionados' },
+  en: { fase: 'Phase', nivel: 'Level', topico: 'Topic', carreira: 'Career', projeto: 'Project', mapa: 'Map', marcar: 'Mark as studied', feito: 'Studied', ajustar: 'Adjust the profile', rascunhoB: 'Full summary in progress.', rascunho: 'Meanwhile, the references below cover the subject.', camadas: 'Project layers', stack: 'Stack', criterios: 'Project criteria', refs: 'References', rel: 'Related' },
+});
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const { Content, headings } = await render(entry as CollectionEntry<'topicos'>);
 
 const nivelOuFase = tipo === 'dica' ? 'fases' : 'niveis';
 const numero = tipo === 'dica' ? (d as CollectionEntry<'dicas'>['data']).fase : (d as CollectionEntry<'topicos'>['data']).nivel;
-const pai = (await getEntry(nivelOuFase, String(numero)))!;
+const pai = (await entradaDe(nivelOuFase, String(numero), lang))!;
 const rotuloPai =
-  tipo === 'dica' ? `Fase ${numero} · ${cap(pai.data.nome)}` : `Nível ${numero} · ${cap((pai.data as { curto: string }).curto)}`;
-const hrefPai = url(tipo === 'dica' ? `/fase/${numero}/` : `/nivel/${numero}/`);
-const rotuloTipo = { topico: 'Tópico', dica: 'Carreira', projeto: 'Projeto' }[tipo];
-const kick = tipo === 'projeto' ? `Projeto ${(d as CollectionEntry<'projetos'>['data']).codigo} · ${rotuloPai}` : `${rotuloTipo} · ${(d as { grupo: string }).grupo}`;
+  tipo === 'dica' ? `${T.fase} ${numero} · ${cap(pai.data.nome)}` : `${T.nivel} ${numero} · ${cap((pai.data as { curto: string }).curto)}`;
+const hrefPai = link(lang, tipo === 'dica' ? `/fase/${numero}/` : `/nivel/${numero}/`);
+const rotuloTipo = { topico: T.topico, dica: T.carreira, projeto: T.projeto }[tipo];
+const kick = tipo === 'projeto' ? `${T.projeto} ${(d as CollectionEntry<'projetos'>['data']).codigo} · ${rotuloPai}` : `${rotuloTipo} · ${(d as { grupo: string }).grupo}`;
 
 const marcavel = tipo !== 'projeto';
 const id = marcavel ? idProgresso(entry as CollectionEntry<'topicos'>) : undefined;
@@ -44,15 +49,17 @@ const relacionados = tipo === 'projeto' ? [] : await Promise.all(
 const relacionadosOk = relacionados.filter((r) => r != null);
 const proj = tipo === 'projeto' ? (d as CollectionEntry<'projetos'>['data']) : undefined;
 const sumarioItens = [
-  ...(proj?.camadas && proj.camadas.length > 0 ? [{ slug: 'camadas', texto: 'Camadas do projeto' }] : []),
-  ...(proj ? [{ slug: 'stack', texto: 'Stack' }, { slug: 'criterios', texto: 'Critérios do projeto' }] : []),
+  ...(proj?.camadas && proj.camadas.length > 0 ? [{ slug: 'camadas', texto: T.camadas }] : []),
+  ...(proj ? [{ slug: 'stack', texto: T.stack }, { slug: 'criterios', texto: T.criterios }] : []),
   ...headings.filter((h) => h.depth === 2).map((h) => ({ slug: h.slug, texto: h.text })),
-  ...(d.referencias.length > 0 ? [{ slug: 'referencias', texto: 'Referências' }] : []),
+  ...(d.referencias.length > 0 ? [{ slug: 'referencias', texto: T.refs }] : []),
 ];
 ---
 <Base titulo={`${d.titulo} | Roadmap AI Engineer`} descricao={d.resumo} rotaOg={`${tipo === "dica" ? "carreira" : tipo}/${entry.id}`}>
+  <div class="docs">
+  <Lateral />
   <div class="item">
-    <Migalha itens={[{ rotulo: 'Mapa', href: url('/') }, { rotulo: rotuloPai, href: hrefPai }, { rotulo: d.titulo }]} />
+    <Migalha itens={[{ rotulo: T.mapa, href: link(lang, '/') }, { rotulo: rotuloPai, href: hrefPai }, { rotulo: d.titulo }]} />
     <header class="item-cab">
       <div class="item-cab-txt">
         <div class="kicker">{kick}</div>
@@ -63,21 +70,18 @@ const sumarioItens = [
           <div class="acoes">
             <button type="button" class="marcar" data-alternar={id} data-progresso-id={id} aria-pressed="false">
               <span class="anel" aria-hidden="true"><Check stroke-width={3.6} /></span>
-              <span class="nao">Marcar como estudado</span>
-              <span class="ja">Estudado</span>
+              <span class="nao">{T.marcar}</span>
+              <span class="ja">{T.feito}</span>
             </button>
           </div>
         )}
         {tipo === 'topico' && (
-          <p class="etq-perfil" data-etiqueta-perfil data-etiqueta-topico={entry.id} hidden><span data-etiqueta-texto></span> <a href={url('/calculadora/')}>Ajustar o perfil</a></p>
+          <p class="etq-perfil" data-etiqueta-perfil data-etiqueta-topico={entry.id} hidden><span data-etiqueta-texto></span> <a href={link(lang, '/calculadora/')}>{T.ajustar}</a></p>
         )}
         {d.rascunho && (
-          <p class="aviso" role="note"><Hammer aria-hidden="true" /> <span><b>Resumo completo em construção.</b> Enquanto isso, as referências abaixo cobrem o assunto.</span></p>
+          <p class="aviso" role="note"><Hammer aria-hidden="true" /> <span><b>{T.rascunhoB}</b> {T.rascunho}</span></p>
         )}
       </div>
-      {tipo === 'topico' && <div class="item-vis"><Ilustracao nome={`icone-${numero}`} /></div>}
-      {tipo === 'dica' && <div class="item-vis fase-num" aria-hidden="true">{String(numero).padStart(2, '0')}<small>fase</small></div>}
-      {tipo === 'projeto' && <div class="item-vis largo"><Ilustracao nome="projetos" /></div>}
     </header>
 
     <div class="item-grid">
@@ -86,7 +90,7 @@ const sumarioItens = [
           <>
             {proj.camadas && proj.camadas.length > 0 && (
               <section class="bloco">
-                <h2 id="camadas" class="sec-h">Camadas do projeto</h2>
+                <h2 id="camadas" class="sec-h">{T.camadas}</h2>
                 <ol class="camadas">
                   {proj.camadas.map((c) => (
                     <li><span class="v">{c.versao}</span><div><b>{c.nome}</b><span>{c.entrega}</span></div></li>
@@ -95,11 +99,11 @@ const sumarioItens = [
               </section>
             )}
             <section class="bloco">
-              <h2 id="stack" class="sec-h">Stack</h2>
+              <h2 id="stack" class="sec-h">{T.stack}</h2>
               <ul class="chips">{proj.stack.map((s) => <li>{s}</li>)}</ul>
             </section>
             <section class="bloco">
-              <h2 id="criterios" class="sec-h">Critérios do projeto</h2>
+              <h2 id="criterios" class="sec-h">{T.criterios}</h2>
               <ul class="criterios">{proj.criterios.map((c) => <li><span class="ok" aria-hidden="true"><Check stroke-width={3} /></span><span>{c}</span></li>)}</ul>
             </section>
           </>
@@ -109,19 +113,19 @@ const sumarioItens = [
 
         {d.referencias.length > 0 && (
           <section class="bloco">
-            <h2 id="referencias" class="sec-h">Referências</h2>
+            <h2 id="referencias" class="sec-h">{T.refs}</h2>
             <Refs refs={d.referencias} />
           </section>
         )}
 
         {relacionadosOk.length > 0 && (
           <section class="bloco relacionados">
-            <h2 class="sec-h">Relacionados</h2>
+            <h2 class="sec-h">{T.rel}</h2>
             <ul>
               {relacionadosOk.map((r) => (
                 <li>
                   <a href={rotaDe(r!)}>
-                    <span class="k">{r!.collection === 'dicas' ? 'Carreira' : 'Tópico'}</span>
+                    <span class="k">{baseDe(r!) === 'dicas' ? T.carreira : T.topico}</span>
                     <span class="t">{r!.data.titulo}</span>
                     <ArrowUpRight aria-hidden="true" />
                   </a>
@@ -134,5 +138,6 @@ const sumarioItens = [
       <aside class="item-lado"><Sumario itens={sumarioItens} /></aside>
     </div>
     <AnteriorProximo anterior={aoLado(anterior)} proximo={aoLado(proximo)} />
+  </div>
   </div>
 </Base>

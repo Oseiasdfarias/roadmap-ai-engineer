@@ -12,8 +12,8 @@ test.describe('páginas internas com a nova identidade', () => {
     });
   }
 
-  test('cada link do sumário leva ao seu H2 em tela larga (1100 px)', async ({ page }) => {
-    await page.setViewportSize({ width: 1100, height: 800 });
+  test('cada link do sumário leva ao seu H2 em tela larga (1280 px)', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
     await page.goto('topico/rag/');
     const links = page.getByRole('navigation', { name: 'Nesta página' }).getByRole('link');
     const total = await links.count();
@@ -32,12 +32,32 @@ test.describe('páginas internas com a nova identidade', () => {
     }
   });
 
-  test('os H2 do artigo trazem o índice mono e o sumário usa os mesmos números', async ({ page }) => {
+  test('os H2 do artigo são simples e o sumário marca a seção lida', async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto('topico/rag/');
     const indice = await page.locator('h2#como-funciona').evaluate((e) => getComputedStyle(e, '::before').content);
-    expect(indice).toContain('counter');
-    await expect(page.getByRole('navigation', { name: 'Nesta página' }).locator('a[href="#como-funciona"] .n')).toHaveText('03');
+    expect(indice).toBe('none');
+    const sumario = page.getByRole('navigation', { name: 'Nesta página' });
+    await sumario.getByRole('link', { name: 'Como funciona' }).click();
+    await expect(sumario.locator('a[href="#como-funciona"]')).toHaveAttribute('aria-current', 'location');
+  });
+
+  test('navegação lateral abre o nível atual e destaca a página', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto('topico/rag/');
+    const lateral = page.getByRole('navigation', { name: 'Roadmap' });
+    await expect(lateral).toBeVisible();
+    await expect(lateral.locator('a[aria-current="page"]')).toHaveText('RAG');
+    await expect(lateral.locator('a[aria-current="page"]')).toBeInViewport();
+  });
+
+  test('navegação lateral fica recolhida no celular', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('topico/rag/');
+    const lateral = page.getByRole('navigation', { name: 'Roadmap' });
+    await expect(lateral).toBeHidden();
+    await page.getByText('Navegar pelo roadmap').click();
+    await expect(lateral).toBeVisible();
   });
 
   test('alternar o tema numa página de tópico persiste após recarregar', async ({ page }) => {
@@ -73,12 +93,12 @@ test.describe('abertura da página inicial', () => {
     await expect(page.locator('h1')).toHaveCount(1);
   });
 
-  test('a rota liga aos quatro níveis e os números às seções', async ({ page }) => {
+  test('a rota liga aos cinco níveis e os números às seções', async ({ page }) => {
     await page.goto('./');
     const rota = page.getByRole('navigation', { name: 'Rota do roadmap' });
     const links = rota.getByRole('link');
-    await expect(links).toHaveCount(4);
-    for (let n = 1; n <= 4; n++) await expect(links.nth(n - 1)).toHaveAttribute('href', `/roadmap-ai-engineer/nivel/${n}/`);
+    await expect(links).toHaveCount(5);
+    for (let n = 1; n <= 5; n++) await expect(links.nth(n - 1)).toHaveAttribute('href', `/roadmap-ai-engineer/nivel/${n}/`);
     await expect(rota).toContainText('Python');
     await expect(rota).toContainText('Agente em produção');
     const numeros = page.locator('.hero-numeros a');
@@ -86,9 +106,9 @@ test.describe('abertura da página inicial', () => {
     await expect(numeros.nth(0)).toHaveAttribute('href', '#niveis');
     await expect(numeros.nth(1)).toHaveAttribute('href', '#carreira');
     await expect(numeros.nth(2)).toHaveAttribute('href', '#portfolio');
-    await expect(numeros.nth(0)).toContainText('4 níveis');
+    await expect(numeros.nth(0)).toContainText('5 níveis');
     await expect(numeros.nth(1)).toContainText('5 fases de carreira');
-    await expect(numeros.nth(2)).toContainText('5 projetos');
+    await expect(numeros.nth(2)).toContainText('6 projetos');
   });
 
   for (const [w, h] of [[1440, 900], [1280, 720], [390, 844]]) {
@@ -153,4 +173,35 @@ test.describe('menu no celular', () => {
       expect(r.fora).toBe(0);
     });
   }
+});
+
+test.describe('fluxogramas', () => {
+  test('o diagrama vira SVG com legenda e abre em tela cheia', async ({ page }) => {
+    await page.goto('topico/rag/');
+    const fig = page.locator('figure.fluxo').first();
+    await expect(fig.locator('.fluxo-tela > svg')).toBeVisible();
+    await expect(fig.locator('figcaption')).toContainText('Fluxo do RAG');
+    const botao = fig.getByRole('button', { name: 'Ver o diagrama em tela cheia' });
+    await botao.click();
+    await expect.poll(() => page.evaluate(() => document.fullscreenElement?.classList.contains('fluxo') ?? false)).toBe(true);
+    await expect(fig.locator('[data-fluxo-cheia]')).toHaveAttribute('aria-pressed', 'true');
+    await fig.getByRole('button', { name: 'Sair da tela cheia' }).click();
+    await expect.poll(() => page.evaluate(() => document.fullscreenElement)).toBeNull();
+  });
+
+  test('sem Fullscreen API, a figura vira camada fixa e Esc fecha', async ({ page }) => {
+    await page.addInitScript(() => Object.defineProperty(document, 'fullscreenEnabled', { get: () => false }));
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('topico/rag/');
+    const fig = page.locator('figure.fluxo').first();
+    await fig.locator('[data-fluxo-cheia]').click();
+    await expect(fig).toHaveClass(/fluxo-aberta/);
+    await page.keyboard.press('Escape');
+    await expect(fig).not.toHaveClass(/fluxo-aberta/);
+  });
+
+  test('a página de nível mostra a visão do nível', async ({ page }) => {
+    await page.goto('nivel/5/');
+    await expect(page.locator('.pg-visao figure.fluxo figcaption')).toContainText('Visão do nível 5');
+  });
 });

@@ -48,6 +48,25 @@ O formato varia por empresa, e esta dica é um roteiro de estudo. O artigo de Ch
 7. **Trate avaliação e operação.** Golden set (perguntas com resposta esperada), evals (testes de qualidade) no CI, rastreamento de cada resposta, alertas e plano para quando o provedor do modelo falhar.
 8. **Treine em voz alta**, com cronômetro de 45 minutos, e peça a alguém para questionar cada caixa do desenho.
 
+```mermaid
+flowchart TB
+  accTitle: Roteiro de uma entrevista de design de sistemas com LLM
+  accDescr: Esclareça requisitos, estime custo, desenhe o fluxo principal e escolha entre workflow e agente. No quadro, o fluxo vai do usuário à resposta validada. Depois, trate custo, segurança, avaliação e operação.
+  subgraph ROT["Roteiro de 45 minutos"]
+    direction LR
+    A[Requisitos] --> B[Estimativa de custo] --> C[Fluxo principal] --> D[Workflow ou agente]
+  end
+  subgraph FLX["Fluxo principal no quadro"]
+    direction LR
+    E([Usuário]) --> F[Recupera contexto] --> G{{LLM}}:::modelo --> H[Valida a saída] --> I([Resposta]):::destaque
+  end
+  subgraph TRT["Depois, trate"]
+    direction LR
+    J[Custo e latência] ~~~ K[Segurança]:::risco ~~~ L[Avaliação e operação]
+  end
+  ROT --> FLX --> TRT
+```
+
 ## Exemplo
 
 Pergunta: "Como você reduziria o custo do assistente?"
