@@ -49,7 +49,7 @@ function iniciar(): void {
   } catch {
     salvo = null;
   }
-  const inicial: Perfil = perfilDaURL(q.toString() ? q : new URLSearchParams(salvo ?? ''));
+  const inicial: Perfil = perfilDaURL(q.has('s') || q.has('h') || q.has('b') ? q : new URLSearchParams(salvo ?? ''));
 
   function aplicar(p: Perfil): void {
     radios.forEach((r) => (r.checked = r.value === p.situacao));
@@ -149,7 +149,10 @@ function iniciar(): void {
       .filter(([, m]) => m === 'pular')
       .map(([id]) => `topico:${id}`);
     marcarVarios(st, ids);
-    feedback.textContent = ids.length ? `${ids.length} tópicos marcados como concluídos.` : 'Nenhum tópico para pular ainda.';
+    document.dispatchEvent(new CustomEvent('progresso:recarregar'));
+    feedback.textContent = ids.length
+      ? `${ids.length} ${ids.length === 1 ? 'tópico marcado' : 'tópicos marcados'} como concluído${ids.length === 1 ? '' : 's'}.`
+      : 'Nenhum tópico para pular ainda.';
   });
   document.querySelector('[data-calc-link]')?.addEventListener('click', async () => {
     try {

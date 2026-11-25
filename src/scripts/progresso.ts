@@ -57,6 +57,11 @@ document.addEventListener('click', (e) => {
   else delete estado[id];
   atualizar();
 });
+// Outra parte da página (a calculadora) gravou direto no armazenamento.
+document.addEventListener('progresso:recarregar', () => {
+  estado = ler(armazem());
+  atualizar();
+});
 window.addEventListener('storage', () => {
   estado = ler(armazem());
   atualizar();

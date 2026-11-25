@@ -13,7 +13,7 @@ test('padrão: estudante, 12 h, nada marcado, tudo a estudar', async ({ page }) 
   await expect(page.locator('[data-calc-bloco]:checked')).toHaveCount(0);
   await expect(page.locator('[data-calc-total]')).toContainText('meses');
   await expect(page.locator('[data-calc-marca="rag"]')).toHaveText('Estudar');
-  await expect(page.locator('[data-calc-resultado]')).toHaveAttribute('aria-live', 'polite');
+  await expect(page.locator('[aria-live="polite"] [data-calc-total]')).toHaveCount(1);
   await expect(page.locator('[data-calc-nojs]')).toBeHidden();
   expect(erros).toEqual([]);
 });
@@ -113,5 +113,26 @@ test.describe('ligações', () => {
     await page.goto('./nivel/1/');
     await expect(page.locator('[data-etiqueta-topico="python-fundamentos"]')).toBeVisible();
     await expect(page.locator('[data-etiqueta-topico="embeddings"]')).toBeHidden();
+  });
+});
+
+test.describe('correções da revisão', () => {
+  test('parâmetro estranho na URL não apaga o perfil salvo', async ({ page }) => {
+    await page.goto('./calculadora/?s=dev');
+    await page.goto('./calculadora/?utm_source=linkedin');
+    await expect(page.getByRole('radio', { name: 'Dev de outra área' })).toBeChecked();
+  });
+
+  test('marcar o que já domino atualiza o progresso do cabeçalho na hora', async ({ page }) => {
+    await page.goto('./calculadora/?s=dev');
+    await page.locator('[data-calc-marcar-concluidos]').click();
+    await expect(page.locator('[data-progresso-global]')).not.toContainText(/^\s*0 \//);
+  });
+
+  test('só o total e o resumo são região ao vivo', async ({ page }) => {
+    await page.goto('./calculadora/');
+    await expect(page.locator('main [aria-live]')).toHaveCount(1);
+    await expect(page.locator('[aria-live] [data-calc-total]')).toHaveCount(1);
+    await expect(page.locator('[aria-live] button')).toHaveCount(0);
   });
 });
